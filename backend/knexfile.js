@@ -1,4 +1,3 @@
-/*
 const AWSSecretsManager = require("./AWSSecretsManager");
 
 module.exports = {
@@ -31,4 +30,3 @@ module.exports = {
     }
   }
 }
-*/
