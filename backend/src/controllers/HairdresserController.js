@@ -9,8 +9,11 @@ const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 module.exports = {
   async index(req, res, next) {
     try {
-      const allHairdressersFromDB = await knex("hairdressers");
+      const connectDB = await knex.connect();
+      const allHairdressersFromDB = await connectDB("hairdressers");
+
       return res.status(200).json(allHairdressersFromDB);
+
     } catch (error) {
         next(error);
     }
@@ -24,7 +27,8 @@ module.exports = {
         return res.status(400).json({ message: "Missing Hairdresser ID" });
       }
 
-      const hairdresserFromDB = await knex("hairdressers").where({ id: id }).first();
+      const connectDB = await knex.connect();
+      const hairdresserFromDB = await connectDB("hairdressers").where({ id: id }).first();
 
       console.log(hairdresserFromDB);
 
@@ -57,7 +61,8 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const hairdresserFromDB = await knex("hairdressers").where({ email: email }).first();
+      const connectDB = await knex.connect();
+      const hairdresserFromDB = await connectDB("hairdressers").where({ email: email }).first();
 
       if(hairdresserFromDB) return res.status(400).json({ message: "Email address already registered" });
 
@@ -66,7 +71,7 @@ module.exports = {
 
       const verificationToken = crypto.randomBytes(20).toString("hex");
 
-      const newHairdresser = await knex('hairdressers').insert({
+      const newHairdresser = await connectDB('hairdressers').insert({
         first_name: firstName, 
         last_name: lastName, 
         dob: dob, 
@@ -137,11 +142,12 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const hairdresserFromDB = await knex("hairdressers").where({ id: id }).first();
+      const connectDB = await knex.connect();
+      const hairdresserFromDB = await connectDB("hairdressers").where({ id: id }).first();
 
       if(!hairdresserFromDB) return res.status(400).json({ message: "No Hairdresser Found" });
 
-      const updatedHairdresser = await knex('hairdressers').where({ id: id }).update({
+      const updatedHairdresser = await connectDB('hairdressers').where({ id: id }).update({
         first_name: firstName, 
         last_name: lastName, 
         dob: dob, 
@@ -171,11 +177,12 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const hairdresserFromDB = await knex("hairdresser").where({ id: id }).first();
+      const connectDB = await knex.connect();
+      const hairdresserFromDB = await connectDB("hairdresser").where({ id: id }).first();
 
       if(!hairdresserFromDB) return res.status(400).json({ message: "No Hairdresser Found" });
 
-      const deletedHairdresser = await knex('hairdresser').where({ id: id}).del();
+      const deletedHairdresser = await connectDB('hairdresser').where({ id: id}).del();
 
       return res.status(200).json({ message: 'Hairdresser deleted successfully' });
 
@@ -193,11 +200,12 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const hairdresserFromDB = await knex("hairdressers").where({ verification_token: verificationToken }).first();
+      const connectDB = await knex.connect();
+      const hairdresserFromDB = await connectDB("hairdressers").where({ verification_token: verificationToken }).first();
 
       if(!hairdresserFromDB) return res.status(400).json({ message: "No Hairdresser found with this verification token" });
 
-      const verifiedHairdresser = await knex('hairdressers').where({ verification_token: verificationToken }).update({
+      const verifiedHairdresser = await connectDB('hairdressers').where({ verification_token: verificationToken }).update({
         verified: 1
       });
 
@@ -217,7 +225,8 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const hairdresserFromDB = await knex("hairdressers").where({ email: email }).first();
+      const connectDB = await knex.connect();
+      const hairdresserFromDB = await connectDB("hairdressers").where({ email: email }).first();
 
       console.log(hairdresserFromDB);
 

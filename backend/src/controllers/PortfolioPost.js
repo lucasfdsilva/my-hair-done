@@ -3,8 +3,12 @@ const knex = require("../database/knex");
 module.exports = {
   async index(req, res, next) {
     try {
-      const portfolioPosts = await knex("portfolio_posts");
+
+      const connectDB = await knex.connect();
+      const portfolioPosts = await connectDB("portfolio_posts");
+
       return res.json(portfolioPosts);
+    
     } catch (error) {
         next(error);
     }
@@ -18,7 +22,8 @@ module.exports = {
         return res.status(400).json({ message: "Missing Portfolio Post ID" });
       }
 
-      const portfolioPost = await knex("portfolio_posts").where({ id: id }).first();
+      const connectDB = await knex.connect();
+      const portfolioPost = await connectDB("portfolio_posts").where({ id: id }).first();
 
       if (!portfolioPost) return res.status(400).json({ message: "No Portfolio Post Found" });
 
@@ -37,7 +42,8 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const newPortfolioPost = await knex('portfolio_posts').insert({
+      const connectDB = await knex.connect();
+      const newPortfolioPost = await connectDB('portfolio_posts').insert({
         hairdresser_id: hairdresser_id, 
         title: title, 
         description: description, 
@@ -61,11 +67,12 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const portfolioPostFromDB = await knex("portfolio_posts").where({ id: id }).first();
+      const connectDB = await knex.connect();
+      const portfolioPostFromDB = await connectDB("portfolio_posts").where({ id: id }).first();
 
       if(!portfolioPostFromDB) return res.status(400).json({ message: "No Portfolio Post Found" });
 
-      const updatedPortfolioPost = await knex('portfolio_posts').where({ id: id }).update({ 
+      const updatedPortfolioPost = await connectDB('portfolio_posts').where({ id: id }).update({ 
         title: title, 
         description: description, 
         img_url: img_url,
@@ -89,11 +96,12 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const portfolioPostFromDB = await knex("portfolio_posts").where({ id: id }).first();
+      const connectDB = await knex.connect();
+      const portfolioPostFromDB = await connectDB("portfolio_posts").where({ id: id }).first();
 
       if(!portfolioPostFromDB) return res.status(400).json({ message: "No Portfolio Post Found" });
 
-      const deletedPortfolioPost = await knex('portfolio_posts').where({ id: id}).del();
+      const deletedPortfolioPost = await connectDB('portfolio_posts').where({ id: id}).del();
 
       return res.status(200).json({ message: 'Portfolio Post deleted successfully' });
 

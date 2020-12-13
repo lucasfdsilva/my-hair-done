@@ -1,4 +1,11 @@
-const knexfile = require('../../knexfile');
-const knex = require('knex')(knexfile['development']);
+const knex = require("knex");
+const knexConfiguration = require("../../knexfile");
 
-module.exports = knex;
+module.exports = {
+  async connect() {
+    const environments = await knexConfiguration.getConfiguration();
+    const connection = knex(environments.development);
+
+    return connection;
+  },
+};
