@@ -39,7 +39,7 @@ module.exports = {
 
   async create(req, res, next) {
     try {
-      const { firstName, lastName, dob, mobile, email, password, isAdmin, profile_image_url, active_bookings, past_haircuts } = req.body;
+      const { firstName, lastName, dob, mobile, email, password, isAdmin, profile_image_url } = req.body;
 
       if (!firstName || !lastName || !dob || mobile || !email || !password) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
