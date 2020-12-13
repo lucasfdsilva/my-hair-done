@@ -1,0 +1,25 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/my-hair-done/
+hooks:
+  ApplicationStop:
+    - location: backend/scripts/application_stop.sh
+      timeout: 300
+      runas: ec2-user
+
+  BeforeInstall:
+    - location: backend/scripts/before_install.sh
+      timeout: 300
+      runas: ec2-user
+
+  AfterInstall:
+    - location: backend/scripts/after_install.sh
+      timeout: 300
+      runas: ec2-user
+
+  ApplicationStart:
+    - location: backend/scripts/application_start.sh
+      timeout: 300
+      runas: ec2-user

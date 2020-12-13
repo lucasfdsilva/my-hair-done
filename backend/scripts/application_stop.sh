@@ -1,3 +1,3 @@
 #!/bin/bash
-echo 'running stop server'
+echo 'Stopping Backend Server'
 sudo pm2 stop all

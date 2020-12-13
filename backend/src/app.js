@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors')
 const routes = require('./routes');
+const NewBookingQueuePollingService = require('./services/NewBookingQueuePollingService');
 
 //Configuring Express Server
 const app = express();
@@ -14,6 +15,6 @@ app.use((error, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, console.log(`Backend Server started on port ${PORT}`));
+app.listen(PORT, console.log(`Server started on port ${PORT}`));
 
 module.exports = app;
