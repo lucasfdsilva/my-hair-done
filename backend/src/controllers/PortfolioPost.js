@@ -95,7 +95,7 @@ module.exports = {
 
       const deletedPortfolioPost = await knex('portfolio_posts').where({ id: id}).del();
 
-      return res.status(200).json({ message: 'Menu Item deleted successfully' });
+      return res.status(200).json({ message: 'Portfolio Post deleted successfully' });
 
     } catch (error) {
         next(error);
