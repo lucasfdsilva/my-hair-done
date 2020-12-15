@@ -1,14 +1,15 @@
 const express = require('express');
 
-//const SessionController = require('./controllers/SessionController.js');
+const UserSessionController = require('./controllers/UserSessionController');
+const HairdresserSessionController = require('./controllers/HairdresserSessionController');
 const UserController = require('./controllers/UserController');
 const HairdresserController = require('./controllers/HairdresserController');
 
 const openRoutes = express.Router();
 
-//Session Controller Routes
-//openRoutes.post('/sessions', SessionController.create);
-
+//Sessions Controller Routes
+openRoutes.post('/users/sessions', UserSessionController.create);
+openRoutes.post('/hairdressers/sessions', HairdresserSessionController.create);
 
 //User Controller Routes
 openRoutes.get('/users', UserController.index)

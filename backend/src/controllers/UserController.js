@@ -53,7 +53,7 @@ module.exports = {
       const userFromDB = await connectDB("users").where({ email: email }).first();
 
       if(userFromDB) return res.status(400).json({ message: "Email address already registered" });
-
+      
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
 

@@ -23,11 +23,11 @@ module.exports = {
       //JWT Auth is built here - After checking the user credentials (authentication)
       if (!await bcrypt.compare(password, hairdresserFromDB.password)) return res.status(400).json({ message: "Password is incorrect" });
         
-      const accessToken = jwt.sign(hairdresserFromDB.id, jwtSecret.secret);
+      const accessToken = jwt.sign(hairdresserFromDB.hairdresser_id, jwtSecret.secret);
 
       return res.status(200).json({
-        message: "User Logged in successfully",
-        id: hairdresserFromDB.id,
+        message: "Hairdresser Logged in successfully",
+        id: hairdresserFromDB.hairdresser_id,
         accessToken: accessToken,
         isAdmin: hairdresserFromDB.is_admin
       });

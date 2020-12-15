@@ -16,6 +16,9 @@ module.exports = {
 
       const userFromDB = await connectDB("users").where({ email: email.toLowerCase() }).first();
 
+      console.log(userFromDB)
+      console.log(await bcrypt.compare(password, userFromDB.password))
+
       if (!userFromDB) return res.status(400).json({ message: "User Not Found" });
 
       //if (userFromDB.verified == false) return res.status(400).json({ message: "Please verify your email before logging in" });
@@ -23,11 +26,11 @@ module.exports = {
       //JWT Auth is built here - After checking the user credentials (authentication)
       if (!await bcrypt.compare(password, userFromDB.password)) return res.status(400).json({ message: "Password is incorrect" });
         
-      const accessToken = jwt.sign(userFromDB.id, jwtSecret.secret);
+      const accessToken = jwt.sign(userFromDB.user_id, jwtSecret.secret);
 
       return res.status(200).json({
         message: "User Logged in successfully",
-        id: userFromDB.id,
+        id: userFromDB.user_id,
         accessToken: accessToken,
         isAdmin: userFromDB.is_admin
       });
