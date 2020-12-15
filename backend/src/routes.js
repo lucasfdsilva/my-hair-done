@@ -5,6 +5,7 @@ const HairdresserSessionController = require('./controllers/HairdresserSessionCo
 const UserController = require('./controllers/UserController');
 const HairdresserController = require('./controllers/HairdresserController');
 const PortfolioPostController = require('./controllers/PortfolioPostController');
+const SlotController = require('./controllers/SlotController');
 
 const openRoutes = express.Router();
 
@@ -37,7 +38,7 @@ openRoutes.post('/portfolioposts', PortfolioPostController.create);
 openRoutes.put('/portfolioposts', PortfolioPostController.update);
 openRoutes.delete('/portfolioposts', PortfolioPostController.delete);
 
-/*
+
 //Restaurant Available Slots Controller Routes
 openRoutes.get('/slots', SlotController.index);
 openRoutes.get('/slots/:id', SlotController.view);
@@ -45,12 +46,7 @@ openRoutes.post('/slots', SlotController.create);
 openRoutes.put('/slots', SlotController.update);
 openRoutes.delete('/slots', SlotController.delete);
 
-//Tables Controller Routes
-openRoutes.get('/tables', TableController.index);
-openRoutes.get('/tables/:id', TableController.view);
-openRoutes.post('/tables', TableController.create);
-openRoutes.put('/tables', TableController.update);
-openRoutes.delete('/tables', TableController.delete);
+/*
 
 //Bookings Controller Routes
 openRoutes.get('/bookings', BookingController.index);

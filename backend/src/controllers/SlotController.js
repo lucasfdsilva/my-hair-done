@@ -23,7 +23,7 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const slotFromDB = await connectDB("slots").where({ id: id }).first();
+      const slotFromDB = await connectDB("slots").where({ slot_id: id }).first();
 
       if (!slotFromDB) return res.status(400).json({ message: "No Slot Found" });
 
@@ -72,11 +72,11 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const slotFromDB = await connectDB("slots").where({ id: id }).first();
+      const slotFromDB = await connectDB("slots").where({ slot_id: id }).first();
 
       if(!slotFromDB) return res.status(400).json({ message: "No Slot Found" });
 
-      const updatedSlot = await connectDB('slots').where({ id: id }).update({
+      const updatedSlot = await connectDB('slots').where({ slot_id: id }).update({
         start_time: startTime,
         duration: duration,
         monday: monday,
@@ -105,11 +105,11 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const slotFromDB = await connectDB("slots").where({ id: id }).first();
+      const slotFromDB = await connectDB("slots").where({ slot_id: id }).first();
 
       if(!slotFromDB) return res.status(400).json({ message: "No Slot Found" });
 
-      const deletedSlot = await connectDB('slots').where({ id: id}).del();
+      const deletedSlot = await connectDB('slots').where({ slot_id: id}).del();
 
       return res.status(200).json({ message: 'Slot deleted successfully' });
 
