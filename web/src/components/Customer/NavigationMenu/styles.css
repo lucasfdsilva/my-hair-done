@@ -10,7 +10,7 @@
 
 .navigation-menu .left-links {
   position: absolute;
-  left: 250px;
+  left: 380px;
 }
 
 .navigation-menu .right-links {
@@ -24,7 +24,8 @@
 }
 
 .navigation-menu img {
-  height: 125px;
+  margin-top: -25px;
+  height: 300px;
   width: 350px;
 }
 

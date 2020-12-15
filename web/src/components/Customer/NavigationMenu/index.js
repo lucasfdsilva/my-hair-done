@@ -4,7 +4,7 @@ import { FiHome,  FiMenu, FiLogIn, FiEdit, FiUser, FiBookOpen, FiBook, FiLogOut 
 
 import './styles.css';
 
-import asystecLogo from '../../../assets/asystec-logo.png';
+import headerLogo from '../../../assets/header-logo.png';
 
 export default function NavigationMenu(){
   const [id, setID] = useState(localStorage.getItem("id"));
@@ -33,7 +33,7 @@ export default function NavigationMenu(){
           }
         </div>
           
-        <img src={asystecLogo} alt=""/>
+        <img src={headerLogo} alt=""/>
   
         <div className="logged-right-links">
           <Link to="/profile">
@@ -76,7 +76,7 @@ export default function NavigationMenu(){
             </Link>
           </div>
   
-          <img src={asystecLogo} alt=""/>
+          <img src={headerLogo} alt=""/>
   
           <div className="right-links">
             <Link className="header-link" to="/register">
