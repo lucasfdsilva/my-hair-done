@@ -42,7 +42,7 @@ module.exports = {
         return res.status(400).json({ message: "Missing Booking ID" });
       }
 
-      const bookingFromDB = await connectDB("bookings").where({ id: id }).first();
+      const bookingFromDB = await connectDB("bookings").where({ booking_id: id }).first();
 
       if (!bookingFromDB) return res.status(400).json({ message: "No Booking Found" });
 
@@ -67,11 +67,13 @@ module.exports = {
         user_id: userID,
         hairdresser_id: hairdresserID,
         slot_id: slotID,
+        user_email: userEmail,
         date: date,
         start_time: startTime,
         duration: duration 
       });
 
+      /*
       const SQSParams = {
         MessageAttributes: {
           "bookingID": {
@@ -117,6 +119,7 @@ module.exports = {
           console.log("Success", data.MessageId);
         }
       })
+      */
 
       return res.status(201).json({ message: "Booking Registered Successfully" });
 
@@ -129,21 +132,23 @@ module.exports = {
     try {
       const connectDB = await knex.connect();
 
-      const { id, userID, hairdresserID, slotID, date } = req.body;
+      const { id, userID, hairdresserID, slotID, date, startTime, duration } = req.body;
 
-      if (!id || !userID || !hairdresserID || !slotID || !date) {
+      if (!id || !userID || !hairdresserID || !slotID || !date || !startTime || !duration) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const bookingFromDB = await connectDB("bookings").where({ id: id }).first();
+      const bookingFromDB = await connectDB("bookings").where({ booking_id: id }).first();
 
       if(!bookingFromDB) return res.status(400).json({ message: "No Booking Found" });
 
-      const updatedBooking = await connectDB('bookings').where({ id: id }).update({
+      const updatedBooking = await connectDB('bookings').where({ booking_id: id }).update({
         user_id: userID,
         hairdresser_id: hairdresserID,
         slot_id: slotID,
-        date: date
+        date: date,
+        start_time: startTime,
+        duration: duration
       });
 
       return res.status(200).json({ message: 'Booking updated successfully' });
@@ -163,11 +168,11 @@ module.exports = {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const bookingFromDB = await connectDB("bookings").where({ id: id }).first();
+      const bookingFromDB = await connectDB("bookings").where({ booking_id: id }).first();
 
       if(!bookingFromDB) return res.status(400).json({ message: "No Booking Found" });
 
-      const deletedBooking = await connectDB('bookings').where({ id: id}).del();
+      const deletedBooking = await connectDB('bookings').where({ booking_id: id}).del();
 
       return res.status(200).json({ message: 'Booking deleted successfully' });
 
@@ -198,30 +203,31 @@ module.exports = {
       weekday[6] = "Saturday";
       var dateWeekDay = weekday[convertedDate.getDay()];
       
-      const allRegisteredSlotsWeekDayTrueRaw = await connectDB.schema.raw(`SELECT id, start_time, duration from slots WHERE ${dateWeekDay} = true`);
-      const existingBookingsOnDate = await connectDB("bookings").where({ date: date });
-
       //Get all slots that are registered for that week day
+      const allRegisteredSlotsWeekDayTrueRaw = await connectDB.schema.raw(`SELECT slot_id, start_time, duration from slots WHERE ${dateWeekDay} = true`);
+      
       var allRegisteredSlotsWeekDayTrueClean = [];
       for(const slot of allRegisteredSlotsWeekDayTrueRaw[0]){
-        allRegisteredSlotsWeekDayTrueClean.push({ "slot_id": slot.id, "start_time": slot.start_time, "duration": slot.duration });
+        allRegisteredSlotsWeekDayTrueClean.push({ "slot_id": slot.slot_id, "start_time": slot.start_time, "duration": slot.duration });
       }
+      console.log(allRegisteredSlotsWeekDayTrueClean);
 
-      //Get all slots that already have bookings on that day
+      //Get all bookings for the same date
+      const existingBookingsOnDate = await connectDB("bookings").where({ date: date });
+
       var availableSlots = [];
-      for(const booking of existingBookingsOnDate){
-        var slotAlreadyInArray=false
-        
-        //If there's already a booking for that slot, it's flags so that same slot is not added to the availableSlots array
-        for(const slot of slotsInBookingsOnDate){
-          if(slot.slotID == booking.slot_id){
-            slotAlreadyInArray = true;
+      for(const slot of allRegisteredSlotsWeekDayTrueClean){
+        slotAlreadyBooked = false;
+
+        for(const booking of existingBookingsOnDate){
+          if(slot.slot_id == booking.slot_id){
+            slotAlreadyBooked = true;
           }
         }
 
         //Adds the current slot in the loop if it's not already booked
-        if(!slotAlreadyInArray) {
-          availableSlots.push({"slotID": booking.slot_id});
+        if(!slotAlreadyBooked) {
+          availableSlots.push({"slotID": slot.slot_id});
         }
       }
   
@@ -249,7 +255,6 @@ module.exports = {
         hairdresser_id: hairdresserID,
         slot_id: slotID,
         date: date,
-        number_of_people: numberOfPeople,
         start_time: startTime,
         duration: duration 
       });
