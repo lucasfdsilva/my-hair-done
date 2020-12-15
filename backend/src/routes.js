@@ -4,6 +4,7 @@ const UserSessionController = require('./controllers/UserSessionController');
 const HairdresserSessionController = require('./controllers/HairdresserSessionController');
 const UserController = require('./controllers/UserController');
 const HairdresserController = require('./controllers/HairdresserController');
+const PortfolioPostController = require('./controllers/PortfolioPostController');
 
 const openRoutes = express.Router();
 
@@ -29,14 +30,14 @@ openRoutes.delete('/hairdressers', HairdresserController.delete);
 openRoutes.put('/hairdressers/verify/:verificationToken', HairdresserController.verifyEmailAddress);
 openRoutes.post('/hairdressers/verify/send', HairdresserController.sendVerificationEmail);
 
-/*
 //Menu Item Controller Routes
-openRoutes.get('/menu', MenuItemController.index);
-openRoutes.get('/menu/:id', MenuItemController.view);
-openRoutes.post('/menu', MenuItemController.create);
-openRoutes.put('/menu', MenuItemController.update);
-openRoutes.delete('/menu', MenuItemController.delete);
+openRoutes.get('/portfolioposts', PortfolioPostController.index);
+openRoutes.get('/portfolioposts/:id', PortfolioPostController.view);
+openRoutes.post('/portfolioposts', PortfolioPostController.create);
+openRoutes.put('/portfolioposts', PortfolioPostController.update);
+openRoutes.delete('/portfolioposts', PortfolioPostController.delete);
 
+/*
 //Restaurant Available Slots Controller Routes
 openRoutes.get('/slots', SlotController.index);
 openRoutes.get('/slots/:id', SlotController.view);

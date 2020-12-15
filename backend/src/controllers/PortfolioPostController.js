@@ -23,7 +23,7 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const portfolioPost = await connectDB("portfolio_posts").where({ id: id }).first();
+      const portfolioPost = await connectDB("portfolio_posts").where({ portfolio_post_id: id }).first();
 
       if (!portfolioPost) return res.status(400).json({ message: "No Portfolio Post Found" });
 
@@ -68,11 +68,11 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const portfolioPostFromDB = await connectDB("portfolio_posts").where({ id: id }).first();
+      const portfolioPostFromDB = await connectDB("portfolio_posts").where({ portfolio_post_id: id }).first();
 
       if(!portfolioPostFromDB) return res.status(400).json({ message: "No Portfolio Post Found" });
 
-      const updatedPortfolioPost = await connectDB('portfolio_posts').where({ id: id }).update({ 
+      const updatedPortfolioPost = await connectDB('portfolio_posts').where({ portfolio_post_id: id }).update({ 
         title: title, 
         description: description, 
         img_url: img_url,
@@ -97,11 +97,11 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const portfolioPostFromDB = await connectDB("portfolio_posts").where({ id: id }).first();
+      const portfolioPostFromDB = await connectDB("portfolio_posts").where({ portfolio_post_id: id }).first();
 
       if(!portfolioPostFromDB) return res.status(400).json({ message: "No Portfolio Post Found" });
 
-      const deletedPortfolioPost = await connectDB('portfolio_posts').where({ id: id}).del();
+      const deletedPortfolioPost = await connectDB('portfolio_posts').where({ portfolio_post_id: id}).del();
 
       return res.status(200).json({ message: 'Portfolio Post deleted successfully' });
 
