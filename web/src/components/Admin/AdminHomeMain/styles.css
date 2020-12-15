@@ -1,0 +1,83 @@
+.admin-home-main-container {
+  display: flex;
+
+  grid-area: main;
+  
+  justify-content: center;
+  align-items: center;
+
+  overflow: auto;
+
+  background: #E4F0FB;
+}
+
+.admin-home-main-content {
+  height: 95%;
+  width: 95%;
+  margin-top: 15px;
+  margin-bottom: 30px;
+
+  align-items: center;
+  justify-items: center;
+
+  padding: 30px;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+}
+
+.admin-home-main-content a {
+  font-size: 24px;
+  color: #5f6670;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.5s;
+  margin-left: -15px;
+  margin-top: -30px;
+}
+
+.admin-home-main-content a:hover  {
+  opacity: 0.6;
+}
+
+.links {
+  height: 20%;
+  width: 75%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+  'usersLogo slotsLogo menuLogo bookingsLogo'
+  'usersText slotsText menuText bookingsText'
+  ;
+  margin-top: 75px;
+  margin-left: 12%;
+  align-items: center;
+  justify-items: center;
+}
+
+.users-icon{
+  grid-area: usersLogo;
+}
+
+.slots-icon{
+  grid-area: slotsLogo;
+}
+
+.bookings-icon{
+  grid-area: bookingsLogo;
+}
+
+.menu-icon{
+  grid-area: menuLogo;
+}
+
+.admin-home-main-content .strong-link:active {
+  background: #7AC3FF;
+}
+
+.admin-home-main-content svg {
+  margin-right: 15px;
+}

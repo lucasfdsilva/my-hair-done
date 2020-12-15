@@ -1,0 +1,121 @@
+.admin-view-users-container {
+  display: flex;
+
+  grid-area: main;
+  
+  justify-content: center;
+  align-items: center;
+
+  overflow: auto;
+
+  background: #E4F0FB;
+}
+
+.admin-view-users-content {
+  height: 95%;
+  width: 95%;
+  margin-top: 15px;
+  margin-bottom: 30px;
+
+  align-items: center;
+  justify-items: center;
+
+  padding: 30px;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+}
+
+.admin-view-users-content h1 {
+  font-size: 38px;
+  margin-bottom: 40px;
+}
+
+.admin-view-users-content a {
+  text-decoration: none;
+  color: #000;
+  font-size: 24px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.admin-view-users-content a:hover {
+  opacity: 0.5;
+}
+
+.admin-view-users-content svg {
+  margin-right: 10px;
+}
+
+
+.admin-view-users-content ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 8px;
+  
+  margin-top: 25px;
+  margin-bottom: 60px;
+  
+  list-style: none;
+
+  border-radius: 8px;
+
+}
+
+.admin-view-users-content ul li {
+  background: #CDE3F5;
+  padding: 10px;
+
+  border: 1px solid #5f6670;
+  border-radius: 8px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 
+    'field1 field2 field3 field4 field5'
+  ;
+
+  align-items: center;
+  justify-items: start;
+
+  transition: opacity 0.4s;
+}
+
+.admin-view-users-content ul li:hover {
+  opacity: 0.7;
+}
+
+.admin-view-users-content ul li strong {
+  font-size: 17px;
+  margin-bottom: 5px;
+}
+
+.admin-view-users-content .id {
+  grid-area: field1;
+}
+.admin-view-users-content .first-name {
+  grid-area: field2;
+}
+.admin-view-users-content .last-name {
+  grid-area: field3;
+}
+.admin-view-users-content .email {
+  grid-area: field4;
+}
+.admin-view-users-content .admin {
+  grid-area: field5;
+}
+
+.admin-view-users-content ul li p {
+  font-size: 18px;
+  color: #5f6670;
+}
+
+
+
+
+
+

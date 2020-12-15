@@ -1,0 +1,12 @@
+.layout {
+  display: grid;
+
+  grid-template-columns: auto;
+  grid-template-rows: 12vh 76vh 12vh;
+
+  grid-template-areas: 
+    'navigationMenu'
+    'mainContent'
+    'footer'
+  ;
+}

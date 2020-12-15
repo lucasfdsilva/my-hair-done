@@ -1,0 +1,31 @@
+.home-page-body {
+  grid-area: mainContent;
+  display: block;
+  position: relative;
+  
+  align-items: center;
+  justify-content: center;
+}
+
+.home-page-body img {
+  height: 100%;
+  width: 100%;
+}
+
+.home-page-body h1 {
+  position: absolute;
+  left: 32%;
+  top: 390px;
+  color: #FFF;
+  font-size: 78px;
+}
+
+.home-page-body h2 {
+  position: absolute;
+  left: 42%;
+  top: 475px;
+  color: #FFF;
+  font-size: 64px;
+}
+
+

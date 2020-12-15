@@ -1,0 +1,63 @@
+.navigation-menu {
+  grid-area: navigationMenu;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation-menu .left-links {
+  position: absolute;
+  left: 250px;
+}
+
+.navigation-menu .right-links {
+  position: absolute;
+  right: 250px;
+}
+
+.navigation-menu .logged-right-links {
+  position: absolute;
+  right: 110px;
+}
+
+.navigation-menu img {
+  height: 125px;
+  width: 350px;
+}
+
+.navigation-menu a {
+  text-decoration: none;
+  color: #000;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 15px;
+  transition: opacity 0.2s;
+}
+
+.navigation-menu a:hover {
+  opacity: 0.5;
+}
+
+.navigation-menu .admin-panel {
+  border-radius: 5px;
+  padding: 5px;
+  background: #0c71c3;
+  color: #FFF;
+}
+
+.navigation-menu .book-online {
+  border-radius: 5px;
+  padding: 5px;
+  background: #ff6257;
+  color: #FFF;
+}
+
+.navigation-menu svg {
+  margin-right: 10px;
+}
+
+
+

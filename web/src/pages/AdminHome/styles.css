@@ -1,0 +1,12 @@
+.admin-home-container {
+  display: grid;
+
+  grid-template-columns: 1fr 6fr;
+  grid-template-rows: 6vh minmax(88vh, auto) 6vh;
+
+  grid-template-areas: 
+  "header header" 
+  "menu main" 
+  "footer footer";
+
+}

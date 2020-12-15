@@ -1,0 +1,96 @@
+.profile-container {
+  height: 100%;
+  width: 100%;
+  grid-area: mainContent;
+  display: flex;
+  justify-content: center;
+
+  background: url('../../../assets/pub-counter-cropped-blur.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.profile-content {
+  width: 50%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  padding: 30px;
+
+  border-radius: 8px;
+
+  align-items: center;
+  justify-items: center;
+
+  background: #ffffff;
+}
+
+.profile-content h1 {
+  font-size: 38px;
+}
+
+.profile-content form {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+
+  align-items: center;
+
+  margin-top: 35px;
+  margin-bottom: 35px;
+
+  background: #fff5f5;
+
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.profile-content form strong {
+  font-size: 20px;
+  margin: 10px;
+}
+
+.profile-content form p {
+  font-size: 17px;
+}
+
+.profile-content a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #000;
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 25px;
+  transition: opacity 0.2s;
+}
+
+.profile-content a:hover {
+  opacity: 0.5;
+}
+
+.profile-content svg {
+  margin-right: 10px;
+}
+
+.profile-content .verification-button {
+  height: 30px;
+  margin-left: 15px;
+  background: #FFF;
+  border: 2px solid red;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 5px;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+
+.profile-content .verification-button:hover {
+  filter: brightness(90%);
+}
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+.menu-container {
+  height: 100%;
+  width: 100%;
+  grid-area: mainContent;
+  display: flex;
+  justify-content: center;
+
+  background: url('../../../assets/pub-counter-cropped-blur.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.menu-content {
+  width: 50%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  padding: 30px;
+
+  border-radius: 8px;
+
+  align-items: center;
+  justify-items: center;
+
+  background: #ffffff;
+}
+
+.menu-content h1 {
+  font-size: 38px;
+}
+
+.menu-content ul {
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 50px;
+  list-style: none;
+  margin-bottom: 25px;
+  align-items: center;
+}
+
+.menu-content ul li {
+  background: #fff5f5;
+  padding: 24px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.menu-content ul li strong {
+  font-size: 16px;
+  margin: 7px;
+}
+
+.menu-content ul li p {
+  font-size: 17px;
+}
+
+
+
+
+
+

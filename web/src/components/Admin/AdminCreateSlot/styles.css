@@ -1,0 +1,204 @@
+.admin-create-slot-container {
+  display: flex;
+  min-height: 88vh;
+
+  grid-area: main;
+  
+  justify-content: center;
+
+  overflow: auto;
+
+  background: #E4F0FB;
+}
+
+.admin-create-slot-content {
+  height: auto;
+  width: 95%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  align-items: center;
+  justify-items: center;
+
+  padding: 30px;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+}
+
+.admin-create-slot-content h1 {
+  font-size: 38px;
+  margin-bottom: 33px;
+}
+
+.admin-create-slot-content a {
+  text-decoration: none;
+  color: #000;
+  font-size: 24px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.admin-create-slot-content a:hover {
+  opacity: 0.5;
+}
+
+.admin-create-slot-content svg {
+  margin-right: 10px;
+}
+
+.admin-create-slot-content form {
+  font-size: 21px;
+  margin-top: 25px;
+  margin-right: 30px;
+}
+
+.admin-create-slot-content p {
+  font-size: 18px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #41414d;
+}
+
+.admin-create-slot-content form input {
+  width: 100%;
+  height: 40px;
+  color: #41414d;
+  border: 1px solid #dcdce6;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.admin-create-slot-content form input[type=checkbox] {
+  position: absolute;
+  right: 600px;
+}
+
+.admin-create-slot-content strong {
+  margin-bottom: 15px;
+  font-weight: 400;
+}
+
+.weekdays {
+  display: flex;
+  flex-direction: column;
+}
+
+.weekdays label {
+  max-width: 10px;
+  font-size: 18px;
+  margin-top: 5px;
+  margin-right: 30px;
+  margin-bottom: 15px;
+  color: #41414d;
+}
+
+.admin-create-slot-content form button {
+  width: 15%;
+  height: 45px;
+  margin-top: 15px;
+
+  border: 2px solid #000;
+  border-radius: 8px;
+  border-color: #000;
+  
+  font-weight: 700;
+  font-size: 24px;
+  color: #000;
+
+  text-align: center;
+  text-decoration: none;
+  background: #FFF;
+
+  cursor: pointer;
+
+  transition: filter 0.2s;
+}
+
+.admin-create-slot-content form button:hover {
+  filter: brightness(90%);
+}
+
+.admin-create-slot-content form button:disabled {
+  background: rgb(190, 190, 190);
+  color: #f0f0f5;
+  cursor: not-allowed;
+}
+
+
+/*creating a custom checkbox*/
+.custom-checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/*hiding the default checkbox*/
+.custom-checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.custom-checkbox-container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.custom-checkbox-container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.custom-checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.custom-checkbox-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+
+
+
+

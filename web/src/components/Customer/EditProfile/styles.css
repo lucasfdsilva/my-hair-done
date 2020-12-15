@@ -1,0 +1,104 @@
+.edit-profile-container {
+  height: 100%;
+  grid-area: mainContent;
+  display: flex;
+  justify-content: center;
+
+  background: url('../../../assets/pub-counter-cropped-blur.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.edit-profile-content {
+  width: 50%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+
+  border-radius: 8px;
+
+  align-items: center;
+  justify-items: center;
+
+  background: #ffffff;
+}
+
+.edit-profile-content h1 {
+  font-size: 38px;
+  margin-left: 30px;
+  margin-top: 25px;
+}
+
+.edit-profile-content form {
+  font-size: 21px;
+  margin-top: 35px;
+  margin-bottom: 35px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.edit-profile-content form p {
+  font-size: 21px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: #41414d;
+}
+
+.edit-profile-content form input {
+  width: 100%;
+  height: 40px;
+  color: #41414d;
+  border: 1px solid #dcdce6;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.edit-profile-content form button {
+  width: 25%;
+  height: 50px;
+  margin-top: 35px;
+  margin-bottom: 10px;
+
+  border: 2px solid #000;
+  border-radius: 8px;
+  border-color: #000;
+  
+  font-weight: 700;
+  font-size: 24px;
+  color: #000;
+
+  text-align: center;
+  text-decoration: none;
+  background: #FFF;
+
+  cursor: pointer;
+
+  transition: filter 0.2s;
+}
+
+.edit-profile-content form button:hover {
+  filter: brightness(90%);
+}
+
+.edit-profile-content a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #000;
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 25px;
+  transition: opacity 0.2s;
+}
+
+.edit-profile-content a:hover {
+  opacity: 0.5;
+}
+
+.edit-profile-content svg {
+  margin-right: 10px;
+}
+
+
+

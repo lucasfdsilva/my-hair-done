@@ -1,0 +1,33 @@
+.admin-footer {
+  grid-area: footer;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #0c71c3;
+}
+
+.admin-footer img {
+  height: 30px;
+  width: 30px;
+}
+
+.admin-footer p {
+  color: #FFF;
+}
+
+.admin-footer a {
+  text-decoration: none;
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 500;
+  margin-right: 12px;
+  transition: opacity 0.2s;
+}
+
+.admin-footer a:hover {
+  opacity: 0.5;
+}

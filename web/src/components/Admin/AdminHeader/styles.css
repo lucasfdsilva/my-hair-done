@@ -1,0 +1,48 @@
+.header {
+  grid-area: header;
+
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  background: #0c71c3;
+  
+}
+
+.header img {
+  height: 60px;
+  width: 200px;
+  margin-left: 45px;
+}
+
+.header p {
+  color: #f6f7f2;
+  margin-left: 1250px;
+  margin-right: 30px;
+}
+
+.header a {
+  margin-left: 35px;
+  text-decoration: none;
+  color: #FFF;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 15px;
+  transition: opacity 0.2s;
+}
+
+.header a:hover {
+  opacity: 0.5;
+}
+
+.header .book-online {
+  border-radius: 5px;
+  padding: 5px;
+  background: #ff6257;
+}
+
+.header svg {
+  margin-right: 10px;
+}
