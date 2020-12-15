@@ -2,11 +2,11 @@ const AWSSecretsManager = require("./AWSSecretsManager");
 
 module.exports = {
   async getConfiguration() {
-    const credentials = await AWSSecretsManager.getCredentials('my-hair-done'); 
+    const credentials = await AWSSecretsManager.getCredentials('myhairdone-db'); 
 
     return {
       development: {
-        client: "mysql",
+        client: 'mysql',
         connection: {
           host: credentials.host,
           database: credentials.dbname,

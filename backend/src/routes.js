@@ -1,13 +1,15 @@
 const express = require('express');
 
 //const SessionController = require('./controllers/SessionController.js');
+const UserController = require('./controllers/UserController');
+const HairdresserController = require('./controllers/HairdresserController');
 
 const openRoutes = express.Router();
 
 //Session Controller Routes
 //openRoutes.post('/sessions', SessionController.create);
 
-/*
+
 //User Controller Routes
 openRoutes.get('/users', UserController.index)
 openRoutes.get('/users/:id', UserController.view);
@@ -17,7 +19,16 @@ openRoutes.delete('/users', UserController.delete);
 openRoutes.put('/users/verify/:verificationToken', UserController.verifyEmailAddress);
 openRoutes.post('/users/verify/send', UserController.sendVerificationEmail);
 
+//Hairdresser Controller Routes
+openRoutes.get('/hairdressers', HairdresserController.index)
+openRoutes.get('/hairdressers/:id', HairdresserController.view);
+openRoutes.post('/hairdressers', HairdresserController.create);
+openRoutes.put('/hairdressers', HairdresserController.update);
+openRoutes.delete('/hairdressers', HairdresserController.delete);
+openRoutes.put('/hairdressers/verify/:verificationToken', HairdresserController.verifyEmailAddress);
+openRoutes.post('/hairdressers/verify/send', HairdresserController.sendVerificationEmail);
 
+/*
 //Menu Item Controller Routes
 openRoutes.get('/menu', MenuItemController.index);
 openRoutes.get('/menu/:id', MenuItemController.view);

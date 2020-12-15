@@ -28,7 +28,7 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const hairdresserFromDB = await connectDB("hairdressers").where({ id: id }).first();
+      const hairdresserFromDB = await connectDB("hairdressers").where({ hairdresser_id: id }).first();
 
       console.log(hairdresserFromDB);
 
@@ -52,12 +52,12 @@ module.exports = {
         password, 
         address, 
         home_service,
-        profile_image_url,
+        profile_img_url,
         style_expertise, 
-        hairdresser_since_year,
+        hairdresser_since,
      } = req.body;
 
-      if (!firstName || !lastName || !dob || mobile || !email || !password || !address || !home_service || !style_expertise || !hairdresser_since_year ) {
+      if (!firstName || !lastName || !dob || !mobile || !email || !password || !address || !home_service || !style_expertise || !hairdresser_since ) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
@@ -80,12 +80,13 @@ module.exports = {
         password: hashedPassword, 
         address: address, 
         home_service: home_service,
-        profile_image_url: profile_image_url,
+        profile_img_url: profile_img_url,
         style_expertise: style_expertise, 
-        hairdresser_since_year: hairdresser_since_year,
+        hairdresser_since: hairdresser_since,
         verification_token: verificationToken   
       });
 
+      /*
       const SQSParams = {
         MessageAttributes: {
           "firstName": {
@@ -115,6 +116,7 @@ module.exports = {
           console.log("Success", data.MessageId);
         }
       })
+      */
 
       return res.status(201).json({ message: "Hairdresser Created Successfully", newHairdresserID: newHairdresser });
 
@@ -126,6 +128,7 @@ module.exports = {
   async update(req, res, next) {
     try {
       const { 
+        id,
         firstName, 
         lastName, 
         dob, 
@@ -134,31 +137,30 @@ module.exports = {
         password, 
         address, 
         home_service,
-        profile_image_url,
+        profile_img_url,
         style_expertise, 
-        hairdresser_since_year, } = req.body;
+        hairdresser_since, } = req.body;
 
-      if ( !firstName || !lastName || !dob || mobile || !email || !password || !address || !home_service || !style_expertise || !hairdresser_since_year ) {
+      if ( !firstName || !lastName || !dob || !mobile || !email || !password || !address || !home_service || !style_expertise || !hairdresser_since ) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
       const connectDB = await knex.connect();
-      const hairdresserFromDB = await connectDB("hairdressers").where({ id: id }).first();
+      const hairdresserFromDB = await connectDB("hairdressers").where({ hairdresser_id: id }).first();
 
       if(!hairdresserFromDB) return res.status(400).json({ message: "No Hairdresser Found" });
 
-      const updatedHairdresser = await connectDB('hairdressers').where({ id: id }).update({
+      const updatedHairdresser = await connectDB('hairdressers').where({ hairdresser_id: id }).update({
         first_name: firstName, 
         last_name: lastName, 
         dob: dob, 
         mobile: mobile, 
         email: email.toLowerCase(), 
-        password: hashedPassword, 
         address: address, 
         home_service: home_service,
-        profile_image_url: profile_image_url,
+        profile_img_url: profile_img_url,
         style_expertise: style_expertise, 
-        hairdresser_since_year: hairdresser_since_year,
+        hairdresser_since: hairdresser_since,
       });
 
       return res.status(200).json({ message: 'Hairdresser updated successfully'});
@@ -178,11 +180,11 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const hairdresserFromDB = await connectDB("hairdresser").where({ id: id }).first();
+      const hairdresserFromDB = await connectDB("hairdressers").where({ hairdresser_id: id }).first();
 
       if(!hairdresserFromDB) return res.status(400).json({ message: "No Hairdresser Found" });
 
-      const deletedHairdresser = await connectDB('hairdresser').where({ id: id}).del();
+      const deletedHairdresser = await connectDB('hairdressers').where({ hairdresser_id: id}).del();
 
       return res.status(200).json({ message: 'Hairdresser deleted successfully' });
 

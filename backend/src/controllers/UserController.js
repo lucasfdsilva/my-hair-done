@@ -28,7 +28,7 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const userFromDB = await connectDB("users").where({ id: id }).first();
+      const userFromDB = await connectDB("users").where({ user_id: id }).first();
 
       console.log(userFromDB);
 
@@ -43,9 +43,9 @@ module.exports = {
 
   async create(req, res, next) {
     try {
-      const { firstName, lastName, dob, mobile, email, password, isAdmin, profile_image_url } = req.body;
+      const { firstName, lastName, dob, mobile, email, password, isAdmin, profile_img_url } = req.body;
 
-      if (!firstName || !lastName || !dob || mobile || !email || !password) {
+      if (!firstName || !lastName || !dob || !mobile || !email || !password) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
@@ -67,14 +67,11 @@ module.exports = {
         email: email.toLowerCase(),
         password: hashedPassword,
         is_admin: isAdmin,
-        profile_image_url: profile_image_url,
-        active_bookings: active_bookings,
-        past_haircuts: past_haircuts,
+        profile_img_url: profile_img_url,
         verification_token: verificationToken,
-        password_reset_token: "",
-        password_reset_token_duration: ""
       });
 
+      /*
       const SQSParams = {
         MessageAttributes: {
           "firstName": {
@@ -104,6 +101,7 @@ module.exports = {
           console.log("Success", data.MessageId);
         }
       })
+      */
 
       return res.status(201).json({ message: "User Created Successfully", newUserID: newUser });
 
@@ -114,22 +112,25 @@ module.exports = {
 
   async update(req, res, next) {
     try {
-      const { id, firstName, lastName, dob, mobile, email, is_admin, profile_image_url, active_bookings, past_haircuts } = req.body;
+      const { id, firstName, lastName, dob, mobile, email, isAdmin, profile_img_url, active_bookings, past_haircuts } = req.body;
 
       if (!id || !firstName || !lastName || !dob || !mobile || !email ) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
       const connectDB = await knex.connect();
-      const userFromDB = await connectDB("users").where({ id: id }).first();
+      const userFromDB = await connectDB("users").where({ user_id: id }).first();
 
       if(!userFromDB) return res.status(400).json({ message: "No User Found" });
 
-      const updatedUser = await connectDB('users').where({ id: id }).update({
+      const updatedUser = await connectDB('users').where({ user_id: id }).update({
         first_name: firstName,
         last_name: lastName,
         email: email.toLowerCase(),
-        is_admin: isAdmin
+        is_admin: isAdmin,
+        profile_img_url: profile_img_url,
+        active_bookings: active_bookings,
+        past_haircuts: past_haircuts
       });
 
       return res.status(200).json({ message: 'User updated successfully'});
@@ -149,11 +150,11 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const userFromDB = await connectDB("users").where({ id: id }).first();
+      const userFromDB = await connectDB("users").where({ user_id: id }).first();
 
       if(!userFromDB) return res.status(400).json({ message: "No User Found" });
 
-      const deletedUser = await connectDB('users').where({ id: id}).del();
+      const deletedUser = await connectDB('users').where({ user_id: id}).del();
 
       return res.status(200).json({ message: 'User deleted successfully' });
 
