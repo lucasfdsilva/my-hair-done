@@ -18,7 +18,7 @@ sudo yum install -y nodejs
 
 #my-hair-done
 cd /home/ec2-user/
-sudo git clone https://github.com/lucasfdsilva/restaurant-management.git
+sudo git clone https://github.com/lucasfdsilva/my-hair-done.git
 cd /home/ec2-user/my-hair-done/backend
 sudo npm install
 

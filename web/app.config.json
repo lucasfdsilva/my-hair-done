@@ -1,0 +1,11 @@
+  
+{
+  "apps": [
+    {
+      "name": "myhairdone-web",
+      "script": "npx",
+      "interpreter": "none",
+      "args": "serve -s build"
+    }
+  ]
+}

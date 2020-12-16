@@ -8,7 +8,7 @@ import Bookings from '../../components/Customer/Bookings';
 import EditProfile from '../../components/Customer/EditProfile';
 import Home from '../../components/Customer/Home';
 import Login from '../../components/Customer/Login';
-import Menu from '../../components/Customer/Menu';
+import Hairdressers from '../../components/Customer/Hairdressers';
 import NewBooking from '../../components/Customer/NewBooking';
 import Profile from '../../components/Customer/Profile';
 import Register from '../../components/Customer/Register';
@@ -22,7 +22,7 @@ export default function Layout(props) {
     EditProfile,
     Home,
     Login,
-    Menu,
+    Hairdressers,
     NewBooking,
     Profile,
     Register,

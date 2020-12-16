@@ -11,7 +11,7 @@ function Routes(){
     <BrowserRouter>
       <Switch>
         <Route path="/" exact render={(props) => <CustomerHome {...props} component={"Home"}/>}/>
-        <Route path="/menu" exact render={(props) => <CustomerHome {...props} component={"Menu"}/>}/>
+        <Route path="/hairdressers" exact render={(props) => <CustomerHome {...props} component={"Hairdressers"}/>}/>
         <Route path="/register" exact render={(props) => <CustomerHome {...props} component={"Register"}/>}/>
         <Route path="/login" exact render={(props) => <CustomerHome {...props} component={"Login"}/>}/>
         <Route path="/users/verify/:token" render={(props) => <CustomerHome {...props} component={"VerifyEmail"}/>}/>

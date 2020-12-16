@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api.asystec-restaurant.co.uk'
+  baseURL: 'https://api.myhairdone.co.uk/'
   //baseURL: 'http://localhost:3000'
 });
 

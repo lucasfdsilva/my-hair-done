@@ -21,9 +21,9 @@ export default function NavigationMenu(){
             <FiHome size={16} color="#e02041"/>
             Home
           </Link>
-          <Link to="/menu">
+          <Link to="/hairdressers">
             <FiMenu size={16} color="#e02041"/>
-            Menu
+            Hairdressers
           </Link>
           {isAdmin == 1 && 
             <Link className="admin-panel" to="/admin">
@@ -70,9 +70,9 @@ export default function NavigationMenu(){
               Home
             </Link>
   
-            <Link className="header-link" to="/menu">
+            <Link className="header-link" to="/hairdressers">
               <FiMenu size={16} color="#e02041"/>
-              Menu
+              Hairdressers
             </Link>
           </div>
   

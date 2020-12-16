@@ -2,17 +2,17 @@ import React from 'react'
 
 import './styles.css'
 
-import pubCounter from '../../../assets/pub-counter-cropped-blur.jpg'
+import hairSalon from '../../../assets/hair-salon.jpg'
 
 export default function HomePageBody() {
   return (
     <div className="home-page-body">
 
-      <img src={pubCounter}/>
+      <img src={hairSalon}/>
 
-      <h1>Asystec RESTaurant</h1>
+      <h1>My Hair Done</h1>
 
-      <h2>Book Online</h2>
+      <h2>Style or Get Styled with Us</h2>
       
     </div>
   )
