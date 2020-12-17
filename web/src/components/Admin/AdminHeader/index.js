@@ -4,7 +4,7 @@ import { FiLogOut } from 'react-icons/fi';
 
 import './styles.css';
 
-import asystecLogo from '../../../assets/asystec-logo-white.png';
+import asystecLogo from '../../../assets/header-logo.png';
 
 export default function AdminHeader(props) {
 
