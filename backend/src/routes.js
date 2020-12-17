@@ -10,6 +10,7 @@ const BookingController = require('./controllers/BookingController');
 
 const openRoutes = express.Router();
 
+/*
 //API Home
 openRoutes.get('/', function(req, res){
     return res.sendFile(__dirname + '/public/index.html');
@@ -17,6 +18,7 @@ openRoutes.get('/', function(req, res){
 openRoutes.get('/css', function(req, res){
     return res.sendFile(__dirname + '/public/styles.css');
 });
+*/
 
 //Sessions Controller Routes
 openRoutes.post('/users/sessions', UserSessionController.create);

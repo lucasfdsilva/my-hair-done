@@ -1,0 +1,329 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "My Hair Done API",
+    "description": "Author: Lucas Da Silva - x17118361. This swagger file documents the Backend RESTful API I developed for the final project in my BSc (Honours) degree in Computing at National College of Ireland: My Hair Done"
+  },
+  "host": "api.myhairdone.co.uk",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for Users in the system"
+    },
+    {
+      "name": "Hairdressers",
+      "description": "API for Hairdressers in the system"
+    },
+    {
+      "name": "Sessions",
+      "description": "API for Sessions in the system"
+    },
+    {
+      "name": "Portfolio Posts",
+      "description": "API for Portfolio Posts in the system"
+    },
+    {
+      "name": "Reviews",
+      "description": "API for Reviews in the system"
+    },
+    {
+      "name": "Slots",
+      "description": "API for Slots in the system"
+    },
+    {
+      "name": "Bookings",
+      "description": "API for Bookings in the system"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+
+
+
+  "paths": {
+    "/users/user_id": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a specific user in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update a user in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a user in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      }
+    },
+    "/users/verify/verification_token": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Verify a user's email address in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      }
+    },
+
+
+    "/hairdressers/hairdresser_id": {
+      "get": {
+        "tags": [
+          "Hairdressers"
+        ],
+        "summary": "Get a specific hairdresser in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Hairdressers"
+            }
+          }
+        }
+      }
+    },
+    "/hairdressers": {
+      "get": {
+        "tags": [
+          "Hairdressers"
+        ],
+        "summary": "Get all hairdressers in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Hairdressers"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Hairdressers"
+        ],
+        "summary": "Create a new user in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Hairdressers"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Hairdressers"
+        ],
+        "summary": "Update a user in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Hairdressers"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Hairdressers"
+        ],
+        "summary": "Delete a user in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Hairdressers"
+            }
+          }
+        }
+      }
+    },
+    "/hairdressers/verify/verification_token": {
+      "put": {
+        "tags": [
+          "Hairdressers"
+        ],
+        "summary": "Verify a user's email address in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Hairdressers"
+            }
+          }
+        }
+      }
+    },
+
+
+    "/user/sessions": {
+      "post": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Login User in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      }
+    },
+    "/hairdressers/sessions": {
+      "post": {
+        "tags": [
+          "Sessions"
+        ],
+        "summary": "Login Hairdresser in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Hairdressers"
+            }
+          }
+        }
+      }
+    }
+
+
+  },
+
+
+
+
+  "definitions": {
+
+    "Users": {
+      "required": [
+        "first_name",
+        "last_name",
+        "dob",
+        "mobile",
+        "email",
+        "password",
+        "is_admin"
+      ],
+      "properties": {
+        "user_id": {
+          "type": "integer"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "dob": {
+          "type": "string"
+        },
+        "mobile": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "is_admin": {
+          "type": "boolean"
+        },
+        "profile_img_url": {
+          "type": "string"
+        },
+        "verified": {
+          "type": "boolean"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        }
+        
+      }
+    }
+  }
+}
