@@ -10,14 +10,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(routes.openRoutes);
-app.use(express.static('public'));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//app.use(express.static('public'));
 
 app.use((error, req, res, next) => {
   res.status(error.status || 500);
   res.json({ error: error.message})
 });
-
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
