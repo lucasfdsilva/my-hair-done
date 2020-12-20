@@ -5,12 +5,17 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../swagger.json');
 //const NewBookingQueuePollingService = require('./services/NewBookingQueuePollingService');
 
+var swaggerOptions = {
+  customSiteTitle: "My Hair Done API",
+  customfavIcon: "/assets/favicon.ico"
+}
+
 //Configuring Express Server
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(routes.openRoutes);
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions));
 //app.use(express.static('public'));
 
 app.use((error, req, res, next) => {
