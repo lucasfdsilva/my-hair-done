@@ -1,4 +1,4 @@
-# my-hair-done
+# My Hair Done - Style or Get Styled
 <h2>Web App Available at:</h2>
 https://myhairdone.co.uk</br>
 
