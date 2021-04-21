@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
-
-import './styles.css';
+import { useHistory } from 'react-router-dom';
+import { Box, Typography, Button, Grid } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { ExitToApp } from '@material-ui/icons'
+import { Formik, Form } from 'formik'
+import * as Yup from 'yup'
+import "yup-phone"
+import TextField from '../../FormsUI/TextField/index'
+import SelectField from '../../FormsUI/SelectField/index'
+import CustomButton from '../../FormsUI/Button/index'
+import countries from '../../../data/countries.json'
 
 import api from '../../../services/api';
 
@@ -45,78 +52,168 @@ export default function Register(){
     try {
       const response = await api.post('users', data);
 
-      alert(`User Registered Successfully. User ID: ${response.data.newUserID[0]}`);
+      if(response.status == 201){
+        alert(`User Registered Successfully. User ID: ${response.data.newUserID[0]}`);
 
-      history.push('/login');
-
+        history.push('/login');
+      } else{
+        console.log("error")
+      }
+      
     } catch (error) {
-        alert(`Couldn't Register User. Error: ${error}.`);
+        
     }
   }
 
+  const useStyles = makeStyles({
+    componentBox: {
+      backgroundColor: "#fff",
+      borderRadius: 8,
+      alignItems: "center",
+      justifyItems: "center",
+      padding: 25,
+      margin: 35
+
+    },
+    header: {
+      marginBottom: 20
+    },
+    button: {
+      marginTop: 50
+    }
+  });
+
+  const classes = useStyles();
+
+  const INITIAL_FORM_STATE = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    mobile: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    county: '',
+    eircode: '',
+    country: '',
+  };
+
+
+  const FORM_VALIDATION = Yup.object().shape({
+    firstName: Yup.string().required("First Name is a mandatory field"),
+    lastName: Yup.string().required("Last Name is a mandatory field"),
+    email: Yup.string().email('Invalid email address').required("Email is a mandatory field"),
+    mobile: Yup.string().phone("IRE", true).required("Mobile is a mandatory field"),
+    addressLine1: Yup.string().required("Address Line 1 is a mandatory field"),
+    addressLine2: Yup.string(),
+    city: Yup.string().required("City is a mandatory field"),
+    county: Yup.string().required("County is a mandatory field"),
+    eircode: Yup.string().required("Eircode is a mandatory field"),
+    country: Yup.string().required("Country is a mandatory field"),
+  });
+
+
   return (
-    <div className="register-container">
+    <Box className={classes.componentBox}>
 
-      <div className="register-content">
-          <h1>Register</h1>
+      <Formik 
+        initialValues={{ 
+          ...INITIAL_FORM_STATE
+        }}
+        validationSchema={FORM_VALIDATION}
+        onSubmit={(data, {setSubmitting}) => {
+          setSubmitting(true);
+          // make async call
+          console.log(data)
+          setSubmitting(false);
+        }}
+      > 
+        <Form>  
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="h4" className={classes.header}>
+                Register
+              </Typography>
+            </Grid>
 
-          <form onSubmit={handleRegister}>
-            <p>First Name:</p>
-            <input
-              required 
-              placeholder="First Name"
-              value={firstName}
-              onChange={event => setFirstName(event.target.value)}
-            />
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              Your Details
+            </Typography>
+          </Grid>
 
-            <p>Last Name:</p>
-            <input
-              required 
-              placeholder="Last Name"
-              value={lastName}
-              onChange={event => setLastName(event.target.value)}
-            />
+            <Grid item xs={6}>
+              <TextField name="firstName" label="First Name"/>
+            </Grid>
 
-            <p>Email:</p>
-            <input 
-              required
-              type="email" 
-              placeholder="you@email.com"
-              value={email}
-              onChange={event => setEmail(event.target.value)}
-            />
+            <Grid item xs={6}>
+              <TextField name="lastName" label="Last Name"/>
+            </Grid>
 
-            <p>Password:</p>
-            <input 
-              required
-              type="password" 
-              placeholder="password"
-              value={password}
-              onChange={event => setPassword(event.target.value)}
-            />
+            <Grid item xs={12}>
+              <TextField name="email" label="Email"/>
+            </Grid>
 
-            <p>Confirm Password:</p>
-            <input 
-              required
-              type="password" 
-              placeholder="confirm password"
-              value={passwordConfirmation}
-              onChange={event => setPasswordConfirmation(event.target.value)}
-            />
+            <Grid item xs={12}>
+              <TextField name="mobile" label="Mobile"/>
+            </Grid>
 
-            <button 
-              type="submit" 
-              disabled={!firstName || !lastName || !email || !password || !passwordConfirmation }>
-              Register
-            </button>
-          </form>
 
-          <Link to="/login">
-            <FiArrowLeft size={16} color="#e02041"/>
-            Already have an account?
-          </Link>
+            <Grid item xs={12}>
+              <Typography variant="h6">
+                Address
+              </Typography>
+            </Grid>
 
-        </div>
-      </div>
+            <Grid item xs={12}>
+              <TextField name="addressLine1" label="Address Line 1"/>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField name="addressLine2" label="Address Line 2"/>
+            </Grid>
+
+            <Grid item xs={4}>
+              <TextField name="city" label="City"/>
+            </Grid>
+
+            <Grid item xs={4}>
+              <TextField name="county" label="County"/>
+            </Grid>
+
+            <Grid item xs={4}>
+              <TextField name="eircode" label="Eir Code"/>
+            </Grid>
+
+            <Grid item xs={12}>
+              <SelectField
+                name="country"
+                label="Country"
+                options={countries}
+              />
+            </Grid>
+
+
+            <Grid item xs={12}>
+              <CustomButton >
+                Register
+              </CustomButton>
+            </Grid>
+
+            <Grid item xs={4}>
+              <Button 
+                startIcon={<ExitToApp color="primary"/>}
+                href="login"
+              >
+                Already Registered?
+              </Button>
+            </Grid>
+
+          </Grid>
+      
+          </Form>
+        
+      </Formik>
+    </Box>   
   )
 }

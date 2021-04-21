@@ -1,98 +1,155 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FiHome,  FiMenu, FiLogIn, FiEdit, FiUser, FiBookOpen, FiBook, FiLogOut } from 'react-icons/fi';
+import React, { useState } from "react";
+import { AppBar, Toolbar, IconButton, Button, Container  } from "@material-ui/core"
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import { ExitToApp, MenuIcon, HowToReg, PeopleAlt, Person, LibraryBooks, Apps } from "@material-ui/icons";
+import theme from '../../../theme'
+import headerLogo from "../../../assets/header-logo.png";
 
-import './styles.css';
+import { Link, useHistory } from "react-router-dom";
+import {
+  FiHome,
+  FiMenu,
+  FiLogIn,
+  FiEdit,
+  FiUser,
+  FiBookOpen,
+  FiBook,
+  FiLogOut,
+} from "react-icons/fi";
 
-import headerLogo from '../../../assets/header-logo.png';
+import "./styles.css";
 
-export default function NavigationMenu(){
+const useStyles = makeStyles({
+  image: {
+    height: 200,
+    width: 230,
+    marginBottom: -55,
+    marginTop: -70,
+    marginRight: 25,
+  },
+  link: {
+    color: theme.palette.primary.main,
+    fontSize: 20,
+    '&:hover': {
+      color: theme.palette.primary.main,
+    }
+  },
+  icon: {
+    color: theme.palette.secondary.main,
+    fontSize: "large"
+  }
+});
+
+
+
+export default function NavigationMenu() {
   const [id, setID] = useState(localStorage.getItem("id"));
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("accessToken")
+  );
   const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin"));
 
   const history = useHistory();
 
-  if(id && accessToken){
-    return(
-      <div className="navigation-menu">
-        <div className="left-links">
-          <Link to="/">
-            <FiHome size={16} color="#e02041"/>
-            Home
-          </Link>
-          <Link to="/hairdressers">
-            <FiMenu size={16} color="#e02041"/>
-            Hairdressers
-          </Link>
-          {isAdmin == 1 && 
-            <Link className="admin-panel" to="/admin">
-              <FiBook size={16} color="#FFF"/>
-              Admin Panel
-          </Link>
-          }
-        </div>
-          
-        <img src={headerLogo} alt=""/>
-  
-        <div className="logged-right-links">
-          <Link to="/profile">
-            <FiUser size={16} color="#e02041"/>
-            Profile
-          </Link>
-          <Link to="/bookings">
-            <FiBookOpen size={16} color="#e02041"/>
-            Bookings
-          </Link>
-          <Link className="book-online" to="/bookings/new">
-            <FiBook size={16} color="#FFF"/>
-            Book Online
-          </Link>
-          <Link onClick={() => {
-            localStorage.setItem('id', '');
-            localStorage.setItem('accessToken', '');
-            localStorage.setItem('isAdmin', 0);
-            window.location.reload();
-          }}>
-            <FiLogOut size={16} color="#e02041"/>
-            Logout
-          </Link>
-        </div>
-      </div>
-    )
-  }
-  else{
-    return(
-      <div className="navigation-menu">
-          <div className="left-links">
-            <Link className="header-link" to="/">
-              <FiHome size={16} color="#e02041"/>
-              Home
-            </Link>
-  
-            <Link className="header-link" to="/hairdressers">
-              <FiMenu size={16} color="#e02041"/>
+  const classes = useStyles();
+
+  if (id && accessToken) {
+    return (
+      <ThemeProvider theme={theme}>
+        <AppBar color="white">
+          <Toolbar>
+            <a href="/">
+              <img src={headerLogo} alt="" className={classes.image}/>
+            </a>
+
+            <Button
+              className={classes.link}
+              href="hairdressers"
+              startIcon={<PeopleAlt className={classes.icon} />}
+            >
               Hairdressers
-            </Link>
-          </div>
-  
-          <img src={headerLogo} alt=""/>
-  
-          <div className="right-links">
-            <Link className="header-link" to="/register">
-              <FiEdit size={16} color="#e02041"/>
+            </Button>
+
+            <Button
+              className={classes.link}
+              href="profile"
+              startIcon={<Person className={classes.icon} />}
+            >
+              Profile
+            </Button>
+
+            <Button
+              className={classes.link}
+              href="bookings"
+              startIcon={<LibraryBooks className={classes.icon} />}
+            >
+              Bookings
+            </Button>
+
+            <Button
+              className={classes.link}
+              href="bookings"
+              startIcon={<ExitToApp className={classes.icon} />}
+              onClick={() => {
+                localStorage.setItem("id", "");
+                localStorage.setItem("accessToken", "");
+                localStorage.setItem("isAdmin", 0);
+                window.location.reload();
+              }}
+            >
+              Logout
+            </Button>
+            
+            {isAdmin == 1 && (
+              <Button
+              className={classes.link}
+              href="admin"
+              startIcon={<Apps className={classes.icon} />}
+              >
+                Admin Panel
+              </Button>
+            )}
+
+          </Toolbar>
+        </AppBar>
+      </ThemeProvider>
+    );
+    
+  } else {
+    return (
+      <ThemeProvider theme={theme}>
+        <AppBar color="white">
+          <Toolbar>
+            <a href="/">
+              <img src={headerLogo} alt="" className={classes.image}/>
+            </a>
+            <Button
+              xs={20}
+              className={classes.link}
+              href="hairdressers"
+              startIcon={<PeopleAlt className={classes.icon} />}
+            >
+              Hairdressers
+            </Button>
+
+            <Button
+              className={classes.link}
+              href="register"
+              startIcon={<HowToReg className={classes.icon} />}
+            >
               Register
-            </Link>
-            <Link className="header-link" to="/login">
-              <FiLogIn size={16} color="#e02041"/>
+            </Button>
+
+            <Button
+              className={classes.link}
+              href="login"
+              startIcon={<ExitToApp className={classes.icon} />}
+            >
               Login
-            </Link>
-            <Link className="book-online" to="/bookings/new">
-              <FiBook size={16} color="#FFF"/>
-              Book Online
-            </Link>
-          </div>
-      </div>
-    )
+            </Button>
+          </Toolbar>
+        </AppBar>
+      </ThemeProvider>
+    );
   }
 }
