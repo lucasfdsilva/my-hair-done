@@ -66,14 +66,13 @@ export default function Register(){
   }
 
   const useStyles = makeStyles({
-    componentBox: {
+    componentGrid: {
       backgroundColor: "#fff",
       borderRadius: 8,
       alignItems: "center",
       justifyItems: "center",
       padding: 25,
       margin: 35
-
     },
     header: {
       marginBottom: 20
@@ -94,7 +93,6 @@ export default function Register(){
     addressLine2: '',
     city: '',
     county: '',
-    eircode: '',
     country: '',
   };
 
@@ -108,13 +106,12 @@ export default function Register(){
     addressLine2: Yup.string(),
     city: Yup.string().required("City is a mandatory field"),
     county: Yup.string().required("County is a mandatory field"),
-    eircode: Yup.string().required("Eircode is a mandatory field"),
     country: Yup.string().required("Country is a mandatory field"),
   });
 
 
   return (
-    <Box className={classes.componentBox}>
+    <Grid container className={classes.componentGrid} xs={12} md={8} lg={6}>
 
       <Formik 
         initialValues={{ 
@@ -173,16 +170,12 @@ export default function Register(){
               <TextField name="addressLine2" label="Address Line 2"/>
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <TextField name="city" label="City"/>
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={6}>
               <TextField name="county" label="County"/>
-            </Grid>
-
-            <Grid item xs={4}>
-              <TextField name="eircode" label="Eir Code"/>
             </Grid>
 
             <Grid item xs={12}>
@@ -214,6 +207,6 @@ export default function Register(){
           </Form>
         
       </Formik>
-    </Box>   
+    </Grid>   
   )
 }

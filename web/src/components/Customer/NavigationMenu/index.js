@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, IconButton, Button, Container  } from "@material-ui/core"
+import { AppBar, Toolbar, IconButton, Button, Grid, Hidden } from "@material-ui/core"
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
 import { ExitToApp, MenuIcon, HowToReg, PeopleAlt, Person, LibraryBooks, Apps } from "@material-ui/icons";
 import theme from '../../../theme'
@@ -27,11 +28,11 @@ const useStyles = makeStyles({
     marginTop: -70,
     marginRight: 25,
   },
-  link: {
+  button: {
     color: theme.palette.primary.main,
     fontSize: 20,
-    '&:hover': {
-      color: theme.palette.primary.main,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14.5,
     }
   },
   icon: {
@@ -58,12 +59,13 @@ export default function NavigationMenu() {
       <ThemeProvider theme={theme}>
         <AppBar color="white">
           <Toolbar>
+            
             <a href="/">
               <img src={headerLogo} alt="" className={classes.image}/>
             </a>
 
             <Button
-              className={classes.link}
+              className={classes.button}
               href="hairdressers"
               startIcon={<PeopleAlt className={classes.icon} />}
             >
@@ -71,7 +73,7 @@ export default function NavigationMenu() {
             </Button>
 
             <Button
-              className={classes.link}
+              className={classes.button}
               href="profile"
               startIcon={<Person className={classes.icon} />}
             >
@@ -79,7 +81,7 @@ export default function NavigationMenu() {
             </Button>
 
             <Button
-              className={classes.link}
+              className={classes.button}
               href="bookings"
               startIcon={<LibraryBooks className={classes.icon} />}
             >
@@ -87,7 +89,7 @@ export default function NavigationMenu() {
             </Button>
 
             <Button
-              className={classes.link}
+              className={classes.button}
               href="bookings"
               startIcon={<ExitToApp className={classes.icon} />}
               onClick={() => {
@@ -102,7 +104,7 @@ export default function NavigationMenu() {
             
             {isAdmin == 1 && (
               <Button
-              className={classes.link}
+              className={classes.button}
               href="admin"
               startIcon={<Apps className={classes.icon} />}
               >
@@ -118,37 +120,42 @@ export default function NavigationMenu() {
   } else {
     return (
       <ThemeProvider theme={theme}>
-        <AppBar color="white">
-          <Toolbar>
-            <a href="/">
-              <img src={headerLogo} alt="" className={classes.image}/>
-            </a>
-            <Button
-              xs={20}
-              className={classes.link}
-              href="hairdressers"
-              startIcon={<PeopleAlt className={classes.icon} />}
-            >
-              Hairdressers
-            </Button>
+          <AppBar color="white">
+            <Toolbar>
+              <Grid container>
 
-            <Button
-              className={classes.link}
-              href="register"
-              startIcon={<HowToReg className={classes.icon} />}
-            >
-              Register
-            </Button>
+                <Hidden smDown>
+                  <a href="/">
+                    <img src={headerLogo} alt="" className={classes.image}/>
+                  </a>
+                </Hidden> 
 
-            <Button
-              className={classes.link}
-              href="login"
-              startIcon={<ExitToApp className={classes.icon} />}
-            >
-              Login
-            </Button>
-          </Toolbar>
-        </AppBar>
+                <Button
+                  className={classes.button}
+                  href="hairdressers"
+                  startIcon={<PeopleAlt className={classes.icon} />}
+                >
+                  Hairdressers
+                </Button>
+
+                <Button
+                  className={classes.button}
+                  href="register"
+                  startIcon={<HowToReg className={classes.icon} />}
+                >
+                  Register
+                </Button>
+
+                <Button
+                  className={classes.button}
+                  href="login"
+                  startIcon={<ExitToApp className={classes.icon} />}
+                >
+                  Login
+                </Button>
+              </Grid>
+            </Toolbar>
+          </AppBar>
       </ThemeProvider>
     );
   }

@@ -1,19 +1,25 @@
 import React from 'react'
+import { Typography, Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 
-import './styles.css'
-
-import hairSalon from '../../../assets/hair-salon.jpg'
+const useStyles = makeStyles({
+  header:{
+    color: "#fff"
+  }
+})
 
 export default function HomePageBody() {
+  const classes = useStyles();
+
   return (
-    <div className="home-page-body">
+    <Box>
+      <Typography variant="h3" className={classes.header}>
+        My Hair Done
+      </Typography>
 
-      <img src={hairSalon}/>
-
-      <h1>My Hair Done</h1>
-
-      <h2>Style or Get Styled with Us</h2>
-      
-    </div>
+      <Typography variant="h5" className={classes.header}>
+        Style or Get Styled with Us
+      </Typography>
+    </Box>
   )
 }
