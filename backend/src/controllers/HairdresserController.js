@@ -49,15 +49,17 @@ module.exports = {
         dob, 
         mobile, 
         email, 
-        password, 
-        address, 
-        home_service,
-        profile_img_url,
-        style_expertise, 
-        hairdresser_since,
+        password,
+        hairdresserSince, 
+        addressLine1,
+        addressLine2,
+        city,
+        county,
+        country, 
+        homeService,
      } = req.body;
 
-      if (!firstName || !lastName || !dob || !mobile || !email || !password || !address || !home_service || !style_expertise || !hairdresser_since ) {
+      if (!firstName || !lastName || !dob || !mobile || !email || !password || !hairdresserSince || !addressLine1 || !city || !county || !country || !homeService ) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
@@ -78,11 +80,14 @@ module.exports = {
         mobile: mobile, 
         email: email.toLowerCase(), 
         password: hashedPassword, 
-        address: address, 
-        home_service: home_service,
-        profile_img_url: profile_img_url,
-        style_expertise: style_expertise, 
-        hairdresser_since: hairdresser_since,
+        addressLine1: addressLine1,
+        addressLine2: addressLine2, 
+        city: city, 
+        county: county, 
+        country: country,  
+        home_service: homeService,
+        profile_img_url: "",
+        hairdresser_since: hairdresserSince,
         verification_token: verificationToken   
       });
 
