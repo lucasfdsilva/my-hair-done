@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Typography, Button, Grid } from '@material-ui/core'
+import { Box, Typography, Button, Grid, Tab, Tabs, AppBar, Hidden, FormControlLabel  } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { ExitToApp } from '@material-ui/icons'
+import { ExitToApp, MonetizationOn, Person } from '@material-ui/icons'
 import { Formik, Form } from 'formik'
+
 import * as Yup from 'yup'
 import "yup-phone"
+import moment from 'moment'
+
 import TextField from '../../FormsUI/TextField/index'
 import SelectField from '../../FormsUI/SelectField/index'
 import CustomButton from '../../FormsUI/Button/index'
+import Checkbox from '../../FormsUI/Checkbox/index'
 import countries from '../../../data/countries.json'
 
 import api from '../../../services/api';
@@ -16,11 +20,13 @@ import api from '../../../services/api';
 export default function Register(){
   const [id, setID] = useState(localStorage.getItem("id"));
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const [selectedTab, setSelectedTab] = React.useState(0);
+  const handleChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
 
   const history = useHistory();
 
@@ -36,32 +42,35 @@ export default function Register(){
   checkIfUserIsLoggedIn();
   }, [])
 
-  async function handleRegister(event){
-    event.preventDefault();
-
-    if(password !== passwordConfirmation) return alert("Passwords don't match. Please try again.");
+  async function handleRegister(values){
 
     const data = {
-      firstName,
-      lastName,
-      email,
-      password,
-      isAdmin: false
+      firstName: values.firstName,
+      lastName: values.lastName,
+      mobile: values.mobile,
+      dob: values.dob,
+      email: values.email,
+      password: values.password,
+      homeService: values.homeService,
+      hairdresserSince: values.hairdresserSince,
+      addressLine1: values.addressLine1,
+      addressLine2: values.addressLine2,
+      city: values.city,
+      county: values.county,
+      country: values.country,
     }
 
     try {
-      const response = await api.post('users', data);
-
-      if(response.status == 201){
-        alert(`User Registered Successfully. User ID: ${response.data.newUserID[0]}`);
-
-        history.push('/login');
-      } else{
-        console.log("error")
+      if(selectedTab === 0){
+        const response = await api.post('users', data);
+        return alert(`User Registered Successfully. User ID: ${response.data.newUserID[0]}`);
       }
-      
+
+      const response = await api.post('hairdressers', data);
+      alert(`Hairdresser Registered Successfully. Hairdresser ID: ${response.data.newHairdresserID[0]}`);
+
     } catch (error) {
-        
+      setErrorMessage(error.response.data.message)
     }
   }
 
@@ -75,20 +84,45 @@ export default function Register(){
       margin: 35
     },
     header: {
-      marginBottom: 20
+      marginBottom: 30,
     },
     button: {
-      marginTop: 50
+      marginTop: 20,
+      marginBottom: 20
+    },
+    appbar:{
+      marginBottom: 25,
+      borderRadius: 8,
+    },
+    errorText: {
+      color: "#fff",
+    },
+    errorBox: {
+      backgroundColor: "#ff867c",
+      borderRadius: 8,
+      marginTop: 20,
+      marginBottom: 20,
+      marginLeft: 10,
+      marginRight: 10,
+    },
+    checkbox: {
+      marginLeft: -15,
     }
   });
-
   const classes = useStyles();
 
   const INITIAL_FORM_STATE = {
     firstName: '',
     lastName: '',
-    email: '',
+    dob: '',
     mobile: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+
+    homeService: false,
+    hairdresserSince: '',
+
     addressLine1: '',
     addressLine2: '',
     city: '',
@@ -96,48 +130,84 @@ export default function Register(){
     country: '',
   };
 
-
   const FORM_VALIDATION = Yup.object().shape({
     firstName: Yup.string().required("First Name is a mandatory field"),
     lastName: Yup.string().required("Last Name is a mandatory field"),
+    dob: Yup.string()
+    .nullable()
+    .test('Date of Birth', 'Minimum age is 18', function(value) {
+      return moment().diff(moment(value), 'years') >= 18;
+    }),
+    mobile: Yup.string().required("Mobile is a mandatory field"),
     email: Yup.string().email('Invalid email address').required("Email is a mandatory field"),
-    mobile: Yup.string().phone("IRE", true).required("Mobile is a mandatory field"),
-    addressLine1: Yup.string().required("Address Line 1 is a mandatory field"),
+    password: Yup.string()
+      .required("Please enter your password")
+      .matches(
+        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+      ),
+    confirmPassword: Yup.string().required("Please confirm your password")
+      .when("password", {
+        is: password => (password && password.length > 0 ? true : false),
+        then: Yup.string().oneOf([Yup.ref("password")], "Password doesn't match")
+      }),
+
+    addressLine1: Yup.string(),
     addressLine2: Yup.string(),
-    city: Yup.string().required("City is a mandatory field"),
-    county: Yup.string().required("County is a mandatory field"),
-    country: Yup.string().required("Country is a mandatory field"),
+    city: Yup.string(),
+    county: Yup.string(),
+    country: Yup.string()
   });
 
+  
 
   return (
     <Grid container className={classes.componentGrid} xs={12} md={8} lg={6}>
+      <Grid item xs={12}>
+        <Typography variant="h4" className={classes.header}>
+          Register
+        </Typography>
+      </Grid>
+
+      <Grid item xs={12}>
+        <AppBar position="static" className={classes.appbar}>
+          <Tabs value={selectedTab} onChange={handleChange} centered>
+            <Tab icon={<Person />} label="Client" />
+            <Tab icon={<MonetizationOn />} label="Professional" />
+          </Tabs>
+        </AppBar>
+      </Grid>
 
       <Formik 
-        initialValues={{ 
-          ...INITIAL_FORM_STATE
-        }}
+        initialValues={{ ...INITIAL_FORM_STATE }}
         validationSchema={FORM_VALIDATION}
-        onSubmit={(data, {setSubmitting}) => {
+        onSubmit={(values, {setSubmitting}) => {
           setSubmitting(true);
           // make async call
-          console.log(data)
+          console.log(values)
+          handleRegister(values)
           setSubmitting(false);
         }}
       > 
         <Form>  
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h4" className={classes.header}>
-                Register
-              </Typography>
-            </Grid>
 
-          <Grid item xs={12}>
-            <Typography variant="h6">
-              Your Details
-            </Typography>
-          </Grid>
+          {errorMessage && (
+              <>
+                <Grid item xs={12} className={classes.errorBox}>
+                  <Typography variant="h6" fullLength="true" className={classes.errorText}>
+                    Error: {errorMessage}
+                  </Typography>
+                </Grid>
+              </>  
+              )
+            }
+
+            <Grid item xs={12}>
+              <Typography variant="h6">
+                Your Details
+              </Typography>
+            </Grid>           
 
             <Grid item xs={6}>
               <TextField name="firstName" label="First Name"/>
@@ -147,50 +217,83 @@ export default function Register(){
               <TextField name="lastName" label="Last Name"/>
             </Grid>
 
+            <Grid item xs={6}>
+              <TextField name="mobile" label="Mobile"/>
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField name="dob" label="Date of Birth" type="date" InputLabelProps={{shrink: true}}/>
+            </Grid>
+
             <Grid item xs={12}>
               <TextField name="email" label="Email"/>
             </Grid>
 
-            <Grid item xs={12}>
-              <TextField name="mobile" label="Mobile"/>
-            </Grid>
-
-
-            <Grid item xs={12}>
-              <Typography variant="h6">
-                Address
-              </Typography>
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField name="addressLine1" label="Address Line 1"/>
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField name="addressLine2" label="Address Line 2"/>
+            <Grid item xs={6}>
+              <TextField name="password" label="Password" type="password"/>
             </Grid>
 
             <Grid item xs={6}>
-              <TextField name="city" label="City"/>
+              <TextField name="confirmPassword" label="Confirm Password" type="password"/>
             </Grid>
 
-            <Grid item xs={6}>
-              <TextField name="county" label="County"/>
-            </Grid>
+          
+            {selectedTab === 1 && (
+              <>
+                <Grid item xs={12}>
+                  <Typography variant="h6">
+                    Experience
+                  </Typography>
+                </Grid>
 
-            <Grid item xs={12}>
-              <SelectField
-                name="country"
-                label="Country"
-                options={countries}
-              />
-            </Grid>
+                <Grid item xs={6}>
+                  <TextField name="hairdresserSince" label="Hairdresser Since" type="date" InputLabelProps={{shrink: true}}/>
+                </Grid>
 
 
-            <Grid item xs={12}>
-              <CustomButton >
-                Register
-              </CustomButton>
+                <Grid item xs={12}>
+                  <Typography variant="h6">
+                    Business Address
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField name="addressLine1" label="Address Line 1"/>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField name="addressLine2" label="Address Line 2"/>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField name="city" label="City"/>
+                </Grid>
+
+                <Grid item xs={6}>
+                  <TextField name="county" label="County"/>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <SelectField
+                    name="country"
+                    label="Country"
+                    options={countries}
+                  />
+                </Grid>
+
+                <Grid item xs={4} className={classes.checkbox}>
+                  <FormControlLabel control={<Checkbox name="homeService" color="primary" />} labelPlacement="start" label="Home Service?" />
+                </Grid>
+              </>
+              )
+            }
+            
+            <Grid container spacing={3} justify="center" className={classes.button}>
+              <Grid item xs={6}>
+                <CustomButton >
+                  Register
+                </CustomButton>
+              </Grid>
             </Grid>
 
             <Grid item xs={4}>

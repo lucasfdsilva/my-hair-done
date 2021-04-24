@@ -1,31 +1,31 @@
 import React from 'react';
-import { TextField } from '@material-ui/core';
+import { Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useField } from 'formik';
 
-const TextFieldWrapper = ({
+const CheckboxdWrapper = ({
   name, 
   ...otherProps
 }) => {
   const [field, meta] = useField(name);
 
-  const configTextField = {
+  const configCheckbox = {
     ...field,
     ...otherProps,
     fullWidth: true,
-    variant: "outlined",
+    color: "primary",
   };
 
 
   if(meta && meta.touched && meta.error){
-    configTextField.error = true;
-    configTextField.helperText = meta.error;
+    configCheckbox.error = true;
+    configCheckbox.helperText = meta.error;
   }
 
 
   return(
-    <TextField {...configTextField}/>
+    <Checkbox {...configCheckbox}/>
   );
 };
 
-export default TextFieldWrapper;
+export default CheckboxdWrapper;

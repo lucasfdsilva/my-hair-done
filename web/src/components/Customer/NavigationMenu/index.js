@@ -57,7 +57,7 @@ export default function NavigationMenu() {
   if (id && accessToken) {
     return (
       <ThemeProvider theme={theme}>
-        <AppBar color="white">
+        <AppBar position="static" color="white">
           <Toolbar>
             
             <a href="/">

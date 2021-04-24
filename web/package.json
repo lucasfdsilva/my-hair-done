@@ -12,6 +12,7 @@
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "formik": "^2.2.6",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-icons": "^3.10.0",
@@ -19,6 +20,7 @@
     "react-scripts": "3.4.1",
     "web-vitals": "^0.2.4",
     "yup": "^0.32.9",
+    "yup-password": "^0.2.1",
     "yup-phone": "^1.2.19"
   },
   "scripts": {

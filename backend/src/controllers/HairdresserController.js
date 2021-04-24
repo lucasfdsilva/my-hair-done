@@ -59,7 +59,7 @@ module.exports = {
         homeService,
      } = req.body;
 
-      if (!firstName || !lastName || !dob || !mobile || !email || !password || !hairdresserSince || !addressLine1 || !city || !county || !country || !homeService ) {
+      if (!firstName || !lastName || !dob || !mobile || !email || !password || !hairdresserSince || !addressLine1 || !city || !county || !country  ) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 

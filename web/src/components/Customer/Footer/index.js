@@ -12,7 +12,9 @@ const useStyles = makeStyles({
     position: "relative",
     alignItems: "center",
     justifyContent: "center",
-    padding: 20
+    padding: 20,
+    margin: 0,
+    height: 90
   },
   link: {
     textDecoration: "none",
@@ -21,22 +23,26 @@ const useStyles = makeStyles({
     fontWeight: 500,
     marginRight: 12,
     transition: "opacity 0.2s",
+    margin: 0,
   },
   imgGitHub: {
     marginLeft: 12,
     height: 30,
-    width: 30
+    width: 30,
+    margin: 0,
   },
   imgLinkedIn: {
     height: 38,
-    width: 38
+    width: 38,
+    margin: 0,
   },
   imgTwitter: {
     height: 30,
-    width: 30
+    width: 30,
+    margin: 0,
   },
   text: {
-
+    margin: 0,
   }
 });
 

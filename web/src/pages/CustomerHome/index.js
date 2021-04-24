@@ -36,10 +36,13 @@ export default function Layout(props) {
   const ComponentToRender = components[props.component];
 
   const useStyles = makeStyles({
+    layout: {
+      height: -10,
+    },
     center: {
-      marginTop: 80,
+      marginTop: 55,
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1521250164448-79d809c7cb0f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')`,
-      minHeight: 830,
+      minHeight: 800,
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
@@ -48,15 +51,19 @@ export default function Layout(props) {
       justifyContent: "center",
       alignItems: "center",
     },
+    footer:{
+      height: 0,
+      margin: 0
+    }
 
   });
 
   const classes = useStyles();
 
   return (
-    <Box>
+    <Box className={classes.layout}>
 
-      <Box>
+      <Box >
         <NavigationMenu />
       </Box>
 
@@ -64,8 +71,7 @@ export default function Layout(props) {
         <ComponentToRender />
       </Box>
 
-
-      <Box>
+      <Box className={classes.footer}>
         <Footer />
       </Box>
 
