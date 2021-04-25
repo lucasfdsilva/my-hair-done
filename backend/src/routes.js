@@ -1,9 +1,7 @@
 const express = require('express');
 
-const UserSessionController = require('./controllers/UserSessionController');
-const HairdresserSessionController = require('./controllers/HairdresserSessionController');
+const SessionController = require('./controllers/SessionController');
 const UserController = require('./controllers/UserController');
-const HairdresserController = require('./controllers/HairdresserController');
 const PortfolioPostController = require('./controllers/PortfolioPostController');
 const SlotController = require('./controllers/SlotController');
 const BookingController = require('./controllers/BookingController');
@@ -21,8 +19,7 @@ openRoutes.get('/css', function(req, res){
 */
 
 //Sessions Controller Routes
-openRoutes.post('/users/sessions', UserSessionController.create);
-openRoutes.post('/hairdressers/sessions', HairdresserSessionController.create);
+openRoutes.post('/sessions', SessionController.create);
 
 //User Controller Routes
 openRoutes.get('/users', UserController.index)
@@ -33,22 +30,12 @@ openRoutes.delete('/users', UserController.delete);
 openRoutes.put('/users/verify/:verificationToken', UserController.verifyEmailAddress);
 openRoutes.post('/users/verify/send', UserController.sendVerificationEmail);
 
-//Hairdresser Controller Routes
-openRoutes.get('/hairdressers', HairdresserController.index)
-openRoutes.get('/hairdressers/:id', HairdresserController.view);
-openRoutes.post('/hairdressers', HairdresserController.create);
-openRoutes.put('/hairdressers', HairdresserController.update);
-openRoutes.delete('/hairdressers', HairdresserController.delete);
-openRoutes.put('/hairdressers/verify/:verificationToken', HairdresserController.verifyEmailAddress);
-openRoutes.post('/hairdressers/verify/send', HairdresserController.sendVerificationEmail);
-
 //Menu Item Controller Routes
 openRoutes.get('/portfolioposts', PortfolioPostController.index);
 openRoutes.get('/portfolioposts/:id', PortfolioPostController.view);
 openRoutes.post('/portfolioposts', PortfolioPostController.create);
 openRoutes.put('/portfolioposts', PortfolioPostController.update);
 openRoutes.delete('/portfolioposts', PortfolioPostController.delete);
-
 
 //Restaurant Available Slots Controller Routes
 openRoutes.get('/slots', SlotController.index);

@@ -51,6 +51,7 @@ export default function Register(){
       dob: values.dob,
       email: values.email,
       password: values.password,
+      isAdmin: false,
       homeService: values.homeService,
       hairdresserSince: values.hairdresserSince,
       addressLine1: values.addressLine1,

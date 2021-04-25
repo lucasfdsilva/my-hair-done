@@ -12,25 +12,25 @@ module.exports = {
 
       const { email, password } = req.body;
 
-      if (!email || !password) return res.status(400).json({message: "Missing Required Information from Request" });
+      if (!email || !password) return res.status(400).json({message: "Missing Required Information from Request. Please try again." });
 
       const userFromDB = await connectDB("users").where({ email: email.toLowerCase() }).first();
+      
+      if (!userFromDB) return res.status(400).json({ message: "No registered user found with this email address. Please try again." });
 
       console.log(userFromDB)
       console.log(await bcrypt.compare(password, userFromDB.password))
 
-      if (!userFromDB) return res.status(400).json({ message: "User Not Found" });
-
       //if (userFromDB.verified == false) return res.status(400).json({ message: "Please verify your email before logging in" });
 
       //JWT Auth is built here - After checking the user credentials (authentication)
-      if (!await bcrypt.compare(password, userFromDB.password)) return res.status(400).json({ message: "Password is incorrect" });
+      if (!await bcrypt.compare(password, userFromDB.password)) return res.status(400).json({ message: "Password is incorrect. Please try again." });
         
-      const accessToken = jwt.sign(userFromDB.user_id, jwtSecret.secret);
+      const accessToken = jwt.sign(userFromDB.email, jwtSecret.secret);
 
       return res.status(200).json({
         message: "User Logged in successfully",
-        id: userFromDB.user_id,
+        id: userFromDB.id,
         accessToken: accessToken,
         isAdmin: userFromDB.is_admin
       });

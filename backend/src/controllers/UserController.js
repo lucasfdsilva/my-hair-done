@@ -28,11 +28,9 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const userFromDB = await connectDB("users").where({ user_id: id }).first();
+      const userFromDB = await connectDB("users").where({ id: id }).first();
 
-      console.log(userFromDB);
-
-      if (!userFromDB) return res.status(400).json({ message: "No User Found" });
+      if (!userFromDB) return res.status(400).json({ message: "No User Found with this ID" });
 
       return res.status(200).json({ user: userFromDB });
 
@@ -43,32 +41,54 @@ module.exports = {
 
   async create(req, res, next) {
     try {
-      const { firstName, lastName, dob, mobile, email, password, isAdmin, profile_img_url } = req.body;
+      const { 
+        isHairdresser,
+        firstName, 
+        lastName, 
+        dob, 
+        mobile, 
+        email, 
+        password,
+        hairdresserSince, 
+        addressLine1,
+        addressLine2,
+        city,
+        county,
+        country, 
+        homeService,
+     } = req.body;
 
-      if (!firstName || !lastName || !dob || !mobile || !email || !password) {
+      if (!firstName || !lastName || !dob || !mobile || !email || !password ) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
       const connectDB = await knex.connect();
       const userFromDB = await connectDB("users").where({ email: email }).first();
 
-      if(userFromDB) return res.status(400).json({ message: "Email address already registered" });
-      
+      if(userFromDB) return res.status(400).json({ message: "Email address already registered. Please try again using a different email address" });
+
       const salt = await bcrypt.genSalt();
       const hashedPassword = await bcrypt.hash(password, salt);
 
       const verificationToken = crypto.randomBytes(20).toString("hex");
 
       const newUser = await connectDB('users').insert({
-        first_name: firstName,
-        last_name: lastName,
-        dob: dob,
-        mobile: mobile,
-        email: email.toLowerCase(),
-        password: hashedPassword,
-        is_admin: isAdmin,
-        profile_img_url: profile_img_url,
-        verification_token: verificationToken,
+        first_name: firstName, 
+        last_name: lastName, 
+        dob: dob, 
+        mobile: mobile, 
+        email: email.toLowerCase(), 
+        password: hashedPassword, 
+        addressLine1: addressLine1,
+        addressLine2: addressLine2, 
+        city: city, 
+        county: county, 
+        country: country,  
+        home_service: homeService,
+        profile_img_url: "",
+        hairdresser_since: hairdresserSince,
+        verification_token: verificationToken, 
+        is_hairdresser: isHairdresser,
       });
 
       /*
@@ -112,25 +132,43 @@ module.exports = {
 
   async update(req, res, next) {
     try {
-      const { id, firstName, lastName, dob, mobile, email, isAdmin, profile_img_url, active_bookings, past_haircuts } = req.body;
+      const { 
+        id,
+        firstName, 
+        lastName, 
+        mobile, 
+        hairdresserSince, 
+        addressLine1,
+        addressLine2,
+        city,
+        county,
+        country, 
+        homeService,
+        profile_img_url,
+      } = req.body;
 
-      if (!id || !firstName || !lastName || !dob || !mobile || !email ) {
+      if ( !firstName || !lastName || !mobile ) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
       const connectDB = await knex.connect();
-      const userFromDB = await connectDB("users").where({ user_id: id }).first();
+      const userFromDB = await connectDB("users").where({ id: id }).first();
 
-      if(!userFromDB) return res.status(400).json({ message: "No User Found" });
+      if(!userFromDB) return res.status(400).json({ message: "No User Found with this ID" });
 
-      const updatedUser = await connectDB('users').where({ user_id: id }).update({
-        first_name: firstName,
-        last_name: lastName,
-        email: email.toLowerCase(),
-        is_admin: isAdmin,
+      const updatedUser = await connectDB('users').where({ id: id }).update({
+        first_name: firstName, 
+        last_name: lastName,  
+        mobile: mobile,
+        addressLine1: addressLine1,
+        addressLine2: addressLine2, 
+        city: city, 
+        county: county, 
+        country: country, 
+        address: address, 
+        home_service: homeService,
         profile_img_url: profile_img_url,
-        active_bookings: active_bookings,
-        past_haircuts: past_haircuts
+        hairdresser_since: hairdresserSince,
       });
 
       return res.status(200).json({ message: 'User updated successfully'});
@@ -150,11 +188,11 @@ module.exports = {
       }
 
       const connectDB = await knex.connect();
-      const userFromDB = await connectDB("users").where({ user_id: id }).first();
+      const userFromDB = await connectDB("users").where({ id: id }).first();
 
-      if(!userFromDB) return res.status(400).json({ message: "No User Found" });
+      if(!userFromDB) return res.status(400).json({ message: "No User Found with this ID" });
 
-      const deletedUser = await connectDB('users').where({ user_id: id}).del();
+      const deletedUser = await connectDB('users').where({ id: id}).del();
 
       return res.status(200).json({ message: 'User deleted successfully' });
 
@@ -175,7 +213,7 @@ module.exports = {
       const connectDB = await knex.connect();
       const userFromDB = await connectDB("users").where({ verification_token: verificationToken }).first();
 
-      if(!userFromDB) return res.status(400).json({ message: "No User Found with this verification token" });
+      if(!userFromDB) return res.status(400).json({ message: "No User found with this verification token" });
 
       const verifiedUser = await connectDB('users').where({ verification_token: verificationToken }).update({
         verified: 1
@@ -200,9 +238,7 @@ module.exports = {
       const connectDB = await knex.connect();
       const userFromDB = await connectDB("users").where({ email: email }).first();
 
-      console.log(userFromDB);
-
-      if(!userFromDB) return res.status(400).json({ message: "No User Found with this email" });
+      if(!userFromDB) return res.status(400).json({ message: "No User found with this email" });
 
       const SQSParams = {
         MessageAttributes: {
