@@ -23,12 +23,15 @@ openRoutes.post('/sessions', SessionController.create);
 
 //User Controller Routes
 openRoutes.get('/users', UserController.index)
+openRoutes.get('/users/hairdressers', UserController.getAllHairdressers);
+openRoutes.get('/users/hairdressers/:name', UserController.searchHairdressers);
 openRoutes.get('/users/:id', UserController.view);
 openRoutes.post('/users', UserController.create);
 openRoutes.put('/users', UserController.update);
 openRoutes.delete('/users', UserController.delete);
 openRoutes.put('/users/verify/:verificationToken', UserController.verifyEmailAddress);
 openRoutes.post('/users/verify/send', UserController.sendVerificationEmail);
+openRoutes.post('/users/upload', UserController.uploadProfilePicture);
 
 //Menu Item Controller Routes
 openRoutes.get('/portfolioposts', PortfolioPostController.index);

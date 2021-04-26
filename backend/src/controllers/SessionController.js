@@ -18,8 +18,7 @@ module.exports = {
       
       if (!userFromDB) return res.status(400).json({ message: "No registered user found with this email address. Please try again." });
 
-      console.log(userFromDB)
-      console.log(await bcrypt.compare(password, userFromDB.password))
+      await bcrypt.compare(password, userFromDB.password)
 
       //if (userFromDB.verified == false) return res.status(400).json({ message: "Please verify your email before logging in" });
 
@@ -32,6 +31,7 @@ module.exports = {
         message: "User Logged in successfully",
         id: userFromDB.id,
         accessToken: accessToken,
+        isHairdresser: userFromDB.is_hairdresser,
         isAdmin: userFromDB.is_admin
       });
     

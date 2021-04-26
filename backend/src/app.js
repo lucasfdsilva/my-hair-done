@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const fileUpload = require('express-fileupload')
 const routes = require('./routes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../swagger.json');
@@ -15,6 +16,7 @@ var swaggerOptions = {
 
 //Configuring Express Server
 const app = express();
+app.use(fileUpload());
 app.use(cors());
 app.use(express.json());
 app.use(routes.openRoutes);

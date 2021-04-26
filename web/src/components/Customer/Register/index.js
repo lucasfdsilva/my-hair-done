@@ -43,6 +43,8 @@ export default function Register(){
   }, [])
 
   async function handleRegister(values){
+    var isHairdresser = false;
+    if(selectedTab === 1) isHairdresser = true;
 
     const data = {
       firstName: values.firstName,
@@ -51,6 +53,7 @@ export default function Register(){
       dob: values.dob,
       email: values.email,
       password: values.password,
+      isHairdresser: isHairdresser,
       isAdmin: false,
       homeService: values.homeService,
       hairdresserSince: values.hairdresserSince,
@@ -62,13 +65,8 @@ export default function Register(){
     }
 
     try {
-      if(selectedTab === 0){
         const response = await api.post('users', data);
         return alert(`User Registered Successfully. User ID: ${response.data.newUserID[0]}`);
-      }
-
-      const response = await api.post('hairdressers', data);
-      alert(`Hairdresser Registered Successfully. Hairdresser ID: ${response.data.newHairdresserID[0]}`);
 
     } catch (error) {
       setErrorMessage(error.response.data.message)
@@ -184,8 +182,6 @@ export default function Register(){
         validationSchema={FORM_VALIDATION}
         onSubmit={(values, {setSubmitting}) => {
           setSubmitting(true);
-          // make async call
-          console.log(values)
           handleRegister(values)
           setSubmitting(false);
         }}

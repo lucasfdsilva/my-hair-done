@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
 const AWS = require('aws-sdk');
+const fs = require('fs');
 AWS.config.update({region: 'eu-west-1'});
 const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
 
@@ -39,6 +40,64 @@ module.exports = {
     }
   },
 
+  async getAllHairdressers(req, res, next) {
+    try {
+      const connectDB = await knex.connect();
+      const allHairdressersFromDB = await connectDB("users").where({ is_hairdresser: true});
+
+      if(!allHairdressersFromDB){
+        return res.status(400).json({message: "There are no registered hairdressers"})
+      }
+
+      return res.status(200).json({hairdressers: allHairdressersFromDB})
+
+    } catch (error) {
+        next(error);
+    }
+  },
+
+  async searchHairdressers(req, res, next) {
+    try {
+      const { name } = req.params;
+
+      if (!name) {
+        return res.status(400).json({ message: "Missing Hairdresser Name" });
+      }
+
+      const whiteSpaces = /\s/g.test(name);
+
+      if(whiteSpaces){
+        const namesArray = name.split(/[ ]+/);
+        const firstName = namesArray[0];
+        const lastName = namesArray[1];
+
+        const connectDB = await knex.connect();
+        const userFromDB = await connectDB("users")
+        .where('first_name', 'like', `%${firstName}%`)
+        .orWhere('last_name', 'like', `%${lastName}%`)
+        .andWhere({ is_hairdresser: true });
+
+        if (!userFromDB) return res.status(400).json({ message: "No Hairdressers Found. Please try again." });
+
+        return res.status(200).json({ hairdressers: userFromDB });
+      }
+
+      const connectDB = await knex.connect();
+      const userFromDB = await connectDB("users")
+        .where('first_name', 'like', `%${name}%`)
+        .orWhere('last_name', 'like', `%${name}%`)
+        .orWhere('email', 'like', `%${name}%`)
+        .andWhere({ is_hairdresser: true });
+
+      if (!userFromDB) return res.status(400).json({ message: "No Hairdressers Found. Please try again." });
+
+      return res.status(200).json({ hairdressers: userFromDB });
+
+    } catch (error) {
+        next(error);
+    }
+  },
+
   async create(req, res, next) {
     try {
       const { 
@@ -56,6 +115,7 @@ module.exports = {
         county,
         country, 
         homeService,
+        profileImgUrl
      } = req.body;
 
       if (!firstName || !lastName || !dob || !mobile || !email || !password ) {
@@ -85,7 +145,7 @@ module.exports = {
         county: county, 
         country: country,  
         home_service: homeService,
-        profile_img_url: "",
+        profile_img_url: profileImgUrl,
         hairdresser_since: hairdresserSince,
         verification_token: verificationToken, 
         is_hairdresser: isHairdresser,
@@ -130,6 +190,45 @@ module.exports = {
     }
   },
 
+  async uploadProfilePicture(req, res, next){
+    try {
+      const file = req.files.file;
+
+      if (!file ) {
+        return res.status(400).json({ message: "Missing image file from Request" });
+      }
+
+      console.log(file)
+
+      const s3 = new AWS.S3.ManagedUpload({
+        params: {
+          Bucket: 'myhairdone-profilepictures',
+          Key: file.name,
+          Body: file.data,
+          ContentType: "image/jpeg"
+        }
+      });
+
+      const promise = s3.promise();
+
+      promise.then(
+        function(data) {
+          console.log("Successfully uploaded photo.");
+          console.log(data)
+
+          return res.status(200).json({ message: 'Profile image uploaded successfully', url: data.Location});
+        },
+        function(err) {
+          console.log("Error uploading file to S3. ", err.message);
+          return res.status(500).json({ message: 'Error uploading file to S3.'});
+        }
+      );
+
+    } catch (error) {
+        next(error);
+    }
+  },
+
   async update(req, res, next) {
     try {
       const { 
@@ -137,7 +236,6 @@ module.exports = {
         firstName, 
         lastName, 
         mobile, 
-        hairdresserSince, 
         addressLine1,
         addressLine2,
         city,
@@ -165,10 +263,8 @@ module.exports = {
         city: city, 
         county: county, 
         country: country, 
-        address: address, 
         home_service: homeService,
         profile_img_url: profile_img_url,
-        hairdresser_since: hairdresserSince,
       });
 
       return res.status(200).json({ message: 'User updated successfully'});
@@ -270,7 +366,7 @@ module.exports = {
         }
       })
 
-      return res.status(200).json({ message: 'Verification Email Added to SQS queue successfully.' });
+      return res.status(200).json({ message: 'Verification Email sent successfully.' });
 
     } catch (error) {
         next(error);
