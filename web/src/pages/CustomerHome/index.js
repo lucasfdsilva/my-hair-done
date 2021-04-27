@@ -9,10 +9,10 @@ import headerLogo from "../../assets/header-logo.png";
 import NavigationMenu from "../../components/Customer/NavigationMenu";
 import Footer from "../../components/Customer/Footer";
 import Bookings from "../../components/Customer/Bookings";
-import EditProfile from "../../components/Customer/EditProfile";
 import Home from "../../components/Customer/Home";
 import Login from "../../components/Customer/Login";
 import Hairdressers from "../../components/Customer/Hairdressers";
+import ViewHairdresser from "../../components/Customer/ViewHairdresser";
 import NewBooking from "../../components/Customer/NewBooking";
 import Profile from "../../components/Customer/Profile";
 import Register from "../../components/Customer/Register";
@@ -23,10 +23,10 @@ export default function Layout(props) {
     NavigationMenu,
     Footer,
     Bookings,
-    EditProfile,
     Home,
     Login,
     Hairdressers,
+    ViewHairdresser,
     NewBooking,
     Profile,
     Register,

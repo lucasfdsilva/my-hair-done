@@ -52,7 +52,7 @@ export default function NavigationMenu() {
         
               <Button
                 className={classes.button}
-                href="hairdressers"
+                href="/hairdressers"
                 startIcon={<PeopleAlt className={classes.icon} />}
               >
                 Hairdressers
@@ -60,7 +60,7 @@ export default function NavigationMenu() {
 
               <Button
                 className={classes.button}
-                href="profile"
+                href="/profile"
                 startIcon={<Person className={classes.icon} />}
               >
                 Profile
@@ -68,7 +68,7 @@ export default function NavigationMenu() {
 
               <Button
                 className={classes.button}
-                href="bookings"
+                href="/bookings"
                 startIcon={<LibraryBooks className={classes.icon} />}
               >
                 Bookings
@@ -76,7 +76,6 @@ export default function NavigationMenu() {
 
               <Button
                 className={classes.button}
-                href="bookings"
                 startIcon={<ExitToApp className={classes.icon} />}
                 onClick={() => {
                   localStorage.setItem("id", "");
@@ -93,28 +92,28 @@ export default function NavigationMenu() {
               <Grid container justify="center" spacing={3}>
                 <Button
                   className={classes.button}
-                  href="hairdressers"
+                  href="/hairdressers"
                   startIcon={<PeopleAlt className={classes.icon} />}
                 >
                 </Button>
 
                 <Button
                   className={classes.button}
-                  href="profile"
+                  href="/profile"
                   startIcon={<Person className={classes.icon} />}
                 >
                 </Button>
 
                 <Button
                   className={classes.button}
-                  href="bookings"
+                  href="/bookings"
                   startIcon={<LibraryBooks className={classes.icon} />}
                 >
                 </Button>
 
                 <Button
                   className={classes.button}
-                  href="bookings"
+                  href="/bookings"
                   startIcon={<ExitToApp className={classes.icon} />}
                   onClick={() => {
                     localStorage.setItem("id", "");
@@ -128,7 +127,7 @@ export default function NavigationMenu() {
                 {isAdmin == 1 && (
                   <Button
                   className={classes.button}
-                  href="admin"
+                  href="/admin"
                   startIcon={<Apps className={classes.icon} />}
                   >
                     Admin Panel

@@ -158,8 +158,6 @@ export default function Register(){
     country: Yup.string()
   });
 
-  
-
   return (
     <Grid container className={classes.componentGrid} xs={12} md={8} lg={6}>
       <Grid item xs={12}>

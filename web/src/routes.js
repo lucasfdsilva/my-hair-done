@@ -14,10 +14,10 @@ function Routes(){
         <Route path="/hairdressers" exact render={(props) => <CustomerHome {...props} component={"Hairdressers"}/>}/>
         <Route path="/register" exact render={(props) => <CustomerHome {...props} component={"Register"}/>}/>
         <Route path="/login" exact render={(props) => <CustomerHome {...props} component={"Login"}/>}/>
+        <Route path="/hairdressers/:hairdresserId" render={(props) => <CustomerHome {...props} component={"ViewHairdresser"}/>}/>
         <Route path="/users/verify/:token" render={(props) => <CustomerHome {...props} component={"VerifyEmail"}/>}/>
 
         <Route path="/profile" exact render={(props) => <CustomerHome {...props} component={"Profile"}/>}/>
-        <Route path="/profile/edit" exact render={(props) => <CustomerHome {...props} component={"EditProfile"}/>}/>
         <Route path="/bookings" exact render={(props) => <CustomerHome {...props} component={"Bookings"}/>}/>
         <Route path="/bookings/new" exact render={(props) => <CustomerHome {...props} component={"NewBooking"}/>}/>
 

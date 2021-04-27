@@ -256,6 +256,7 @@ export default function Hairdressers(){
                     variant="outlined"
                     color="primary"
                     fullWidth
+                    href={`hairdressers/${hairdresser.id}`}
                   >
                     View Profile
                   </Button>
@@ -357,6 +358,7 @@ export default function Hairdressers(){
                     variant="outlined"
                     color="primary"
                     fullWidth
+                    href={`hairdressers/${hairdresser.id}`}
                   >
                     View Profile
                   </Button>

@@ -3,6 +3,7 @@ const express = require('express');
 const SessionController = require('./controllers/SessionController');
 const UserController = require('./controllers/UserController');
 const PortfolioPostController = require('./controllers/PortfolioPostController');
+const PortfolioImagesController = require('./controllers/PortfolioImagesController');
 const SlotController = require('./controllers/SlotController');
 const BookingController = require('./controllers/BookingController');
 
@@ -33,12 +34,22 @@ openRoutes.put('/users/verify/:verificationToken', UserController.verifyEmailAdd
 openRoutes.post('/users/verify/send', UserController.sendVerificationEmail);
 openRoutes.post('/users/upload', UserController.uploadProfilePicture);
 
-//Menu Item Controller Routes
+//Portfolio Posts Controller Routes
 openRoutes.get('/portfolioposts', PortfolioPostController.index);
+openRoutes.get('/portfolioposts/hairdressers/:hairdresserId', PortfolioPostController.getAllPostsForHairdresser);
+openRoutes.get('/portfolioposts/hairdressers/:hairdresserId/featured', PortfolioPostController.getFeaturedPostsForHairdresser);
 openRoutes.get('/portfolioposts/:id', PortfolioPostController.view);
 openRoutes.post('/portfolioposts', PortfolioPostController.create);
 openRoutes.put('/portfolioposts', PortfolioPostController.update);
 openRoutes.delete('/portfolioposts', PortfolioPostController.delete);
+
+
+//Portfolio Images Controller Routes
+openRoutes.get('/portfolioimages', PortfolioImagesController.index);
+openRoutes.get('/portfolioimages/:id', PortfolioImagesController.view);
+openRoutes.post('/portfolioimages', PortfolioImagesController.create);
+openRoutes.put('/portfolioimages', PortfolioImagesController.update);
+openRoutes.delete('/portfolioimages', PortfolioImagesController.delete);
 
 //Restaurant Available Slots Controller Routes
 openRoutes.get('/slots', SlotController.index);
