@@ -46,7 +46,7 @@ module.exports = {
       const allHairdressersFromDB = await connectDB("users").where({ is_hairdresser: true});
 
       if(!allHairdressersFromDB){
-        return res.status(400).json({message: "There are no registered hairdressers"})
+        return res.status(400).json({message: "There are no registered hairdressers."})
       }
 
       return res.status(200).json({hairdressers: allHairdressersFromDB})
