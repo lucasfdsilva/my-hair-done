@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 
-
+import theme from '../../../theme'
 import api from '../../../services/api';
 
 export default function Hairdressers(){
@@ -102,9 +102,19 @@ export default function Hairdressers(){
       color: '#3793FF'
     },
     ratingsContainer: {
-      marginTop: -35,
-      marginLeft: -20,
+      marginLeft: 0,
       marginBottom: 10,
+      [theme.breakpoints.down('md')]: {
+        justifyItems: 'center',
+        marginTop: -20,
+      },
+      [theme.breakpoints.only('lg')]: {
+        marginTop: -20,
+        marginLeft: -20,
+      },
+      [theme.breakpoints.only('xl')]: {
+        marginTop: -35,
+      }
     },
     profileImgPicture: {
       border: '2px solid #555',
@@ -203,7 +213,7 @@ export default function Hairdressers(){
                 }
               >
               </CardHeader>
-              <Grid container justify="center" spacing={1} className={classes.ratingsContainer}>
+              <Grid container spacing={1} className={classes.ratingsContainer}>
                 <Grid item >
                   <Rating
                     name="read-only" 

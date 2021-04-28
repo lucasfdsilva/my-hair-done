@@ -251,12 +251,6 @@ export default function Profile(){
     firstName: Yup.string().required("First Name is a mandatory field"),
     lastName: Yup.string().required("Last Name is a mandatory field"),
     mobile: Yup.string().required("Mobile is a mandatory field"),
-
-    addressLine1: Yup.string(),
-    addressLine2: Yup.string(),
-    city: Yup.string(),
-    county: Yup.string(),
-    country: Yup.string()
   });
 
 

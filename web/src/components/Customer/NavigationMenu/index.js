@@ -1,20 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, IconButton, Button, Grid, Hidden } from "@material-ui/core"
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
-import { ExitToApp, MenuIcon, HowToReg, PeopleAlt, Person, LibraryBooks, Apps } from "@material-ui/icons";
+import { Home, ExitToApp, MenuIcon, HowToReg, PeopleAlt, Person, PhotoLibrary, LibraryBooks, Apps } from "@material-ui/icons";
 import theme from '../../../theme'
 import headerLogo from "../../../assets/header-logo.png";
 
 import { useHistory } from "react-router-dom";
 
+import api from '../../../services/api';
+
 export default function NavigationMenu() {
   const [id, setID] = useState(localStorage.getItem("id"));
   const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
-  const [isHairdresser, setIsHairdresser] = useState(localStorage.getItem("isHairdresser"));
-  const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin"));
+  const [isHairdresser, setIsHairdresser] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const history = useHistory();
+
+  useEffect(() => {
+    async function loadProfile(){
+      try {
+        
+        const response = await api.get(`users/${id}`);
+
+        setIsHairdresser(response.data.user.is_hairdresser)
+        setIsAdmin(response.data.user.is_admin)
+
+      } catch (error) {
+          setErrorMessage(error.response.data.message)
+      }
+    }
+  if(id && accessToken){
+    loadProfile();
+  }
+  }, [])
 
   const useStyles = makeStyles({
     image: {
@@ -49,6 +72,14 @@ export default function NavigationMenu() {
               <a href="/">
                 <img src={headerLogo} alt="" className={classes.image}/>
               </a>
+
+              <Button
+                className={classes.button}
+                href="/"
+                startIcon={<Home className={classes.icon} />}
+              >
+                Home
+              </Button>
         
               <Button
                 className={classes.button}
@@ -66,6 +97,16 @@ export default function NavigationMenu() {
                 Profile
               </Button>
 
+              {isHairdresser && (
+                <Button
+                className={classes.button}
+                href={`/hairdressers/${id}`}
+                startIcon={<PhotoLibrary className={classes.icon} />}
+                >
+                 Portfolio
+                </Button>
+              )}
+              
               <Button
                 className={classes.button}
                 href="/bookings"
@@ -81,6 +122,7 @@ export default function NavigationMenu() {
                   localStorage.setItem("id", "");
                   localStorage.setItem("accessToken", "");
                   localStorage.setItem("isAdmin", 0);
+                  history.push('/')
                   window.location.reload();
                 }}
               >
@@ -90,6 +132,13 @@ export default function NavigationMenu() {
 
             <Hidden mdUp>
               <Grid container justify="center" spacing={3}>
+                <Button
+                  className={classes.button}
+                  href="/"
+                  startIcon={<Home className={classes.icon} />}
+                >
+                </Button>
+                
                 <Button
                   className={classes.button}
                   href="/hairdressers"
@@ -103,6 +152,15 @@ export default function NavigationMenu() {
                   startIcon={<Person className={classes.icon} />}
                 >
                 </Button>
+
+                {isHairdresser && (
+                  <Button
+                  className={classes.button}
+                  href={`/hairdressers/${id}`}
+                  startIcon={<PhotoLibrary className={classes.icon} />}
+                  >
+                  </Button>
+                )}
 
                 <Button
                   className={classes.button}
@@ -156,7 +214,7 @@ export default function NavigationMenu() {
 
                 <Button
                   className={classes.button}
-                  href="hairdressers"
+                  href="/hairdressers"
                   startIcon={<PeopleAlt className={classes.icon} />}
                 >
                   Hairdressers
@@ -164,7 +222,7 @@ export default function NavigationMenu() {
 
                 <Button
                   className={classes.button}
-                  href="register"
+                  href="/register"
                   startIcon={<HowToReg className={classes.icon} />}
                 >
                   Register
@@ -172,7 +230,7 @@ export default function NavigationMenu() {
 
                 <Button
                   className={classes.button}
-                  href="login"
+                  href="/login"
                   startIcon={<ExitToApp className={classes.icon} />}
                 >
                   Login

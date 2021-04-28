@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardActionArea, CardHeader, CardMedia, CardContent, CardActions,Typography, IconButton, Avatar, Grid, Button, Divider, TextField,InputAdornment } from '@material-ui/core';
+import { Modal, Card, CardActionArea, CardHeader, CardMedia, CardContent, CardActions,Typography, IconButton, Avatar, Grid, Button, Divider, TextField,InputAdornment } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 import { makeStyles } from '@material-ui/styles';
 import theme from '../../../theme'
-import { Search, SkipPrevious, SkipNext } from '@material-ui/icons';
+import { Search, SkipPrevious, SkipNext, Add } from '@material-ui/icons';
 import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 
+import PortfolioPost from '../PortfolioPost';
 import PortfolioPostCard from '../PortfolioPostCard';
 
 import api from '../../../services/api';
 
 export default function ViewHairdresser(props){
+  const [id, setID] = useState(localStorage.getItem("id"));
+  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
   const { hairdresserId } = useParams();
-  const [hairdresser, setHairdresser] = useState([]);
+  const [ hairdresser, setHairdresser ] = useState([]);
   const [featuredPosts, setFeaturedPosts] = useState([]);
   const [posts, setPosts] = useState([]);
 
-  const [searchParameter, setSearchParameter] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -63,6 +66,14 @@ export default function ViewHairdresser(props){
   loadPosts();
   loadFeaturedPosts();
   }, [])
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const useStyles = makeStyles({
     componentGrid: {
@@ -155,12 +166,28 @@ export default function ViewHairdresser(props){
     title: {
       marginTop: -50,
     },
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 30,
+    }
 
   });
   const classes = useStyles();
 
   return (
     <Grid container className={classes.componentGrid}>
+
+      <Grid container className={classes.modalContainer}>
+        <Modal
+          className={classes.modal}
+          open={open}
+          onClose={handleClose}
+        >
+          <PortfolioPost />
+        </Modal>
+      </Grid>
 
       <Grid container spacing={3} className={classes.hairdresserInfo}>
         <Grid item xs={12}>
@@ -217,6 +244,22 @@ export default function ViewHairdresser(props){
                   Book Now
                 </Button>
               </Grid>
+              
+              {id && accessToken && id === hairdresserId && (
+                <Grid item>
+                  <Button
+                  variant="outlined"
+                  color="primary"
+                  fullWidth
+                  size="large"
+                  startIcon={<Add />}
+                  onClick={handleOpen}
+                  >
+                    New Portfolio Post
+                  </Button>
+                </Grid>
+              )}
+            
             </Grid>
           </Card>
         </Grid>
@@ -228,9 +271,9 @@ export default function ViewHairdresser(props){
         </Typography>
         <Divider variant="middle" fullWidth className={classes.divider}/>
         
-        <Grid container spacing={3}>
+        <Grid container spacing={4}>
           {featuredPosts.map(post => (
-              <Grid item xs={12} sm={6} md={4} lg={3} > 
+              <Grid item xs={12} sm={6} md={4} lg={4} > 
                 <PortfolioPostCard key={post.id} post={post}/>
               </Grid>
           ))}

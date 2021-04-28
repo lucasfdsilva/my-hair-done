@@ -1,4 +1,7 @@
 const knex = require("../database/knex");
+const uploadPictures = require("../utils/uploadImagesS3");
+const AWS = require('aws-sdk');
+const S3 = new AWS.S3()
 
 module.exports = {
   async index(req, res, next) {
@@ -36,19 +39,31 @@ module.exports = {
 
   async create(req, res, next) {
     try {
-      const { postId, url } = req.body;
+      const { postId } = req.body;
+      const files = req.files.files;
 
-      if (!postId || !url) {
+      if (!postId) {
         return res.status(400).json({ message: "Missing Required Information from Request" });
       }
 
-      const connectDB = await knex.connect();
-      const newPortfolioImage = await connectDB('portfolio_images').insert({
-        post_id: postId, 
-        url: url,        
-      });
+      if (!files) {
+        return res.status(400).json({ message: "At least 1 picture of your job is required..." });
+      }
 
-      return res.status(201).json({ message: "Portfolio Image Created Successfully", portfolioImage: newPortfolioImage });
+      const urls = await uploadPictures.uploadPictures(files);
+
+      console.log(urls)
+
+      const connectDB = await knex.connect();
+
+      for(const url of urls){  
+        const newPortfolioImage = await connectDB('portfolio_images').insert({
+          post_id: postId, 
+          url: url,        
+        });
+      }
+      
+      return res.status(201).json({ message: "Portfolio Images Created Successfully" });
 
     } catch (error) {
         next(error);
