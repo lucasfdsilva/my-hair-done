@@ -5,6 +5,7 @@ import { Error, BurstMode, NavigateBefore, NavigateNext } from '@material-ui/ico
 import { FiTrash2 } from 'react-icons/fi';
 import { Formik, Form } from 'formik'
 import axios from 'axios'
+import theme from '../../../theme'
 
 import * as Yup from 'yup'
 
@@ -26,8 +27,9 @@ export default function PortfolioPost(props){
   const [imagesIndex, setImagesIndex] = useState(0);
   const [imageOpen, setImageOpen] = useState(false);
 
-  const [files, setFiles] = useState([]);
-  const [uploadLabelValue, setUploadLabelValue] = useState('Upload your pictures...');
+  const [files, setFiles] = useState(null);
+  const [newFilesAdded, setNewFilesAdded] = useState(false)
+  const [uploadLabelValue, setUploadLabelValue] = useState('Upload pictures...');
 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -49,7 +51,19 @@ export default function PortfolioPost(props){
   }
 
   async function handleImageDelete(){
+    try {
 
+      const response = await api.delete('portfolioimages', { data: { id: images[imagesIndex].id }});
+
+      setImagesIndex(imagesIndex - 1)
+
+      const responseUpdatedImages = await api.get(`/portfolioimages/posts/${postId}`);
+
+      setImages(responseUpdatedImages.data.images)
+      
+    } catch (error) {
+      setErrorMessage(error.responseUpdatedImages.data.message)
+    }
   }
 
   const handleImageOpen = () => {
@@ -63,43 +77,12 @@ export default function PortfolioPost(props){
   async function handleFileSelected(event){
     setFiles(event.target.files)
     setUploadLabelValue(event.target.files.length + ' Files Selected...')
+    setNewFilesAdded(true)
   }
 
 
   async function handleClickedToDelete(){
     setClickedToDelete(true)
-  }
-
-  async function handleDeletePost(){
-    try {
-
-      const response = await api.delete('portfolioposts', { data: { id: postId }});
-
-      alert(`Post Deleted Successfully ${response.data}`);
-      
-    } catch (error) {
-      alert(`Could not delete user. Error: ${error}`)
-    }
-
-  }
-
-  async function handlePostUpdate(values){
-    const data = {
-      id: postId,
-      userId: userId,
-      title: title,
-      description: description,
-      tags: tags,
-      featured: featured,
-    }
-
-    try {
-      const response = await api.put('portfolioposts', data);
-      window.location.reload();
-
-    } catch (error) {
-      setErrorMessage(error.response.data.message)
-    }
   }
 
   async function handlePostCreation(values){
@@ -135,30 +118,79 @@ export default function PortfolioPost(props){
     }
   }
 
-  async function handlePicturesUpload(newPostId){
-    try{
-      var formData = new FormData();
-      formData.append("file", files)
-
-      const response = await api.post('users/upload', formData, {
-        headers: {
-          'Content-type': 'multipart/form-data'
-        }
-      });
-
+  async function handlePostUpdate(values){
+    const data = {
+      id: postId,
+      userId: userId,
+      title: values.title,
+      description: values.description,
+      tags: values.tags,
+      featured: values.featured,
     }
-    catch(error){
+
+    try {
+      //Saving Post 
+      const response = await api.put('portfolioposts', data);
+      
+      //Uploading images
+      if(newFilesAdded){
+        var formData = new FormData();
+        for (let i = 0; i < files.length; i++){
+          formData.append(`files`, files[i])
+        }
+        formData.append('postId', postId);
+
+        const imagesResponse = await api.post('portfolioimages', formData, {
+          headers: {
+            'Content-type': 'multipart/form-data'
+          }
+        });
+      }
+
+      window.location.reload();
+
+    } catch (error) {
       setErrorMessage(error.response.data.message)
     }
   }
 
+  async function handleDeletePost(){
+    try {
+      const response = await api.delete('portfolioposts', { data: { id: postId }});
+
+      window.location.reload();
+      
+    } catch (error) {
+      setErrorMessage(error.response.data.message)
+    }
+
+  }
+
+
   const useStyles = makeStyles({
-    componentGrid: {
+    componentGridNewPost: {
       backgroundColor: "#fff",
       borderRadius: 8,
       alignItems: "center",
       justifyItems: "center",
       padding: 25,
+      maxHeight: 600,
+      maxWidth: 500,
+    },
+    componentGridEditPost: {
+      backgroundColor: "#fff",
+      borderRadius: 8,
+      alignItems: "center",
+      justifyItems: "center",
+      padding: 25,
+      maxHeight: 1000,
+      maxWidth: 500,
+      overflowY: 'scroll',
+
+      [theme.breakpoints.down('xs')]: {
+        maxHeight: 700,
+        maxWidth: 350,
+      },
     },
     header:{
       marginBottom: 30,
@@ -184,7 +216,16 @@ export default function PortfolioPost(props){
     },
     imagesIndex: {
       marginTop: 14
-    }
+    },
+    modalImageContainer:{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    modalImage:{
+      maxHeight: 500,
+      maxWidth: 600,
+    },
     
   });
   const classes = useStyles();
@@ -201,28 +242,28 @@ export default function PortfolioPost(props){
     description: Yup.string().required("Description is a mandatory field"),
   });
 
+  if(postId){
+    return (
+      <Grid container justify="center" className={classes.componentGridEditPost} >
 
-  return (
-    <Grid container className={classes.componentGrid} >
+        <Grid item xs={12}>
+          <Typography variant="h4" className={classes.header}>
+            Portfolio Post
+          </Typography>
+        </Grid>
 
-      <Grid item xs={12}>
-        <Typography variant="h4" className={classes.header}>
-          Portfolio Post
-        </Typography>
-      </Grid>
+        <Grid container >
+          <Modal
+            className={classes.modalImageContainer}
+            open={imageOpen}
+            onClose={handleImageClose}
+          >
+            <img className={classes.modalImage} src={images[imagesIndex].url} alt={title}/>
+          </Modal>
+        </Grid>
 
-      {postId && (
-        <>
-          <Grid container className={classes.modalContainer}>
-            <Modal
-              className={classes.modal}
-              open={imageOpen}
-              onClose={handleImageClose}
-            >
-              <img className={classes.modalImage} src={images[imagesIndex].url} alt={title}/>
-            </Modal>
-          </Grid>
-
+        <Grid container justify="center" spacing={3} className={classes.controlButtons}>
+          <Grid item>
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -233,54 +274,156 @@ export default function PortfolioPost(props){
                 onClick={handleImageOpen}
               />
             </CardActionArea>
+          </Grid>
+        </Grid>
 
-            <Grid container justify="center" spacing={3} className={classes.controlButtons}>
-                <Grid item>
-                  <IconButton 
-                    color="primary"
-                    aria-label="previous"
-                    onClick={previousImage}
-                    disabled={imagesIndex > 0 
-                              ? false
-                              : true
-                            }
-                  >
-                    <NavigateBefore />
-                  </IconButton>
-                </Grid>
+        <Grid container justify="center" spacing={3} className={classes.controlButtons}>
+          <Grid item>
+            <IconButton 
+              color="primary"
+              aria-label="previous"
+              onClick={previousImage}
+              disabled={imagesIndex > 0 
+                        ? false
+                        : true
+                      }
+            >
+              <NavigateBefore />
+            </IconButton>
+          </Grid>
 
-                <Grid item className={classes.imagesIndex}>
-                  <Typography variant="body2"> 
-                    {imagesIndex + 1}/{images.length}
+          <Grid item className={classes.imagesIndex}>
+            <Typography variant="body2"> 
+              {imagesIndex + 1}/{images.length}
+            </Typography>
+          </Grid>
+
+          <Grid item>
+            <IconButton 
+              color="primary"
+              aria-label="next"
+              onClick={nextImage}
+              disabled={imagesIndex < (images.length - 1) 
+                ? false
+                : true
+              }
+            >
+              <NavigateNext />
+            </IconButton>
+          </Grid>
+
+          <Grid item>
+            <IconButton 
+              color="primary"
+              aria-label="next"
+              onClick={handleImageDelete}
+            >
+              <FiTrash2 />
+            </IconButton>
+          </Grid>
+      </Grid>
+
+      <Formik 
+        enableReinitialize
+        initialValues={{ ...INITIAL_FORM_STATE }}
+        validationSchema={FORM_VALIDATION}
+        onSubmit={(values, {setSubmitting}) => {
+          setSubmitting(true);
+          handlePostUpdate(values)
+          setSubmitting(false);
+        }}
+      > 
+        <Form>  
+          <Grid container justify="center" spacing={2}>
+            {successMessage && (
+              <>
+                <Grid item xs={12} className={classes.successBox}>
+                  <Typography variant="h6" fullLength="true" className={classes.successText}>
+                    {successMessage}
                   </Typography>
                 </Grid>
-
-                <Grid item>
-                  <IconButton 
-                    color="primary"
-                    aria-label="next"
-                    onClick={nextImage}
-                    disabled={imagesIndex < (images.length - 1) 
-                      ? false
-                      : true
-                    }
-                  >
-                    <NavigateNext />
-                  </IconButton>
+              </>  
+              )
+            }
+            {errorMessage && (
+              <>
+                <Grid item xs={12} className={classes.errorBox}>
+                  <Typography variant="h6" fullLength="true" className={classes.errorText}>
+                    Error: {errorMessage}
+                  </Typography>
                 </Grid>
+              </>  
+              )
+            }          
 
-                <Grid item>
-                  <IconButton 
-                    color="primary"
-                    aria-label="next"
-                    onClick={handleImageDelete}
-                  >
-                    <FiTrash2 />
-                  </IconButton>
-                </Grid>
+            <Grid item xs={12}>
+              <TextField name="title" label="Title"/>
             </Grid>
-        </>
-      )}
+
+            <Grid item xs={12}>
+              <TextArea name="description" label="Description" className={classes.textArea}/>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField name="tags" label="Tags"/>
+            </Grid>
+
+            <Grid item xs={12} className={classes.checkbox}>
+              <FormControlLabel control={<Checkbox name="featured" color="primary" checked={featured}/>} labelPlacement="start" label="Featured?" />
+            </Grid>
+
+            <Grid item xs={12}>
+              <label for="upload-images" className={classes.label}>
+                  <BurstMode color="primary" size="large" className={classes.icon}/> {uploadLabelValue}
+              </label>
+
+              <input 
+                className={classes.fileInput}
+                id="upload-images" 
+                type="file"
+                accept="image/*" 
+                onChange={handleFileSelected}
+                multiple
+              />
+            </Grid>
+
+            <Grid container justify="center" className={classes.button}>
+              <Grid item xs={6}>
+                  <CustomButton >
+                    Update Post
+                  </CustomButton>
+                </Grid>
+              </Grid>
+            </Grid>
+            
+            <Grid container justify="center" className={classes.button}>
+              <Grid item xs={4}>
+                {clickedToDelete == 1
+                  ? <Button fullWidth startIcon={<Error color="primary"/>} onClick={handleDeletePost}>
+                    Are you Sure?
+                    </Button> 
+                  : <Button fullWidth startIcon={<FiTrash2 color="red"/>} onClick={handleClickedToDelete}>
+                      Delete Post
+                    </Button>
+                }
+              </Grid>
+            </Grid>
+      
+        </Form>
+        
+      </Formik>
+    </Grid> 
+    )
+  }
+
+  return (
+    <Grid container className={classes.componentGridNewPost} >
+
+      <Grid item xs={12}>
+        <Typography variant="h4" className={classes.header}>
+          Portfolio Post
+        </Typography>
+      </Grid>
 
       <Formik 
         enableReinitialize
@@ -355,19 +498,6 @@ export default function PortfolioPost(props){
                 </CustomButton>
               </Grid>
             </Grid>
-
-            {postId && (
-              <Grid item xs={8}>
-                {clickedToDelete == 1
-                  ? <Button startIcon={<Error color="primary"/>} onClick={handleDeletePost}>
-                    Are you Sure?
-                    </Button> 
-                  : <Button startIcon={<FiTrash2 color="red"/>} onClick={handleClickedToDelete}>
-                      Delete Post
-                    </Button>
-                }
-              </Grid>
-            )}
 
           </Grid>
       

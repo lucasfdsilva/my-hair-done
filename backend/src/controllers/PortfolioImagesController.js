@@ -17,6 +17,24 @@ module.exports = {
     }
   },
 
+  async getAllImagesForPost(req, res, next) {
+    try {
+      const { postId } = req.params
+
+      if (!postId) {
+        return res.status(400).json({ message: "Missing Portfolio Post ID" });
+      }
+
+      const connectDB = await knex.connect();
+      const images = await connectDB("portfolio_images").where({post_id: postId});
+
+      return res.json({images: images});
+    
+    } catch (error) {
+        next(error);
+    }
+  },
+
   async view(req, res, next) {
     try {
       const { id } = req.params;
@@ -50,19 +68,25 @@ module.exports = {
         return res.status(400).json({ message: "At least 1 picture of your job is required..." });
       }
 
-      const urls = await uploadPictures.uploadPictures(files);
-
+      const urls = await uploadPictures.uploadPictures(postId, files);
       console.log(urls)
 
       const connectDB = await knex.connect();
 
-      for(const url of urls){  
+      if(Array.isArray(files)){
+        for(const url of urls){  
+          const newPortfolioImage = await connectDB('portfolio_images').insert({
+            post_id: postId, 
+            url: url,        
+          });
+        }
+      } else {
         const newPortfolioImage = await connectDB('portfolio_images').insert({
           post_id: postId, 
-          url: url,        
+          url: urls,        
         });
       }
-      
+
       return res.status(201).json({ message: "Portfolio Images Created Successfully" });
 
     } catch (error) {

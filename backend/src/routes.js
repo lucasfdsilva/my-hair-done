@@ -43,9 +43,9 @@ openRoutes.post('/portfolioposts', PortfolioPostController.create);
 openRoutes.put('/portfolioposts', PortfolioPostController.update);
 openRoutes.delete('/portfolioposts', PortfolioPostController.delete);
 
-
 //Portfolio Images Controller Routes
 openRoutes.get('/portfolioimages', PortfolioImagesController.index);
+openRoutes.get('/portfolioimages/posts/:postId', PortfolioImagesController.getAllImagesForPost);
 openRoutes.get('/portfolioimages/:id', PortfolioImagesController.view);
 openRoutes.post('/portfolioimages', PortfolioImagesController.create);
 openRoutes.put('/portfolioimages', PortfolioImagesController.update);

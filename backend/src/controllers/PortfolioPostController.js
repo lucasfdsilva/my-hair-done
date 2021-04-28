@@ -208,6 +208,8 @@ module.exports = {
 
       if(!portfolioPostFromDB) return res.status(400).json({ message: "No Portfolio Post Found" });
 
+      const deletedPostImages = await connectDB('portfolio_images').where({ post_id: id}).del();
+
       const deletedPortfolioPost = await connectDB('portfolio_posts').where({ id: id}).del();
 
       return res.status(200).json({ message: 'Portfolio Post deleted successfully' });

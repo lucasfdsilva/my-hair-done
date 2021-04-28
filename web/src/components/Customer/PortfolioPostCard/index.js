@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Card, CardActionArea, CardHeader, CardMedia, CardContent, CardActions,Typography, IconButton, Avatar, Grid, Button, Divider, TextField,InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { SkipPrevious, SkipNext } from '@material-ui/icons';
+import { NavigateBefore, NavigateNext } from '@material-ui/icons';
+import theme from '../../../theme'
 
 import PortfolioPost from '../PortfolioPost';
 
@@ -50,11 +51,15 @@ export default function PortfolioPostCard(props){
     cardContent: {
       marginTop: -15,
     },
-    modal:{
+    modalForm:{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: 35,
+    },
+    modalImageContainer:{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     modalImage:{
       maxHeight: 500,
@@ -65,6 +70,9 @@ export default function PortfolioPostCard(props){
         cursor: 'pointer',
         backgroundColor: '#cccccc', 
       }
+    },
+    imagesIndex: {
+      marginTop: 14
     }
   });
   const classes = useStyles();
@@ -73,35 +81,31 @@ export default function PortfolioPostCard(props){
 
   return (
     <>
-      <Grid container className={classes.modalContainer}>
-        <Modal
-          className={classes.modal}
-          open={imageOpen}
-          onClose={handleImageClose}
-        >
-          {props.post.images.length > 0 && (
-            <img className={classes.modalImage} src={props.post.images[imagesIndex].url} alt={props.post.title}/>
-          )}
-          
-        </Modal>
-      </Grid>
-
-      <Grid container className={classes.modalContainer}>
-        <Modal
-          className={classes.modal}
-          open={formOpen}
-          onClose={handleFormClose}
-        >
-          <PortfolioPost 
-            postId={props.post.id}
-            title={props.post.title}
-            description={props.post.description}
-            tags={props.post.tags}
-            featured={props.post.featured}
-            images={images}
-          />
-        </Modal>
-      </Grid>
+      <Modal
+        className={classes.modalImageContainer}
+        open={imageOpen}
+        onClose={handleImageClose}
+      >
+        {props.post.images.length > 0 && (
+          <img className={classes.modalImage} src={props.post.images[imagesIndex].url} alt={props.post.title}/>
+        )}
+        
+      </Modal>
+  
+    <Modal
+      className={classes.modalForm}
+      open={formOpen}
+      onClose={handleFormClose}
+    >
+      <PortfolioPost 
+        postId={props.post.id}
+        title={props.post.title}
+        description={props.post.description}
+        tags={props.post.tags}
+        featured={props.post.featured}
+        images={images}
+      />
+    </Modal>
 
       <Card raised="true">
         <CardActionArea>
@@ -126,8 +130,14 @@ export default function PortfolioPostCard(props){
                           : true
                         }
               >
-                <SkipPrevious />
+                <NavigateBefore />
               </IconButton>
+            </Grid>
+
+            <Grid item className={classes.imagesIndex}>
+              <Typography variant="body2"> 
+                {imagesIndex + 1}/{images.length}
+              </Typography>
             </Grid>
 
             <Grid item>
@@ -140,7 +150,7 @@ export default function PortfolioPostCard(props){
                   : true
                 }
               >
-                <SkipNext />
+                <NavigateNext />
               </IconButton>
             </Grid>
         </Grid>
