@@ -1,43 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, IconButton, Button, Grid, Hidden } from "@material-ui/core"
+import React, { useState, useEffect } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+  Grid,
+  Hidden,
+} from '@material-ui/core';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
-import { Home, ExitToApp, MenuIcon, HowToReg, PeopleAlt, Person, PhotoLibrary, LibraryBooks, Apps } from "@material-ui/icons";
-import theme from '../../../theme'
-import headerLogo from "../../../assets/header-logo.png";
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import {
+  Home,
+  ExitToApp,
+  MenuIcon,
+  HowToReg,
+  PeopleAlt,
+  Person,
+  PhotoLibrary,
+  LibraryBooks,
+  Apps,
+} from '@material-ui/icons';
+import theme from '../../../theme';
+import headerLogo from '../../../assets/header-logo.png';
 
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 import api from '../../../services/api';
 
 export default function NavigationMenu() {
-  const [id, setID] = useState(localStorage.getItem("id"));
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+  const [id, setID] = useState(localStorage.getItem('id'));
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem('accessToken'),
+  );
   const [isHairdresser, setIsHairdresser] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const history = useHistory();
 
   useEffect(() => {
-    async function loadProfile(){
+    async function loadProfile() {
       try {
-        
         const response = await api.get(`users/${id}`);
 
-        setIsHairdresser(response.data.user.is_hairdresser)
-        setIsAdmin(response.data.user.is_admin)
-
+        setIsHairdresser(response.data.user.is_hairdresser);
+        setIsAdmin(response.data.user.is_admin);
       } catch (error) {
-          setErrorMessage(error.response.data.message)
+        setErrorMessage(error.response.data.message);
       }
     }
-  if(id && accessToken){
-    loadProfile();
-  }
-  }, [])
+    if (id && accessToken) {
+      loadProfile();
+    }
+  }, []);
 
   const useStyles = makeStyles({
     image: {
@@ -52,12 +69,12 @@ export default function NavigationMenu() {
       fontSize: 20,
       [theme.breakpoints.down('sm')]: {
         fontSize: 14.5,
-      }
+      },
     },
     icon: {
       color: theme.palette.secondary.main,
-      fontSize: "large"
-    }
+      fontSize: 'large',
+    },
   });
 
   const classes = useStyles();
@@ -65,25 +82,24 @@ export default function NavigationMenu() {
   if (id && accessToken) {
     return (
       <ThemeProvider theme={theme}>
-        <AppBar position="static" color="white">
+        <AppBar position='static' color='white'>
           <Toolbar>
-            
             <Hidden smDown>
-              <a href="/">
-                <img src={headerLogo} alt="" className={classes.image}/>
+              <a href='/'>
+                <img src={headerLogo} alt='' className={classes.image} />
               </a>
 
               <Button
                 className={classes.button}
-                href="/"
+                href='/'
                 startIcon={<Home className={classes.icon} />}
               >
                 Home
               </Button>
-        
+
               <Button
                 className={classes.button}
-                href="/hairdressers"
+                href='/hairdressers'
                 startIcon={<PeopleAlt className={classes.icon} />}
               >
                 Hairdressers
@@ -91,7 +107,7 @@ export default function NavigationMenu() {
 
               <Button
                 className={classes.button}
-                href="/profile"
+                href='/profile'
                 startIcon={<Person className={classes.icon} />}
               >
                 Profile
@@ -99,17 +115,17 @@ export default function NavigationMenu() {
 
               {isHairdresser && (
                 <Button
-                className={classes.button}
-                href={`/hairdressers/${id}`}
-                startIcon={<PhotoLibrary className={classes.icon} />}
+                  className={classes.button}
+                  href={`/hairdressers/${id}`}
+                  startIcon={<PhotoLibrary className={classes.icon} />}
                 >
-                 Portfolio
+                  Portfolio
                 </Button>
               )}
-              
+
               <Button
                 className={classes.button}
-                href="/bookings"
+                href='/bookings'
                 startIcon={<LibraryBooks className={classes.icon} />}
               >
                 Bookings
@@ -119,10 +135,10 @@ export default function NavigationMenu() {
                 className={classes.button}
                 startIcon={<ExitToApp className={classes.icon} />}
                 onClick={() => {
-                  localStorage.setItem("id", "");
-                  localStorage.setItem("accessToken", "");
-                  localStorage.setItem("isAdmin", 0);
-                  history.push('/')
+                  localStorage.setItem('id', '');
+                  localStorage.setItem('accessToken', '');
+                  localStorage.setItem('isAdmin', 0);
+                  history.push('/');
                   window.location.reload();
                 }}
               >
@@ -131,113 +147,112 @@ export default function NavigationMenu() {
             </Hidden>
 
             <Hidden mdUp>
-              <Grid container justify="center" spacing={3}>
+              <Grid container justify='center' spacing={3}>
                 <Button
                   className={classes.button}
-                  href="/"
+                  href='/'
                   startIcon={<Home className={classes.icon} />}
-                >
-                </Button>
-                
-                <Button
-                  className={classes.button}
-                  href="/hairdressers"
-                  startIcon={<PeopleAlt className={classes.icon} />}
-                >
-                </Button>
+                ></Button>
 
                 <Button
                   className={classes.button}
-                  href="/profile"
+                  href='/hairdressers'
+                  startIcon={<PeopleAlt className={classes.icon} />}
+                ></Button>
+
+                <Button
+                  className={classes.button}
+                  href='/profile'
                   startIcon={<Person className={classes.icon} />}
-                >
-                </Button>
+                ></Button>
 
                 {isHairdresser && (
                   <Button
-                  className={classes.button}
-                  href={`/hairdressers/${id}`}
-                  startIcon={<PhotoLibrary className={classes.icon} />}
-                  >
-                  </Button>
+                    className={classes.button}
+                    href={`/hairdressers/${id}`}
+                    startIcon={<PhotoLibrary className={classes.icon} />}
+                  ></Button>
                 )}
 
                 <Button
                   className={classes.button}
-                  href="/bookings"
+                  href='/bookings'
                   startIcon={<LibraryBooks className={classes.icon} />}
-                >
-                </Button>
+                ></Button>
 
                 <Button
                   className={classes.button}
-                  href="/bookings"
+                  href='/bookings'
                   startIcon={<ExitToApp className={classes.icon} />}
                   onClick={() => {
-                    localStorage.setItem("id", "");
-                    localStorage.setItem("accessToken", "");
-                    localStorage.setItem("isAdmin", 0);
+                    localStorage.setItem('id', '');
+                    localStorage.setItem('accessToken', '');
+                    localStorage.setItem('isAdmin', 0);
                     window.location.reload();
                   }}
-                >
-                </Button>
-                
+                ></Button>
+
                 {isAdmin == 1 && (
                   <Button
-                  className={classes.button}
-                  href="/admin"
-                  startIcon={<Apps className={classes.icon} />}
+                    className={classes.button}
+                    href='/admin'
+                    startIcon={<Apps className={classes.icon} />}
                   >
                     Admin Panel
                   </Button>
                 )}
               </Grid>
             </Hidden>
-
           </Toolbar>
         </AppBar>
       </ThemeProvider>
     );
-    
   } else {
     return (
       <ThemeProvider theme={theme}>
-          <AppBar position="static" color="white">
-            <Toolbar>
-              <Grid container>
+        <AppBar position='static' color='white'>
+          <Toolbar>
+            <Grid container>
+              <Hidden smDown>
+                <a href='/'>
+                  <img src={headerLogo} alt='' className={classes.image} />
+                </a>
+              </Hidden>
 
-                <Hidden smDown>
-                  <a href="/">
-                    <img src={headerLogo} alt="" className={classes.image}/>
-                  </a>
-                </Hidden> 
+              <Button
+                className={classes.button}
+                href='/'
+                startIcon={<Home className={classes.icon} />}
+              >
+                home
+              </Button>
 
-                <Button
-                  className={classes.button}
-                  href="/hairdressers"
-                  startIcon={<PeopleAlt className={classes.icon} />}
-                >
-                  Hairdressers
-                </Button>
+              <Button
+                className={classes.button}
+                href='/hairdressers'
+                startIcon={<PeopleAlt className={classes.icon} />}
+              >
+                Hairdressers
+              </Button>
 
-                <Button
-                  className={classes.button}
-                  href="/register"
-                  startIcon={<HowToReg className={classes.icon} />}
-                >
-                  Register
-                </Button>
+              <Button
+                className={classes.button}
+                href='/register'
+                startIcon={<HowToReg className={classes.icon} />}
+              >
+                Register
+              </Button>
 
-                <Button
-                  className={classes.button}
-                  href="/login"
-                  startIcon={<ExitToApp className={classes.icon} />}
-                >
-                  Login
-                </Button>
-              </Grid>
-            </Toolbar>
-          </AppBar>
+              <Button
+                className={classes.button}
+                href='/login'
+                startIcon={<ExitToApp className={classes.icon} />}
+              >
+                Login
+              </Button>
+            </Grid>
+          </Toolbar>
+        </AppBar>
       </ThemeProvider>
     );
   }
