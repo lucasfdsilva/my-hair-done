@@ -1,90 +1,108 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FiTrash2, FiBook } from 'react-icons/fi';
+import { useHistory } from 'react-router-dom';
+import { Grid, AppBar, Tabs, Tab } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { DateRange, Schedule, Timer } from '@material-ui/icons';
 
-import './styles.css';
+import ActiveBookings from './ActiveBookings';
+import PastBookings from './PastBookings';
+import Slots from './Slots';
 
-import api from '../../../services/api'
+import api from '../../../services/api';
 
-export default function Bookings(){
-  const [id, setID] = useState(localStorage.getItem("id"));
-  const [accessToken, setAccessToken] = useState(localStorage.getItem("accessToken"));
+export default function Bookings() {
+	const [id, setID] = useState(localStorage.getItem('id'));
+	const [accessToken, setAccessToken] = useState(
+		localStorage.getItem('accessToken'),
+	);
+	const [isHairdresser, setIsHairdresser] = useState(false);
+	const [bookings, setBookings] = useState([]);
+	const [slots, setSlots] = useState([]);
 
-  const [bookings, setBookings] = useState([]);
+	const [errorMessage, setErrorMessage] = useState('');
+	const [successMessage, setSuccessMessage] = useState('');
 
-  const history = useHistory();
+	const history = useHistory();
 
-  useEffect(() => {
-    async function loadBookings(){
-    try {
-      
-      if(!id || !accessToken) return history.push('/login');
-      
-      const response = await api.get(`/bookings?userID=${id}`);
-      setBookings(response.data);
+	const [selectedTab, setSelectedTab] = useState(0);
+	const handleChange = (event, newValue) => {
+		setSelectedTab(newValue);
+	};
 
-    } catch (error) {
-      alert(`Couldn't Load Bookings. Please try again. Error: ${error}.`);
-    }
-  }
-  loadBookings();
-  }, [])
+	useEffect(() => {
+		if (!id || !accessToken) return history.push('/login');
 
-  async function handleBookingDeletion(event, bookingID){
-    event.preventDefault();
+		async function loadProfile() {
+			if (!id || !accessToken) return history.push('/login');
 
-    const response = await api.delete('bookings', { data: { id: bookingID }});
+			try {
+				const response = await api.get(`users/${id}`);
 
-    alert('Booking Deleted Succesfully');
+				setIsHairdresser(response.data.user.is_hairdresser);
+			} catch (error) {
+				setErrorMessage(error.response.data.message);
+			}
+		}
 
-    window.location.reload();
-  }
+		async function loadBookings() {}
 
-  return (
-    <div className="bookings-container">
+		async function loadSlots() {
+			try {
+				const response = await api.get(`/slots/hairdressers/${id}`);
+				setSlots(response.data.slots);
+			} catch (error) {
+				setErrorMessage(error.response.data.message);
+			}
+		}
+		loadProfile();
+		loadBookings();
+		loadSlots();
+	}, []);
 
-      <div className="bookings-content">
-        <h1>Your Bookings</h1>
+	const useStyles = makeStyles({
+		componentGrid: {
+			backgroundColor: '#fff',
+			borderRadius: 8,
+			alignItems: 'center',
+			justifyItems: 'center',
+			margin: 35,
+			padding: 15,
+		},
+		appbar: {
+			marginBottom: 30,
+		},
+	});
+	const classes = useStyles();
 
-        {bookings.length == 0 ? (
-          <h3>You have no bookings at the moment. 
-            <Link to="/bookings/new">
-                Book a table with us now
-                <FiBook size={16} color="#e02041"/>
-            </Link>
-          </h3>
-        ) : (
-          <ul>
-          {bookings.map(booking => (
-            <li key={booking.id}>
-              <strong>Booking ID:</strong>
-              <p>{booking.id}</p>
+	return (
+		<Grid container className={classes.componentGrid}>
+			<Grid item xs={12}>
+				<AppBar position='static' className={classes.appbar}>
+					<Tabs value={selectedTab} onChange={handleChange} centered>
+						<Tab icon={<DateRange />} label='Active Bookings' />
+						<Tab icon={<Schedule />} label='Past Bookings' />
+						{isHairdresser && <Tab icon={<Timer />} label='Slots' />}
+					</Tabs>
+				</AppBar>
+			</Grid>
 
-              <strong>Slot ID:</strong>
-              <p>{booking.slot_id}</p>
+			{selectedTab === 0 && (
+				<Grid item>
+					<ActiveBookings bookings={bookings} />
+				</Grid>
+			)}
 
-              <strong>Date:</strong>
-              <p>{booking.date}</p>
+			{selectedTab === 1 && (
+				<Grid item>
+					<PastBookings bookings={bookings} />
+				</Grid>
+			)}
 
-              <strong>Start Time:</strong>
-              <p>{booking.start_time}</p>
-
-              <strong>Duration:</strong>
-              <p>{booking.duration} minutes</p>
-
-              <strong>People:</strong>
-              <p>{booking.number_of_people} people</p>
-
-              <button onClick={(event) => handleBookingDeletion(event, booking.id)}>
-                <FiTrash2 size={20} color="#a8a8b3"/>
-              </button>
-            </li>
-          ))}
-        </ul>
-        )}
-
-      </div>
-
-    </div>
-  )
+			{selectedTab === 2 && (
+				<Grid item xs={12}>
+					<Slots slots={slots} userId={id} />
+				</Grid>
+			)}
+		</Grid>
+	);
 }

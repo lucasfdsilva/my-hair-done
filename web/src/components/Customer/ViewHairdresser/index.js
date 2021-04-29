@@ -24,7 +24,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 
-import PortfolioPost from '../PortfolioPost';
+import PortfolioPostForm from '../PortfolioPostForm';
 import PortfolioPostCard from '../PortfolioPostCard';
 
 import api from '../../../services/api';
@@ -201,7 +201,7 @@ export default function ViewHairdresser(props) {
 		<Grid container className={classes.componentGrid}>
 			<Grid container className={classes.modalContainer}>
 				<Modal className={classes.modal} open={open} onClose={handleClose}>
-					<PortfolioPost />
+					<PortfolioPostForm />
 				</Modal>
 			</Grid>
 

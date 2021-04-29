@@ -1,120 +1,161 @@
-const knex = require("../database/knex");
+const knex = require('../database/knex');
 
 module.exports = {
-  async index(req, res, next) {
-    try {
+	async index(req, res, next) {
+		try {
+			const connectDB = await knex.connect();
+			const allSlots = await connectDB('slots');
 
-      const connectDB = await knex.connect();
-      const allSlots = await connectDB("slots");
+			return res.json(allSlots);
+		} catch (error) {
+			next(error);
+		}
+	},
 
-      return res.json(allSlots);
+	async getAllSlotsForHairdresser(req, res, next) {
+		const { hairdresserId } = req.params;
 
-    } catch (error) {
-        next(error);
-    }
-  },
+		try {
+			const connectDB = await knex.connect();
+			const allSlots = await connectDB('slots').where({
+				hairdresser_id: hairdresserId,
+			});
 
-  async view(req, res, next) {
-    try {
-      const { id } = req.params;
+			return res.status(200).json({ slots: allSlots });
+		} catch (error) {
+			next(error);
+		}
+	},
 
-      if (!id) {
-        return res.status(400).json({ message: "Missing Slot ID" });
-      }
+	async view(req, res, next) {
+		try {
+			const { id } = req.params;
 
-      const connectDB = await knex.connect();
-      const slotFromDB = await connectDB("slots").where({ slot_id: id }).first();
+			if (!id) {
+				return res.status(400).json({ message: 'Missing Slot ID' });
+			}
 
-      if (!slotFromDB) return res.status(400).json({ message: "No Slot Found" });
+			const connectDB = await knex.connect();
+			const slotFromDB = await connectDB('slots').where({ id: id }).first();
 
-      return res.status(200).json({ slot : slotFromDB });
+			if (!slotFromDB)
+				return res.status(400).json({ message: 'No Slot Found' });
 
-    } catch (error) {
-        next(error);
-    }
-  },
+			return res.status(200).json({ slot: slotFromDB });
+		} catch (error) {
+			next(error);
+		}
+	},
 
-  async create(req, res, next) {
-    try {
-      const { hairdresser_id, startTime, duration, monday, tuesday, wednesday, thursday, friday, saturday, sunday } = req.body;
+	async create(req, res, next) {
+		try {
+			const {
+				hairdresserId,
+				startTime,
+				endTime,
+				monday,
+				tuesday,
+				wednesday,
+				thursday,
+				friday,
+				saturday,
+				sunday,
+			} = req.body;
 
-      if (!hairdresser_id || !startTime || !duration) {
-        return res.status(400).json({ message: "Missing Required Information from Request" });
-      }
+			if (!hairdresserId || !startTime || !endTime) {
+				return res
+					.status(400)
+					.json({ message: 'Missing Required Information from Request' });
+			}
 
-     const connectDB = await knex.connect();
-      const newSlot = await connectDB('slots').insert({
-        hairdresser_id: hairdresser_id,
-        start_time: startTime,
-        duration: duration,
-        monday: monday,
-        tuesday: tuesday,
-        wednesday: wednesday,
-        thursday: thursday,
-        friday: friday,
-        saturday: saturday,
-        sunday: sunday
-      });
+			const connectDB = await knex.connect();
+			const newSlot = await connectDB('slots').insert({
+				hairdresser_id: hairdresserId,
+				start_time: startTime,
+				end_time: endTime,
+				monday: monday,
+				tuesday: tuesday,
+				wednesday: wednesday,
+				thursday: thursday,
+				friday: friday,
+				saturday: saturday,
+				sunday: sunday,
+			});
 
-      return res.status(201).json({ message: "Slot Created Successfully" });
+			return res
+				.status(201)
+				.json({ message: 'Slot Created Successfully', newSlot: newSlot });
+		} catch (error) {
+			next(error);
+		}
+	},
 
-    } catch (error) {
-        next(error);
-    }
-  },
+	async update(req, res, next) {
+		try {
+			const {
+				id,
+				startTime,
+				endTime,
+				monday,
+				tuesday,
+				wednesday,
+				thursday,
+				friday,
+				saturday,
+				sunday,
+			} = req.body;
 
-  async update(req, res, next) {
-    try {
-      const { id, startTime, duration, monday, tuesday, wednesday, thursday, friday, saturday, sunday } = req.body;
+			if (!id || !startTime || !endTime) {
+				return res
+					.status(400)
+					.json({ message: 'Missing Required Information from Request' });
+			}
 
-      if (!id || !startTime || !duration) {
-        return res.status(400).json({ message: "Missing Required Information from Request" });
-      }
+			const connectDB = await knex.connect();
+			const slotFromDB = await connectDB('slots').where({ id: id }).first();
 
-      const connectDB = await knex.connect();
-      const slotFromDB = await connectDB("slots").where({ slot_id: id }).first();
+			if (!slotFromDB)
+				return res.status(400).json({ message: 'No Slot Found' });
 
-      if(!slotFromDB) return res.status(400).json({ message: "No Slot Found" });
+			const updatedSlot = await connectDB('slots').where({ id: id }).update({
+				start_time: startTime,
+				end_time: endTime,
+				monday: monday,
+				tuesday: tuesday,
+				wednesday: wednesday,
+				thursday: thursday,
+				friday: friday,
+				saturday: saturday,
+				sunday: sunday,
+			});
 
-      const updatedSlot = await connectDB('slots').where({ slot_id: id }).update({
-        start_time: startTime,
-        duration: duration,
-        monday: monday,
-        tuesday: tuesday,
-        wednesday: wednesday,
-        thursday: thursday,
-        friday: friday,
-        saturday: saturday,
-        sunday: sunday
-      });
+			return res.status(200).json({ message: 'Slot updated successfully' });
+		} catch (error) {
+			next(error);
+		}
+	},
 
-      return res.status(200).json({ message: 'Slot updated successfully'});
+	async delete(req, res, next) {
+		try {
+			const { id } = req.body;
 
-    } catch (error) {
-        next(error);
-    }
-  },
+			if (!id) {
+				return res
+					.status(400)
+					.json({ message: 'Missing Required Information from Request' });
+			}
 
-  async delete(req, res, next) {
-    try {
+			const connectDB = await knex.connect();
+			const slotFromDB = await connectDB('slots').where({ id: id }).first();
 
-      const { id } = req.body;
+			if (!slotFromDB)
+				return res.status(400).json({ message: 'No Slot Found' });
 
-      if (!id) {
-        return res.status(400).json({ message: "Missing Required Information from Request" });
-      }
+			const deletedSlot = await connectDB('slots').where({ id: id }).del();
 
-      const connectDB = await knex.connect();
-      const slotFromDB = await connectDB("slots").where({ slot_id: id }).first();
-
-      if(!slotFromDB) return res.status(400).json({ message: "No Slot Found" });
-
-      const deletedSlot = await connectDB('slots').where({ slot_id: id}).del();
-
-      return res.status(200).json({ message: 'Slot deleted successfully' });
-
-    } catch (error) {
-        next(error);
-    }
-  },
+			return res.status(200).json({ message: 'Slot deleted successfully' });
+		} catch (error) {
+			next(error);
+		}
+	},
 };

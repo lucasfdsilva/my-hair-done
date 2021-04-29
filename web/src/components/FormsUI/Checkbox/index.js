@@ -3,29 +3,23 @@ import { Checkbox } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useField } from 'formik';
 
-const CheckboxdWrapper = ({
-  name, 
-  ...otherProps
-}) => {
-  const [field, meta] = useField(name);
+const CheckboxdWrapper = ({ name, ...otherProps }) => {
+	const [field, meta] = useField(name);
 
-  const configCheckbox = {
-    ...field,
-    ...otherProps,
-    fullWidth: true,
-    color: "primary",
-  };
+	const configCheckbox = {
+		...field,
+		...otherProps,
+		checked: field.value,
+		fullWidth: true,
+		color: 'primary',
+	};
 
+	if (meta && meta.touched && meta.error) {
+		configCheckbox.error = true;
+		configCheckbox.helperText = meta.error;
+	}
 
-  if(meta && meta.touched && meta.error){
-    configCheckbox.error = true;
-    configCheckbox.helperText = meta.error;
-  }
-
-
-  return(
-    <Checkbox {...configCheckbox}/>
-  );
+	return <Checkbox {...configCheckbox} />;
 };
 
 export default CheckboxdWrapper;
