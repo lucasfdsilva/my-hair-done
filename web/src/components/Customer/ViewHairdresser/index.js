@@ -24,6 +24,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 
+import BookingFormNew from '../Bookings/BookingFormNew';
 import PortfolioPostForm from '../PortfolioPostForm';
 import PortfolioPostCard from '../PortfolioPostCard';
 
@@ -40,7 +41,8 @@ export default function ViewHairdresser(props) {
 	const [featuredPosts, setFeaturedPosts] = useState([]);
 	const [posts, setPosts] = useState([]);
 
-	const [open, setOpen] = useState(false);
+	const [openBookingForm, setOpenBookingForm] = useState(false);
+	const [openPortfolioPostForm, setOpenPortfolioPostForm] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
@@ -89,12 +91,20 @@ export default function ViewHairdresser(props) {
 		loadFeaturedPosts();
 	}, []);
 
-	const handleOpen = () => {
-		setOpen(true);
+	const handleOpenPortfolioPostForm = () => {
+		setOpenPortfolioPostForm(true);
 	};
 
-	const handleClose = () => {
-		setOpen(false);
+	const handleClosePortfolioPostForm = () => {
+		setOpenPortfolioPostForm(false);
+	};
+
+	const handleOpenBookingForm = () => {
+		setOpenBookingForm(true);
+	};
+
+	const handleCloseBookingForm = () => {
+		setOpenBookingForm(false);
 	};
 
 	const useStyles = makeStyles({
@@ -200,8 +210,22 @@ export default function ViewHairdresser(props) {
 	return (
 		<Grid container className={classes.componentGrid}>
 			<Grid container className={classes.modalContainer}>
-				<Modal className={classes.modal} open={open} onClose={handleClose}>
+				<Modal
+					className={classes.modal}
+					open={openPortfolioPostForm}
+					onClose={handleClosePortfolioPostForm}
+				>
 					<PortfolioPostForm />
+				</Modal>
+			</Grid>
+
+			<Grid container className={classes.modalContainer}>
+				<Modal
+					className={classes.modal}
+					open={openBookingForm}
+					onClose={handleCloseBookingForm}
+				>
+					<BookingFormNew />
 				</Modal>
 			</Grid>
 
@@ -264,6 +288,7 @@ export default function ViewHairdresser(props) {
 										color='primary'
 										fullWidth
 										size='large'
+										onClick={handleOpenBookingForm}
 									>
 										Book Now
 									</Button>
@@ -278,7 +303,7 @@ export default function ViewHairdresser(props) {
 										fullWidth
 										size='large'
 										startIcon={<Add />}
-										onClick={handleOpen}
+										onClick={handleOpenPortfolioPostForm}
 									>
 										Portfolio Post
 									</Button>
