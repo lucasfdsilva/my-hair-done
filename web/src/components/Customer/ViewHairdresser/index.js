@@ -202,7 +202,7 @@ export default function ViewHairdresser(props) {
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'center',
-			padding: 30,
+			width: '100%',
 		},
 	});
 	const classes = useStyles();
@@ -225,7 +225,7 @@ export default function ViewHairdresser(props) {
 					open={openBookingForm}
 					onClose={handleCloseBookingForm}
 				>
-					<BookingFormNew />
+					<BookingFormNew hairdresser={hairdresser} />
 				</Modal>
 			</Grid>
 
@@ -281,7 +281,7 @@ export default function ViewHairdresser(props) {
 						</Grid>
 
 						<Grid container spacing={2} className={classes.bookButtonContainer}>
-							{id && accessToken && !isOwner && (
+							{!isOwner && (
 								<Grid item>
 									<Button
 										variant='contained'
