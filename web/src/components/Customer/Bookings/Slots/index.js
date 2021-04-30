@@ -51,7 +51,7 @@ export default function Slots(props) {
 	return (
 		<Grid container className={classes.componentGrid}>
 			<Modal className={classes.modal} open={open} onClose={handleClose}>
-				<SlotFormNew userId={props.userId} />
+				<SlotFormNew userId={props.userId} slots={props.slots} />
 			</Modal>
 
 			<Grid item xs={12} className={classes.title}>

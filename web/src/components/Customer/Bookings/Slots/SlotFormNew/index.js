@@ -15,7 +15,41 @@ export default function SlotForm(props) {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
 
+	async function checkTimesAreValid(values) {
+		if (
+			Date.parse(`01/01/2000 ${values.endTime}`) <
+			Date.parse(`01/01/2000 ${values.startTime}`)
+		) {
+			return false;
+		}
+
+		return true;
+	}
+
+	async function checkIfSlotTimeExists(values) {
+		return props.slots.some(
+			(slot) =>
+				slot.start_time.slice(0, -3) === values.startTime &&
+				slot.end_time.slice(0, -3) === values.endTime,
+		);
+	}
+
 	async function handleCreateSlot(values) {
+		console.log({ values: values, slots: props.slots });
+
+		const timesValid = await checkTimesAreValid(values);
+
+		if (!timesValid)
+			return setErrorMessage(`End time cannot be set to before Start time.`);
+
+		const slotExists = await checkIfSlotTimeExists(values);
+		console.log(slotExists);
+
+		if (slotExists)
+			return setErrorMessage(
+				`You already have a slot created using the same Start/End times. Please edit that slot.`,
+			);
+
 		const data = {
 			hairdresserId: props.userId,
 			startTime: values.startTime,
@@ -63,6 +97,17 @@ export default function SlotForm(props) {
 		},
 		title: {
 			marginBottom: 30,
+		},
+		errorText: {
+			color: '#fff',
+		},
+		errorBox: {
+			backgroundColor: '#ff867c',
+			borderRadius: 8,
+			marginTop: 20,
+			marginBottom: 20,
+			marginLeft: 10,
+			marginRight: 10,
 		},
 	});
 	const classes = useStyles();

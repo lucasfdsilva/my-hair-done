@@ -27,21 +27,26 @@ export default function SlotForm(props) {
 	const [sunday, setSunday] = useState(props.slot.sunday);
 
 	async function handleUpdateSlot(values) {
+		if (
+			Date.parse(`01/01/2000 ${values.endTime}`) <
+			Date.parse(`01/01/2000 ${values.startTime}`)
+		) {
+			return setErrorMessage(`End time cannot be before start time`);
+		}
+
 		const data = {
 			id: props.slot.id,
 			hairdresserId: props.userId,
 			startTime: values.startTime,
 			endTime: values.endTime,
-			monday: values.monday,
-			tuesday: values.tuesday,
-			wednesday: values.wednesday,
-			thursday: values.thursday,
-			friday: values.friday,
-			saturday: values.saturday,
-			sunday: values.sunday,
+			monday: monday,
+			tuesday: tuesday,
+			wednesday: wednesday,
+			thursday: thursday,
+			friday: friday,
+			saturday: saturday,
+			sunday: sunday,
 		};
-
-		console.log(data);
 
 		try {
 			const response = await api.put('/slots', data);
@@ -61,7 +66,7 @@ export default function SlotForm(props) {
 			setDeleting(true);
 
 			const response = await api.delete('/slots', {
-				data: { id: props.post.id },
+				data: { id: props.slot.id },
 			});
 
 			window.location.reload();
@@ -192,6 +197,8 @@ export default function SlotForm(props) {
 										control={<Checkbox name='monday' color='primary' />}
 										labelPlacement='end'
 										label='Monday'
+										checked={monday}
+										onClick={() => setMonday(!monday)}
 									/>
 								</Grid>
 								<Grid item xs={4} className={classes.checkbox}>
@@ -199,6 +206,8 @@ export default function SlotForm(props) {
 										control={<Checkbox name='tuesday' color='primary' />}
 										labelPlacement='end'
 										label='Tuesday'
+										checked={tuesday}
+										onClick={() => setTuesday(!tuesday)}
 									/>
 								</Grid>
 								<Grid item xs={6} className={classes.checkbox}>
@@ -206,6 +215,8 @@ export default function SlotForm(props) {
 										control={<Checkbox name='wednesday' color='primary' />}
 										labelPlacement='end'
 										label='Wednesday'
+										checked={wednesday}
+										onClick={() => setWednesday(!wednesday)}
 									/>
 								</Grid>
 								<Grid item xs={6} className={classes.checkbox}>
@@ -213,6 +224,8 @@ export default function SlotForm(props) {
 										control={<Checkbox name='thursday' color='primary' />}
 										labelPlacement='end'
 										label='Thursday'
+										checked={thursday}
+										onClick={() => setThursday(!thursday)}
 									/>
 								</Grid>
 								<Grid item xs={6} className={classes.checkbox}>
@@ -220,6 +233,8 @@ export default function SlotForm(props) {
 										control={<Checkbox name='friday' color='primary' />}
 										labelPlacement='end'
 										label='Friday'
+										checked={friday}
+										onClick={() => setFriday(!friday)}
 									/>
 								</Grid>
 								<Grid item xs={6} className={classes.checkbox}>
@@ -227,6 +242,8 @@ export default function SlotForm(props) {
 										control={<Checkbox name='saturday' color='primary' />}
 										labelPlacement='end'
 										label='Saturday'
+										checked={saturday}
+										onClick={() => setSaturday(!saturday)}
 									/>
 								</Grid>
 								<Grid item xs={6} className={classes.checkbox}>
@@ -234,6 +251,8 @@ export default function SlotForm(props) {
 										control={<Checkbox name='sunday' color='primary' />}
 										labelPlacement='end'
 										label='Sunday'
+										checked={sunday}
+										onClick={() => setSunday(!sunday)}
 									/>
 								</Grid>
 							</Grid>

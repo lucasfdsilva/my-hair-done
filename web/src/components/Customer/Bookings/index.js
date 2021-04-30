@@ -49,7 +49,20 @@ export default function Bookings() {
 		async function loadSlots() {
 			try {
 				const response = await api.get(`/slots/hairdressers/${id}`);
-				setSlots(response.data.slots);
+
+				const sortedSlots = await response.data.slots.sort((a, b) => {
+					var x = a.start_time;
+					var y = b.start_time;
+					if (x < y) {
+						return -1;
+					}
+					if (x > y) {
+						return 1;
+					}
+					return 0;
+				});
+
+				setSlots(sortedSlots);
 			} catch (error) {
 				setErrorMessage(error.response.data.message);
 			}

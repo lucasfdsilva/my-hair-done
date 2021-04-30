@@ -9,7 +9,7 @@ const CheckboxdWrapper = ({ name, ...otherProps }) => {
 	const configCheckbox = {
 		...field,
 		...otherProps,
-		checked: field.value,
+
 		fullWidth: true,
 		color: 'primary',
 	};
