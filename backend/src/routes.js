@@ -6,6 +6,7 @@ const PortfolioPostController = require('./controllers/PortfolioPostController')
 const PortfolioImagesController = require('./controllers/PortfolioImagesController');
 const SlotController = require('./controllers/SlotController');
 const BookingController = require('./controllers/BookingController');
+const ReviewController = require('./controllers/ReviewController');
 
 const openRoutes = express.Router();
 
@@ -85,6 +86,17 @@ openRoutes.post('/bookings', BookingController.create);
 openRoutes.put('/bookings', BookingController.update);
 openRoutes.delete('/bookings', BookingController.delete);
 openRoutes.get('/availability', BookingController.checkSlotsAvailability);
+
+//Reviews Controller Routes
+openRoutes.get('/reviews', ReviewController.index);
+openRoutes.get(
+	'/reviews/hairdressers/:hairdresserId',
+	ReviewController.getAllReviewsForHairdresser,
+);
+openRoutes.get('/reviews/:id', ReviewController.view);
+openRoutes.post('/reviews', ReviewController.create);
+openRoutes.put('/reviews', ReviewController.update);
+openRoutes.delete('/reviews', ReviewController.delete);
 
 module.exports = {
 	openRoutes: openRoutes,
