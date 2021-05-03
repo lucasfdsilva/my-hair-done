@@ -1,5 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Grid, Typography, List, Divider } from '@material-ui/core';
 
-export default function PastBookings() {
-	return <div></div>;
+import { useStyles } from './styles.js';
+
+import BookingCardPast from '../BookingCardPast';
+import BookingCardActive from '../BookingCardActive';
+
+export default function PastBookings(props) {
+	const classes = useStyles();
+
+	return (
+		<Grid container className={classes.componentGrid}>
+			<Grid item xs={12} className={classes.title}>
+				<Typography variant='h4'>Past Bookings</Typography>
+			</Grid>
+
+			<Grid item xs={12}>
+				<List className={classes.list} dense>
+					{props.bookings.map((booking) => (
+						<Grid item xs={12}>
+							<BookingCardPast booking={booking} userId={props.userId} />
+						</Grid>
+					))}
+				</List>
+			</Grid>
+		</Grid>
+	);
 }

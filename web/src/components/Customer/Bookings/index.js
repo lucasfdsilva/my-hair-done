@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Grid, AppBar, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { DateRange, Schedule, Timer } from '@material-ui/icons';
+import moment from 'moment';
 
 import ActiveBookings from './ActiveBookings';
 import PastBookings from './PastBookings';
@@ -12,11 +13,14 @@ import api from '../../../services/api';
 
 export default function Bookings() {
 	const [id, setID] = useState(localStorage.getItem('id'));
+	const [isHairdresser, setIsHairdresser] = useState(
+		localStorage.getItem('isHairdresser'),
+	);
 	const [accessToken, setAccessToken] = useState(
 		localStorage.getItem('accessToken'),
 	);
-	const [isHairdresser, setIsHairdresser] = useState(false);
-	const [bookings, setBookings] = useState([]);
+	const [activeBookings, setActiveBookings] = useState([]);
+	const [pastBookings, setPastBookings] = useState([]);
 	const [slots, setSlots] = useState([]);
 
 	const [errorMessage, setErrorMessage] = useState('');
@@ -38,7 +42,7 @@ export default function Bookings() {
 			try {
 				const response = await api.get(`users/${id}`);
 
-				setIsHairdresser(response.data.user.is_hairdresser);
+				return setIsHairdresser(response.data.user.is_hairdresser);
 			} catch (error) {
 				setErrorMessage(error.response.data.message);
 			}
@@ -46,15 +50,38 @@ export default function Bookings() {
 
 		async function loadBookings() {
 			try {
+				console.log(isHairdresser);
+				//If the logged user is a hairdresser
 				if (isHairdresser) {
 					const response = await api.get(`/bookings/hairdressers/${id}`);
 
-					return setBookings(response?.data?.bookings);
+					setActiveBookings(
+						await response?.data?.bookings?.filter((booking) =>
+							moment(booking.date).isSameOrAfter(moment(), 'day'),
+						),
+					);
+
+					return setPastBookings(
+						response?.data?.bookings?.filter((booking) =>
+							moment(booking.date).isBefore(moment(), 'day'),
+						),
+					);
 				}
 
+				//If the logged user is a normal user
 				const response = await api.get(`/bookings/users/${id}`);
 
-				return setBookings(response?.data?.bookings);
+				setActiveBookings(
+					await response?.data?.bookings?.filter((booking) =>
+						moment(booking.date).isSameOrAfter(moment(), 'day'),
+					),
+				);
+
+				return setPastBookings(
+					response?.data?.bookings?.filter((booking) =>
+						moment(booking.date).isBefore(moment(), 'day'),
+					),
+				);
 			} catch (error) {
 				setErrorMessage(error?.response?.data?.message);
 			}
@@ -115,13 +142,13 @@ export default function Bookings() {
 
 			{selectedTab === 0 && (
 				<Grid item>
-					<ActiveBookings bookings={bookings} userId={id} />
+					<ActiveBookings bookings={activeBookings} userId={id} />
 				</Grid>
 			)}
 
 			{selectedTab === 1 && (
 				<Grid item>
-					<PastBookings bookings={bookings} />
+					<PastBookings bookings={pastBookings} userId={id} />
 				</Grid>
 			)}
 

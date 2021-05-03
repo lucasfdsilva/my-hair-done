@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import {
 	Grid,
 	CardHeader,
-	Card,
 	Avatar,
 	Typography,
 	Button,
 } from '@material-ui/core';
 
+import { RateReview } from '@material-ui/icons';
+
 import { useStyles } from './styles.js';
 
 import api from '../../../../services/api';
 
-export default function BookingCardActive(props) {
+export default function BookingCardPast(props) {
 	const [hairdresser, setHairdresser] = useState();
 	const [slot, setSlot] = useState();
 	const [formattedDate, setFormattedDate] = useState(
@@ -81,8 +82,13 @@ export default function BookingCardActive(props) {
 			</Grid>
 
 			<Grid item>
-				<Button color='primary' variant='outlined' className={classes.buttons}>
-					Cancel Booking
+				<Button
+					color='primary'
+					variant='outlined'
+					className={classes.buttons}
+					startIcon={<RateReview />}
+				>
+					Review
 				</Button>
 			</Grid>
 		</Grid>
