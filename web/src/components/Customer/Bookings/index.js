@@ -50,9 +50,8 @@ export default function Bookings() {
 
 		async function loadBookings() {
 			try {
-				console.log(isHairdresser);
 				//If the logged user is a hairdresser
-				if (isHairdresser) {
+				if (isHairdresser == true) {
 					const response = await api.get(`/bookings/hairdressers/${id}`);
 
 					setActiveBookings(

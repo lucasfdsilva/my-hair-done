@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { makeStyles } from '@material-ui/core/styles';
 import { Formik, Form } from 'formik';
 
 import * as Yup from 'yup';
@@ -24,7 +23,7 @@ import api from '../../../../services/api';
 export default function BookingFormNew(props) {
 	const [id, setID] = useState(localStorage.getItem('id'));
 	const [dateValue, setDateValue] = useState(new Date());
-	const [slots, setSlots] = useState([]);
+	const [availableSlots, setAvailableSlots] = useState([]);
 	const [selectedSlot, setSelectedSlot] = useState();
 
 	const [errorMessage, setErrorMessage] = useState('');
@@ -32,18 +31,26 @@ export default function BookingFormNew(props) {
 
 	useEffect(() => {
 		async function loadSlots() {
+			console.log('loading slots');
 			try {
 				const response = await api.get(
-					`/slots/hairdressers/${props.hairdresser.id}`,
+					`/availability?date=${
+						dateValue.getFullYear() +
+						'-' +
+						(dateValue.getMonth() + 1) +
+						'-' +
+						dateValue.getDate()
+					}&hairdresserId=${props.hairdresser.id}`,
 				);
+				console.log(response.data.availableSlots);
 
-				setSlots(response.data.slots);
+				setAvailableSlots(response.data.availableSlots);
 			} catch (error) {
-				setErrorMessage(error.response.data.message);
+				setErrorMessage(error?.response?.data?.message);
 			}
 		}
 		loadSlots();
-	}, []);
+	}, [dateValue]);
 
 	async function handleCreateBooking(values) {
 		const data = {
@@ -52,8 +59,6 @@ export default function BookingFormNew(props) {
 			slotId: selectedSlot,
 			date: dateValue,
 		};
-
-		console.log(data);
 
 		try {
 			const response = await api.post('/bookings', data);
@@ -186,7 +191,7 @@ export default function BookingFormNew(props) {
 									spacing={3}
 									className={classes.buttonsContainer}
 								>
-									{slots.map((slot) => (
+									{availableSlots.map((slot) => (
 										<Grid item>
 											<Button
 												key={slot.id}
@@ -200,6 +205,14 @@ export default function BookingFormNew(props) {
 											</Button>
 										</Grid>
 									))}
+
+									{availableSlots.length === 0 && (
+										<Grid item>
+											<Typography variant='h6'>
+												No Slots Available at this date.
+											</Typography>
+										</Grid>
+									)}
 								</Grid>
 							</Grid>
 

@@ -217,12 +217,9 @@ module.exports = {
 
 	async checkSlotsAvailability(req, res, next) {
 		try {
-			const connectDB = await knex.connect();
+			const { hairdresserId, date } = req.query;
 
-			const { date } = req.query;
-			var availableSlots = [];
-
-			if (!date) {
+			if (!hairdresserId || !date) {
 				return res
 					.status(400)
 					.json({ message: 'Missing Required Information from Request' });
@@ -239,24 +236,26 @@ module.exports = {
 			weekday[6] = 'Saturday';
 			var dateWeekDay = weekday[convertedDate.getDay()];
 
+			const connectDB = await knex.connect();
+
 			//Get all slots that are registered for that week day
 			const allRegisteredSlotsWeekDayTrueRaw = await connectDB.schema.raw(
-				`SELECT slot_id, start_time, duration from slots WHERE ${dateWeekDay} = true`,
+				`SELECT id, start_time, end_time from slots WHERE ${dateWeekDay} = true AND hairdresser_id = ${hairdresserId}`,
 			);
 
 			var allRegisteredSlotsWeekDayTrueClean = [];
 			for (const slot of allRegisteredSlotsWeekDayTrueRaw[0]) {
 				allRegisteredSlotsWeekDayTrueClean.push({
-					slot_id: slot.slot_id,
+					id: slot.id,
 					start_time: slot.start_time,
-					duration: slot.duration,
+					end_time: slot.end_time,
 				});
 			}
-			console.log(allRegisteredSlotsWeekDayTrueClean);
 
 			//Get all bookings for the same date
 			const existingBookingsOnDate = await connectDB('bookings').where({
 				date: date,
+				hairdresser_id: hairdresserId,
 			});
 
 			var availableSlots = [];
@@ -264,14 +263,18 @@ module.exports = {
 				slotAlreadyBooked = false;
 
 				for (const booking of existingBookingsOnDate) {
-					if (slot.slot_id == booking.slot_id) {
+					if (slot.id == booking.slot_id) {
 						slotAlreadyBooked = true;
 					}
 				}
 
 				//Adds the current slot in the loop if it's not already booked
 				if (!slotAlreadyBooked) {
-					availableSlots.push({ slotId: slot.slot_id });
+					availableSlots.push({
+						id: slot.id,
+						start_time: slot.start_time,
+						end_time: slot.end_time,
+					});
 				}
 			}
 

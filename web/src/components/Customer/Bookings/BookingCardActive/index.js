@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
 	Grid,
 	CardHeader,
-	Card,
 	Avatar,
 	Typography,
 	Button,
@@ -49,6 +48,18 @@ export default function BookingCardActive(props) {
 		loadSlot();
 	}, []);
 
+	async function handleCancelBooking() {
+		try {
+			const response = await api.delete(`/bookings`, {
+				data: { id: props.booking.id },
+			});
+
+			window.location.reload();
+		} catch (error) {
+			setErrorMessage(error?.response?.data?.message);
+		}
+	}
+
 	const classes = useStyles();
 
 	return (
@@ -81,7 +92,12 @@ export default function BookingCardActive(props) {
 			</Grid>
 
 			<Grid item>
-				<Button color='primary' variant='outlined' className={classes.buttons}>
+				<Button
+					color='primary'
+					variant='outlined'
+					className={classes.buttons}
+					onClick={() => handleCancelBooking()}
+				>
 					Cancel Booking
 				</Button>
 			</Grid>

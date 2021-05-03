@@ -9,7 +9,7 @@ import {
 	Modal,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { Delete, Create } from '@material-ui/icons';
+import { Create } from '@material-ui/icons';
 
 import SlotFormEdit from '../SlotFormEdit';
 

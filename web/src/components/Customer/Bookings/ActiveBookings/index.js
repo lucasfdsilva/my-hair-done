@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, List } from '@material-ui/core';
+import { Grid, Typography, List, Divider } from '@material-ui/core';
 
 import { useStyles } from './styles.js';
 
@@ -16,9 +16,11 @@ export default function ActiveBookings(props) {
 
 			<Grid item xs={12}>
 				<List className={classes.list} dense>
-					{props.bookings.map((booking) => (
+					{props.bookings.map((booking, i) => (
 						<Grid item xs={12}>
 							<BookingCardActive booking={booking} userId={props.userId} />
+
+							{i + 1 < props.bookings.length && <Divider />}
 						</Grid>
 					))}
 				</List>

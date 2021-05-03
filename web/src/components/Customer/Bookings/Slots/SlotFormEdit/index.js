@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Grid, Typography, FormControlLabel, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Delete, Error } from '@material-ui/icons';

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Grid, Typography, List, Divider } from '@material-ui/core';
 
 import { useStyles } from './styles.js';
 
 import BookingCardPast from '../BookingCardPast';
-import BookingCardActive from '../BookingCardActive';
 
 export default function PastBookings(props) {
 	const classes = useStyles();
@@ -17,9 +16,11 @@ export default function PastBookings(props) {
 
 			<Grid item xs={12}>
 				<List className={classes.list} dense>
-					{props.bookings.map((booking) => (
+					{props.bookings.map((booking, i) => (
 						<Grid item xs={12}>
 							<BookingCardPast booking={booking} userId={props.userId} />
+
+							{i + 1 < props.bookings.length && <Divider />}
 						</Grid>
 					))}
 				</List>

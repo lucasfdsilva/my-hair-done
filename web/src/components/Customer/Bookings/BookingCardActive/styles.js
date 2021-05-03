@@ -9,11 +9,11 @@ export const useStyles = makeStyles({
 		marginTop: -40,
 	},
 	date: {
-		marginTop: 25,
+		marginTop: 45,
 		marginLeft: 30,
 	},
 	buttons: {
-		marginTop: 20,
+		marginTop: 40,
 		marginLeft: 50,
 	},
 	profileImgPicture: {
@@ -21,8 +21,5 @@ export const useStyles = makeStyles({
 		height: 100,
 		width: 100,
 		fontSize: 30,
-		marginTop: -20,
-		marginBottom: -20,
-		marginLeft: -10,
 	},
 });

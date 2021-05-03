@@ -138,6 +138,7 @@ export default function NavigationMenu() {
 									localStorage.setItem('id', '');
 									localStorage.setItem('accessToken', '');
 									localStorage.setItem('isAdmin', 0);
+									localStorage.setItem('isHairdresser', 0);
 									history.push('/');
 									window.location.reload();
 								}}
