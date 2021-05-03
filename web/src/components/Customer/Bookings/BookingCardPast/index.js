@@ -5,20 +5,25 @@ import {
 	Avatar,
 	Typography,
 	Button,
+	Modal,
 } from '@material-ui/core';
-
 import { RateReview } from '@material-ui/icons';
 
-import { useStyles } from './styles.js';
+import ReviewFormNew from '../../Reviews/ReviewFormNew';
 
 import api from '../../../../services/api';
+import { useStyles } from './styles.js';
 
 export default function BookingCardPast(props) {
+	const classes = useStyles();
+	const [id, setID] = useState(localStorage.getItem('id'));
 	const [hairdresser, setHairdresser] = useState();
 	const [slot, setSlot] = useState();
 	const [formattedDate, setFormattedDate] = useState(
 		new Date(props.booking.date).toLocaleDateString(),
 	);
+
+	const [openReviewForm, setOpenReviewForm] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
@@ -50,10 +55,26 @@ export default function BookingCardPast(props) {
 		loadSlot();
 	}, []);
 
-	const classes = useStyles();
+	const handleOpenReviewForm = () => {
+		setOpenReviewForm(true);
+	};
+
+	const handleCloseReviewForm = () => {
+		setOpenReviewForm(false);
+	};
 
 	return (
 		<Grid container>
+			<Grid container className={classes.modalContainer}>
+				<Modal
+					className={classes.modal}
+					open={openReviewForm}
+					onClose={handleCloseReviewForm}
+				>
+					<ReviewFormNew userId={id} hairdresser={hairdresser} />
+				</Modal>
+			</Grid>
+
 			<Grid item>
 				<CardHeader
 					className={classes.header}
@@ -87,6 +108,7 @@ export default function BookingCardPast(props) {
 					variant='outlined'
 					className={classes.buttons}
 					startIcon={<RateReview />}
+					onClick={() => setOpenReviewForm(true)}
 				>
 					Review
 				</Button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Card,
 	CardHeader,
@@ -19,7 +19,38 @@ import api from '../../../../services/api';
 
 export default function HairdresserCard(props) {
 	const classes = useStyles();
+	const [totalReviews, setTotalReviews] = useState(0);
+	const [averageRating, setAverageRating] = useState(0);
+
 	const [openBookingForm, setOpenBookingForm] = useState(false);
+
+	useEffect(() => {
+		async function getReviews() {
+			try {
+				const response = await api.get(
+					`/reviews/hairdressers/${props.hairdresser.id}`,
+				);
+
+				var ratings = [];
+				for (const review of response.data.reviews) {
+					ratings.push(review.rating);
+				}
+
+				function roundHalf(value) {
+					return Math.round(value * 2) / 2;
+				}
+
+				const totalRating = ratings.reduce((a, b) => a + b, 0);
+				const rawAverageRating = totalRating / ratings.length;
+				const finalRating = roundHalf(rawAverageRating);
+
+				setAverageRating(finalRating);
+				setTotalReviews(ratings.length);
+			} catch (error) {}
+		}
+
+		getReviews();
+	}, []);
 
 	const handleOpenBookingForm = () => {
 		setOpenBookingForm(true);
@@ -66,11 +97,18 @@ export default function HairdresserCard(props) {
 					className={classes.ratingsContainer}
 				>
 					<Grid item>
-						<Rating name='read-only' value={3.5} precision={0.5} readOnly />
+						<Rating
+							name='read-only'
+							value={averageRating}
+							precision={0.5}
+							readOnly
+						/>
 					</Grid>
 
 					<Grid item>
-						<Typography className={classes.ratingsTotal}>(96)</Typography>
+						<Typography className={classes.ratingsTotal}>
+							({totalReviews})
+						</Typography>
 					</Grid>
 				</Grid>
 
