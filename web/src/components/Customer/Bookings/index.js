@@ -44,7 +44,21 @@ export default function Bookings() {
 			}
 		}
 
-		async function loadBookings() {}
+		async function loadBookings() {
+			try {
+				if (isHairdresser) {
+					const response = await api.get(`/bookings/hairdressers/${id}`);
+
+					return setBookings(response?.data?.bookings);
+				}
+
+				const response = await api.get(`/bookings/users/${id}`);
+
+				return setBookings(response?.data?.bookings);
+			} catch (error) {
+				setErrorMessage(error?.response?.data?.message);
+			}
+		}
 
 		async function loadSlots() {
 			try {
@@ -101,7 +115,7 @@ export default function Bookings() {
 
 			{selectedTab === 0 && (
 				<Grid item>
-					<ActiveBookings bookings={bookings} />
+					<ActiveBookings bookings={bookings} userId={id} />
 				</Grid>
 			)}
 

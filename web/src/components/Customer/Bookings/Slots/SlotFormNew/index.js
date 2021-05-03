@@ -43,7 +43,6 @@ export default function SlotForm(props) {
 			return setErrorMessage(`End time cannot be set to before Start time.`);
 
 		const slotExists = await checkIfSlotTimeExists(values);
-		console.log(slotExists);
 
 		if (slotExists)
 			return setErrorMessage(

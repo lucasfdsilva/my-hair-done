@@ -75,7 +75,11 @@ openRoutes.put('/slots', SlotController.update);
 openRoutes.delete('/slots', SlotController.delete);
 
 //Bookings Controller Routes
-openRoutes.get('/bookings', BookingController.index);
+openRoutes.get('/bookings/users/:userId', BookingController.indexUser);
+openRoutes.get(
+	'/bookings/hairdressers/:hairdresserId',
+	BookingController.indexHairdresser,
+);
 openRoutes.get('/bookings/:id', BookingController.view);
 openRoutes.post('/bookings', BookingController.create);
 openRoutes.put('/bookings', BookingController.update);

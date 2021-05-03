@@ -17,11 +17,12 @@ import * as Yup from 'yup';
 
 import TextField from '../../../FormsUI/TextField/index';
 import CustomButton from '../../../FormsUI/Button/index';
-import theme from '../../../../theme';
 
+import { useStyles } from './styles.js';
 import api from '../../../../services/api';
 
 export default function BookingFormNew(props) {
+	const [id, setID] = useState(localStorage.getItem('id'));
 	const [dateValue, setDateValue] = useState(new Date());
 	const [slots, setSlots] = useState([]);
 	const [selectedSlot, setSelectedSlot] = useState();
@@ -44,80 +45,29 @@ export default function BookingFormNew(props) {
 		loadSlots();
 	}, []);
 
-	async function slotSelected(slot) {
-		setSelectedSlot(slot.id);
-	}
-
 	async function handleCreateBooking(values) {
-		const data = {};
-		console.log(dateValue);
+		const data = {
+			hairdresserId: props.hairdresser.id,
+			userId: id,
+			slotId: selectedSlot,
+			date: dateValue,
+		};
+
+		console.log(data);
 
 		try {
-			//const response = await api.post('/slots', data);
-			//window.location.reload();
-		} catch (error) {}
+			const response = await api.post('/bookings', data);
+
+			window.location.reload();
+		} catch (error) {
+			setErrorMessage(error.response.data.message);
+		}
 	}
 
 	const INITIAL_FORM_STATE = {};
 
 	const FORM_VALIDATION = Yup.object().shape({});
 
-	const useStyles = makeStyles({
-		componentGrid: {
-			backgroundColor: '#fff',
-			borderRadius: 8,
-			alignItems: 'center',
-			justifyItems: 'center',
-			margin: 35,
-			maxWidth: 900,
-			padding: 30,
-
-			[theme.breakpoints.down('xs')]: {
-				height: 900,
-				width: 1400,
-				overflowY: 'scroll',
-				overflowX: 'scroll',
-				padding: 10,
-			},
-		},
-		button: {
-			marginTop: 45,
-			marginBottom: 15,
-		},
-		buttonsContainer: {
-			marginTop: 20,
-		},
-		slotButton: {
-			'&:focus': {
-				background: '#EF5350',
-				color: '#fff',
-			},
-		},
-		title: {
-			marginBottom: 30,
-		},
-		errorText: {
-			color: '#fff',
-		},
-		errorBox: {
-			backgroundColor: '#ff867c',
-			borderRadius: 8,
-			marginTop: 20,
-			marginBottom: 20,
-			marginLeft: 10,
-			marginRight: 10,
-		},
-		profileImgPicture: {
-			border: '2px solid #555',
-			height: 100,
-			width: 100,
-			fontSize: 30,
-		},
-		title: {
-			marginTop: -50,
-		},
-		calendar: {},
-	});
 	const classes = useStyles();
 
 	return (
@@ -243,7 +193,7 @@ export default function BookingFormNew(props) {
 												className={classes.slotButton}
 												variant='outlined'
 												color='primary'
-												onClick={() => slotSelected(slot)}
+												onClick={() => setSelectedSlot(slot.id)}
 											>
 												{slot.start_time.slice(0, -3)} -{' '}
 												{slot.end_time.slice(0, -3)}

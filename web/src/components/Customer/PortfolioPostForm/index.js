@@ -56,8 +56,6 @@ export default function PortfolioPost(props) {
 
 	const [clickedToDelete, setClickedToDelete] = useState(false);
 
-	useEffect(() => {}, []);
-
 	function nextImage() {
 		var newIndex = imagesIndex + 1;
 		setImagesIndex(newIndex);
@@ -100,10 +98,6 @@ export default function PortfolioPost(props) {
 		setFiles(event.target.files);
 		setUploadLabelValue(event.target.files.length + ' Files Selected...');
 		setNewFilesAdded(true);
-	}
-
-	async function handleClickedToDelete() {
-		setClickedToDelete(true);
 	}
 
 	async function handlePostCreation(values) {
@@ -171,6 +165,10 @@ export default function PortfolioPost(props) {
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}
+	}
+
+	async function handleClickedToDelete() {
+		setClickedToDelete(true);
 	}
 
 	async function handleDeletePost() {
