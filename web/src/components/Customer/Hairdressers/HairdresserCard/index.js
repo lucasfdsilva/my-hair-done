@@ -19,6 +19,7 @@ import api from '../../../../services/api';
 
 export default function HairdresserCard(props) {
 	const classes = useStyles();
+	const [reviews, setReviews] = useState([]);
 	const [totalReviews, setTotalReviews] = useState(0);
 	const [averageRating, setAverageRating] = useState(0);
 
@@ -46,6 +47,7 @@ export default function HairdresserCard(props) {
 
 				setAverageRating(finalRating);
 				setTotalReviews(ratings.length);
+				setReviews(response.data.reviews);
 			} catch (error) {}
 		}
 
@@ -122,26 +124,33 @@ export default function HairdresserCard(props) {
 				/>
 
 				<CardContent>
-					<Grid container spacing={1}>
-						<Grid item>
-							<Typography variant='subtitle2'>Latest Review Title</Typography>
-						</Grid>
+					{reviews.length > 0 && (
+						<>
+							<Grid container spacing={1}>
+								<Grid item>
+									<Typography variant='subtitle2'>
+										{reviews[0].headline}
+									</Typography>
+								</Grid>
 
-						<Grid item>
-							<Rating
-								name='read-only'
-								value={2}
-								precision={0.5}
-								readOnly
-								size='small'
-							/>
-						</Grid>
-					</Grid>
+								<Grid item>
+									<Rating
+										name='read-only'
+										value={reviews[0].rating}
+										precision={0.5}
+										readOnly
+										size='small'
+									/>
+								</Grid>
+							</Grid>
 
-					<Typography variant='body2'>
-						Review body Review body Review body Review body Review body Review
-						body Review body Review body
-					</Typography>
+							<Typography variant='body2'>{reviews[0].description}</Typography>
+							<Typography variant='caption'>
+								{new Date(reviews[0].created_at).toDateString()} |{' '}
+								{reviews[0].first_name} {reviews[0].last_name}
+							</Typography>
+						</>
+					)}
 
 					<Grid container spacing={1} className={classes.buttonsContainer}>
 						<Grid item xs={6}>

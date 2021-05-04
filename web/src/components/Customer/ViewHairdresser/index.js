@@ -2,31 +2,23 @@ import React, { useState, useEffect } from 'react';
 import {
 	Modal,
 	Card,
-	CardActionArea,
 	CardHeader,
-	CardMedia,
-	CardContent,
-	CardActions,
 	Typography,
-	IconButton,
 	Avatar,
 	Grid,
 	Button,
 	Divider,
-	TextField,
-	InputAdornment,
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import { makeStyles } from '@material-ui/styles';
-import theme from '../../../theme';
-import { Search, SkipPrevious, SkipNext, Add } from '@material-ui/icons';
-import { useHistory, useParams } from 'react-router-dom';
-import * as Yup from 'yup';
-import { Formik, Form } from 'formik';
+import { Add } from '@material-ui/icons';
+import { useParams } from 'react-router-dom';
 
 import BookingFormNew from '../Bookings/BookingFormNew';
 import PortfolioPostForm from '../PortfolioPostForm';
 import PortfolioPostCard from '../PortfolioPostCard';
+import ReviewCard from '../Reviews/ReviewCard';
+
+import { useStyles } from './styles';
 
 import api from '../../../services/api';
 
@@ -41,13 +33,15 @@ export default function ViewHairdresser(props) {
 	const [featuredPosts, setFeaturedPosts] = useState([]);
 	const [posts, setPosts] = useState([]);
 
+	const [reviews, setReviews] = useState([]);
+	const [totalReviews, setTotalReviews] = useState(0);
+	const [averageRating, setAverageRating] = useState(0);
+
 	const [openBookingForm, setOpenBookingForm] = useState(false);
 	const [openPortfolioPostForm, setOpenPortfolioPostForm] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
-
-	const history = useHistory();
 
 	useEffect(() => {
 		async function loadHairdresser() {
@@ -82,11 +76,39 @@ export default function ViewHairdresser(props) {
 			} catch (error) {}
 		}
 
+		async function getReviews() {
+			try {
+				const response = await api.get(
+					`/reviews/hairdressers/${hairdresserId}`,
+				);
+
+				var ratings = [];
+				for (const review of response.data.reviews) {
+					ratings.push(review.rating);
+				}
+
+				function roundHalf(value) {
+					return Math.round(value * 2) / 2;
+				}
+
+				const totalRating = ratings.reduce((a, b) => a + b, 0);
+				const rawAverageRating = totalRating / ratings.length;
+				const finalRating = roundHalf(rawAverageRating);
+
+				setAverageRating(finalRating);
+				setTotalReviews(ratings.length);
+				setReviews(response.data.reviews);
+			} catch (error) {
+				setErrorMessage(error?.response?.data?.message);
+			}
+		}
+
 		if (id == hairdresserId) {
 			setIsOwner(true);
 		}
 
 		loadHairdresser();
+		getReviews();
 		loadPosts();
 		loadFeaturedPosts();
 	}, []);
@@ -107,104 +129,6 @@ export default function ViewHairdresser(props) {
 		setOpenBookingForm(false);
 	};
 
-	const useStyles = makeStyles({
-		componentGrid: {
-			backgroundColor: '#fff',
-			borderRadius: 8,
-			alignItems: 'center',
-			justifyItems: 'center',
-			padding: 25,
-			margin: 35,
-		},
-		hairdresserInfo: {
-			marginBottom: 40,
-		},
-		header: {
-			fontSize: 30,
-		},
-		button: {
-			marginTop: 20,
-			marginBottom: 15,
-		},
-		errorText: {
-			color: '#fff',
-		},
-		errorBox: {
-			backgroundColor: '#ff867c',
-			borderRadius: 8,
-			marginTop: 20,
-			marginBottom: 20,
-			marginLeft: 10,
-			marginRight: 10,
-		},
-		ratingsTotal: {
-			color: '#3793FF',
-		},
-		ratingsContainer: {
-			marginTop: -95,
-			marginLeft: 200,
-			[theme.breakpoints.down('xs')]: {
-				justifyContent: 'center',
-				marginTop: -5,
-				marginBottom: 5,
-				marginLeft: 0,
-			},
-		},
-		bookButtonContainer: {
-			marginTop: -120,
-			marginLeft: 530,
-			marginBottom: 200,
-			[theme.breakpoints.down('xs')]: {
-				justifyContent: 'center',
-				marginTop: 0,
-				marginLeft: 0,
-				marginBottom: 60,
-			},
-			[theme.breakpoints.only('sm')]: {
-				marginLeft: 200,
-				marginTop: 0,
-				marginBottom: 50,
-			},
-		},
-		profileImgPicture: {
-			border: '2px solid #555',
-			height: 175,
-			width: 175,
-			fontSize: 30,
-		},
-		buttonsContainer: {
-			marginTop: 15,
-		},
-		divider: {
-			marginBottom: 20,
-			marginLeft: 0,
-			height: 2,
-			width: '100%',
-			border: '1px solid #FF6257',
-		},
-		dividerResults: {
-			marginBottom: 20,
-			marginLeft: 0,
-			height: 2,
-			width: '100%',
-			border: '1px solid #5c5a5a',
-		},
-		formContainer: {
-			marginBottom: 50,
-		},
-		searchResults: {
-			marginBottom: 40,
-		},
-		title: {
-			marginTop: -50,
-		},
-		modal: {
-			display: 'flex',
-			alignItems: 'center',
-			justifyContent: 'center',
-			width: '100%',
-		},
-	});
 	const classes = useStyles();
 
 	return (
@@ -272,11 +196,18 @@ export default function ViewHairdresser(props) {
 
 						<Grid container spacing={1} className={classes.ratingsContainer}>
 							<Grid item>
-								<Rating name='read-only' value={3.5} precision={0.5} readOnly />
+								<Rating
+									name='read-only'
+									value={averageRating}
+									precision={0.5}
+									readOnly
+								/>
 							</Grid>
 
 							<Grid item>
-								<Typography className={classes.ratingsTotal}>(96)</Typography>
+								<Typography className={classes.ratingsTotal}>
+									({totalReviews})
+								</Typography>
 							</Grid>
 						</Grid>
 
@@ -326,6 +257,21 @@ export default function ViewHairdresser(props) {
 							isOwner={isOwner}
 							userId={id}
 						/>
+					</Grid>
+				))}
+			</Grid>
+
+			<Typography variant='h5' className={classes.reviewTitle}>
+				Reviews
+			</Typography>
+			<Divider variant='middle' fullWidth className={classes.divider} />
+
+			<Grid container>
+				{reviews.map((review, i) => (
+					<Grid item xs={12}>
+						<ReviewCard key={review.id} review={review} />
+
+						{i + 1 < reviews.length && <Divider />}
 					</Grid>
 				))}
 			</Grid>

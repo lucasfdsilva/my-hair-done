@@ -17,9 +17,18 @@ module.exports = {
 
 		try {
 			const connectDB = await knex.connect();
-			const allReviews = await connectDB('reviews').where({
-				hairdresser_id: hairdresserId,
-			});
+			const allReviews = await connectDB('reviews')
+				.select(
+					'reviews.*',
+					'users.first_name',
+					'users.last_name',
+					'users.profile_img_url',
+				)
+				.leftJoin('users', 'reviews.user_id', 'users.id')
+				.where({
+					hairdresser_id: hairdresserId,
+				})
+				.orderBy('created_at', 'desc');
 
 			return res.status(200).json({ reviews: allReviews });
 		} catch (error) {
