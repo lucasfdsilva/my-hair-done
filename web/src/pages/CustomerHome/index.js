@@ -10,6 +10,7 @@ import Home from '../../components/Customer/Home';
 import Login from '../../components/Customer/Login';
 import Hairdressers from '../../components/Customer/Hairdressers';
 import ViewHairdresser from '../../components/Customer/ViewHairdresser';
+import BookingFormNew from '../../components/Customer/Bookings/BookingFormNew';
 import Profile from '../../components/Customer/Profile';
 import Register from '../../components/Customer/Register';
 import VerifyEmail from '../../components/Customer/VerifyEmail';
@@ -23,6 +24,7 @@ export default function Layout(props) {
 		Login,
 		Hairdressers,
 		ViewHairdresser,
+		BookingFormNew,
 		Profile,
 		Register,
 		VerifyEmail,

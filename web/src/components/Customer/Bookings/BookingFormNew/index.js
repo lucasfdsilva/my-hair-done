@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
 	Grid,
 	Typography,
@@ -25,11 +27,25 @@ export default function BookingFormNew(props) {
 	const [dateValue, setDateValue] = useState(new Date());
 	const [availableSlots, setAvailableSlots] = useState([]);
 	const [selectedSlot, setSelectedSlot] = useState();
+	const { hairdresserId } = useParams();
+	const [hairdresser, setHairdresser] = useState([]);
 
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
 
+	const history = useHistory();
+
 	useEffect(() => {
+		async function loadHairdresser() {
+			try {
+				const response = await api.get(`/users/${hairdresserId}`);
+
+				setHairdresser(response.data.user);
+			} catch (error) {
+				setErrorMessage(error.response.data.message);
+			}
+		}
+
 		async function loadSlots() {
 			console.log('loading slots');
 			try {
@@ -40,7 +56,7 @@ export default function BookingFormNew(props) {
 						(dateValue.getMonth() + 1) +
 						'-' +
 						dateValue.getDate()
-					}&hairdresserId=${props.hairdresser.id}`,
+					}&hairdresserId=${hairdresserId}`,
 				);
 				console.log(response.data.availableSlots);
 
@@ -49,12 +65,13 @@ export default function BookingFormNew(props) {
 				setErrorMessage(error?.response?.data?.message);
 			}
 		}
+		loadHairdresser();
 		loadSlots();
 	}, [dateValue]);
 
 	async function handleCreateBooking(values) {
 		const data = {
-			hairdresserId: props.hairdresser.id,
+			hairdresserId: hairdresser.id,
 			userId: id,
 			slotId: selectedSlot,
 			date: dateValue,
@@ -63,7 +80,7 @@ export default function BookingFormNew(props) {
 		try {
 			const response = await api.post('/bookings', data);
 
-			window.location.reload();
+			history.push('/hairdressers');
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}
@@ -124,40 +141,35 @@ export default function BookingFormNew(props) {
 										avatar={
 											<Avatar
 												className={classes.profileImgPicture}
-												src={props.hairdresser.profile_img_url}
+												src={hairdresser.profile_img_url}
 											>
-												{props.hairdresser.first_name +
-													props.hairdresser.last_name}
+												{hairdresser.first_name + hairdresser.last_name}
 											</Avatar>
 										}
-										title={
-											props.hairdresser.first_name +
-											' ' +
-											props.hairdresser.last_name
-										}
+										title={hairdresser.first_name + ' ' + hairdresser.last_name}
 										titleTypographyProps={{
-											variant: 'h4',
+											variant: 'h5',
 											className: `${classes.title}`,
 										}}
 										subheader={
-											props.hairdresser.addressLine2 == ''
-												? props.hairdresser.addressLine1 +
+											hairdresser.addressLine2 == ''
+												? hairdresser.addressLine1 +
 												  ', ' +
-												  props.hairdresser.city +
+												  hairdresser.city +
 												  ', ' +
-												  props.hairdresser.county +
+												  hairdresser.county +
 												  ', ' +
-												  props.hairdresser.country +
+												  hairdresser.country +
 												  '.'
-												: props.hairdresser.addressLine1 +
+												: hairdresser.addressLine1 +
 												  ', ' +
-												  props.hairdresser.addressLine2 +
+												  hairdresser.addressLine2 +
 												  ', ' +
-												  props.hairdresser.city +
+												  hairdresser.city +
 												  ', ' +
-												  props.hairdresser.county +
+												  hairdresser.county +
 												  ', ' +
-												  props.hairdresser.country +
+												  hairdresser.country +
 												  '.'
 										}
 									/>
@@ -223,7 +235,7 @@ export default function BookingFormNew(props) {
 
 						<Grid container spacing={3} justify='center'>
 							<Grid item xs={6} className={classes.button}>
-								<CustomButton>Create Slot</CustomButton>
+								<CustomButton>Confirm Booking</CustomButton>
 							</Grid>
 						</Grid>
 					</Grid>

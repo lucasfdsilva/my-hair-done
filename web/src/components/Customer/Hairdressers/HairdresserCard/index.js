@@ -19,6 +19,8 @@ import api from '../../../../services/api';
 
 export default function HairdresserCard(props) {
 	const classes = useStyles();
+	const [id, setID] = useState(localStorage.getItem('id'));
+	const [isOwner, setIsOwner] = useState(false);
 	const [reviews, setReviews] = useState([]);
 	const [totalReviews, setTotalReviews] = useState(0);
 	const [averageRating, setAverageRating] = useState(0);
@@ -49,6 +51,10 @@ export default function HairdresserCard(props) {
 				setTotalReviews(ratings.length);
 				setReviews(response.data.reviews);
 			} catch (error) {}
+		}
+
+		if (id == props.hairdresser.id) {
+			setIsOwner(true);
 		}
 
 		getReviews();
@@ -164,16 +170,18 @@ export default function HairdresserCard(props) {
 							</Button>
 						</Grid>
 
-						<Grid item xs={6}>
-							<Button
-								variant='contained'
-								color='primary'
-								fullWidth
-								onClick={() => setOpenBookingForm(true)}
-							>
-								Book Now
-							</Button>
-						</Grid>
+						{!isOwner && (
+							<Grid item xs={6}>
+								<Button
+									variant='contained'
+									color='primary'
+									fullWidth
+									href={`/bookings/new/hairdressers/${props.hairdresser.id}`}
+								>
+									Book Now
+								</Button>
+							</Grid>
+						)}
 					</Grid>
 				</CardContent>
 			</Card>

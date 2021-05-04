@@ -1,30 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
-	Box,
 	Typography,
 	Button,
 	Grid,
-	Tab,
-	Tabs,
-	AppBar,
-	Hidden,
 	FormControlLabel,
 	Avatar,
 	Input,
-	IconButton,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-	ExitToApp,
-	MonetizationOn,
-	Person,
-	Image,
-	Error,
-} from '@material-ui/icons';
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { Image, Error } from '@material-ui/icons';
+import { FiTrash2 } from 'react-icons/fi';
 import { Formik, Form } from 'formik';
-import axios from 'axios';
 
 import * as Yup from 'yup';
 
@@ -33,6 +19,8 @@ import SelectField from '../../FormsUI/SelectField/index';
 import CustomButton from '../../FormsUI/Button/index';
 import Checkbox from '../../FormsUI/Checkbox/index';
 import countries from '../../../data/countries.json';
+
+import { useStyles } from './styles';
 
 import api from '../../../services/api';
 
@@ -180,70 +168,6 @@ export default function Profile() {
 		}
 	}
 
-	const useStyles = makeStyles({
-		componentGrid: {
-			backgroundColor: '#fff',
-			borderRadius: 8,
-			alignItems: 'center',
-			justifyItems: 'center',
-			padding: 25,
-			margin: 35,
-		},
-		header: {
-			marginBottom: 30,
-		},
-		button: {
-			marginTop: 20,
-			marginBottom: 20,
-		},
-		appbar: {
-			marginBottom: 25,
-			borderRadius: 8,
-		},
-		errorText: {
-			color: '#fff',
-		},
-		errorBox: {
-			backgroundColor: '#ff867c',
-			borderRadius: 8,
-			marginTop: 20,
-			marginBottom: 20,
-			marginLeft: 10,
-			marginRight: 10,
-		},
-		successText: {
-			color: '#fff',
-		},
-		successBox: {
-			backgroundColor: '#1cbd77',
-			borderRadius: 8,
-			marginTop: 20,
-			marginBottom: 20,
-			marginLeft: 10,
-			marginRight: 10,
-		},
-		checkbox: {
-			marginLeft: -15,
-		},
-		picture: {
-			height: 150,
-			width: 150,
-			marginBottom: 20,
-			fontSize: 50,
-			border: '2px solid #555',
-		},
-		uploadButton: {
-			marginTop: 10,
-			marginBottom: 45,
-		},
-		verificationText: {
-			marginTop: -15,
-			marginBottom: 10,
-		},
-		verificationButton: {
-			marginBottom: 20,
-		},
-	});
 	const classes = useStyles();
 
 	const INITIAL_FORM_STATE = {

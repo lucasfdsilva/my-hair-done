@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
-import theme from '../../../../theme';
+import theme from '../../../theme';
 
 export const useStyles = makeStyles({
 	componentGrid: {
@@ -7,27 +7,22 @@ export const useStyles = makeStyles({
 		borderRadius: 8,
 		alignItems: 'center',
 		justifyItems: 'center',
-		padding: 15,
 		margin: 35,
 		[theme.breakpoints.down('xs')]: {
 			margin: 10,
 		},
 	},
+	header: {
+		marginTop: 30,
+		marginBottom: 20,
+	},
+	registerLink: {
+		marginBottom: 30,
+		marginLeft: -20,
+	},
 	button: {
-		marginTop: 45,
-		marginBottom: 30,
-	},
-	buttonsContainer: {
 		marginTop: 20,
-	},
-	slotButton: {
-		'&:focus': {
-			background: '#EF5350',
-			color: '#fff',
-		},
-	},
-	title: {
-		marginBottom: 30,
+		marginBottom: 15,
 	},
 	errorText: {
 		color: '#fff',
@@ -36,18 +31,8 @@ export const useStyles = makeStyles({
 		backgroundColor: '#ff867c',
 		borderRadius: 8,
 		marginTop: 20,
-		marginBottom: 20,
+		marginBottom: 5,
 		marginLeft: 10,
 		marginRight: 10,
 	},
-	profileImgPicture: {
-		border: '2px solid #555',
-		height: 100,
-		width: 100,
-		fontSize: 30,
-	},
-	title: {
-		marginTop: -50,
-	},
-	calendar: {},
 });

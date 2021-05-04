@@ -139,13 +139,13 @@ export default function ViewHairdresser(props) {
 					open={openPortfolioPostForm}
 					onClose={handleClosePortfolioPostForm}
 				>
-					<PortfolioPostForm />
+					<PortfolioPostForm userId={id} />
 				</Modal>
 			</Grid>
 
-			<Grid container className={classes.modalContainer}>
+			<Grid item>
 				<Modal
-					className={classes.modal}
+					className={classes.modalBookingForm}
 					open={openBookingForm}
 					onClose={handleCloseBookingForm}
 				>
@@ -219,7 +219,8 @@ export default function ViewHairdresser(props) {
 										color='primary'
 										fullWidth
 										size='large'
-										onClick={handleOpenBookingForm}
+										//onClick={handleOpenBookingForm}
+										href={'/bookings/new/hairdressers/' + hairdresserId}
 									>
 										Book Now
 									</Button>

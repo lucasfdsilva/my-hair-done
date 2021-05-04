@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-	Box,
 	Typography,
 	Button,
 	Grid,
 	Tab,
 	Tabs,
 	AppBar,
-	Hidden,
 	FormControlLabel,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { ExitToApp, MonetizationOn, Person } from '@material-ui/icons';
 import { Formik, Form } from 'formik';
 
@@ -24,6 +21,8 @@ import SelectField from '../../FormsUI/SelectField/index';
 import CustomButton from '../../FormsUI/Button/index';
 import Checkbox from '../../FormsUI/Checkbox/index';
 import countries from '../../../data/countries.json';
+
+import { useStyles } from './styles';
 
 import api from '../../../services/api';
 
@@ -88,41 +87,6 @@ export default function Register() {
 		}
 	}
 
-	const useStyles = makeStyles({
-		componentGrid: {
-			backgroundColor: '#fff',
-			borderRadius: 8,
-			alignItems: 'center',
-			justifyItems: 'center',
-			padding: 25,
-			margin: 35,
-		},
-		header: {
-			marginBottom: 30,
-		},
-		button: {
-			marginTop: 20,
-			marginBottom: 20,
-		},
-		appbar: {
-			marginBottom: 25,
-			borderRadius: 8,
-		},
-		errorText: {
-			color: '#fff',
-		},
-		errorBox: {
-			backgroundColor: '#ff867c',
-			borderRadius: 8,
-			marginTop: 20,
-			marginBottom: 20,
-			marginLeft: 10,
-			marginRight: 10,
-		},
-		checkbox: {
-			marginLeft: -15,
-		},
-	});
 	const classes = useStyles();
 
 	const INITIAL_FORM_STATE = {
@@ -326,7 +290,7 @@ export default function Register() {
 							</Grid>
 						</Grid>
 
-						<Grid item xs={4}>
+						<Grid item xs={8}>
 							<Button startIcon={<ExitToApp color='primary' />} href='login'>
 								Already Registered?
 							</Button>

@@ -7,8 +7,11 @@ export const useStyles = makeStyles({
 		borderRadius: 8,
 		alignItems: 'center',
 		justifyItems: 'center',
-		padding: 25,
+		padding: 15,
 		margin: 35,
+		[theme.breakpoints.down('xs')]: {
+			margin: 10,
+		},
 	},
 	header: {
 		marginBottom: 30,

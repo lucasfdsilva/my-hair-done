@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	Modal,
-	Card,
 	CardActionArea,
 	CardMedia,
-	Box,
 	Typography,
 	Button,
 	Grid,
-	Tab,
-	Tabs,
-	AppBar,
-	Hidden,
 	FormControlLabel,
-	Avatar,
-	Input,
 	IconButton,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import {
 	Error,
 	BurstMode,
@@ -26,8 +17,6 @@ import {
 } from '@material-ui/icons';
 import { FiTrash2 } from 'react-icons/fi';
 import { Formik, Form } from 'formik';
-import axios from 'axios';
-import theme from '../../../theme';
 
 import * as Yup from 'yup';
 
@@ -35,6 +24,8 @@ import TextField from '../../FormsUI/TextField/index';
 import TextArea from '../../FormsUI/TextArea/index';
 import CustomButton from '../../FormsUI/Button/index';
 import Checkbox from '../../FormsUI/Checkbox/index';
+
+import { useStyles } from './styles';
 
 import api from '../../../services/api';
 
@@ -185,66 +176,6 @@ export default function PortfolioPost(props) {
 		}
 	}
 
-	const useStyles = makeStyles({
-		componentGridNewPost: {
-			backgroundColor: '#fff',
-			borderRadius: 8,
-			alignItems: 'center',
-			justifyItems: 'center',
-			padding: 25,
-			maxHeight: 600,
-			maxWidth: 500,
-		},
-		componentGridEditPost: {
-			backgroundColor: '#fff',
-			borderRadius: 8,
-			alignItems: 'center',
-			justifyItems: 'center',
-			padding: 25,
-			maxHeight: 1000,
-			maxWidth: 500,
-			overflowY: 'scroll',
-
-			[theme.breakpoints.down('xs')]: {
-				maxHeight: 700,
-				maxWidth: 350,
-			},
-		},
-		header: {
-			marginBottom: 30,
-		},
-		label: {
-			display: 'flex',
-			alignItems: 'center',
-			fontSize: 17,
-			'&:hover': {
-				cursor: 'pointer',
-				opacity: 0.5,
-			},
-		},
-		icon: {
-			marginRight: 10,
-		},
-		fileInput: {
-			display: 'none',
-		},
-		button: {
-			marginTop: 30,
-			marginBottom: 15,
-		},
-		imagesIndex: {
-			marginTop: 14,
-		},
-		modalImageContainer: {
-			display: 'flex',
-			alignItems: 'center',
-			justifyContent: 'center',
-		},
-		modalImage: {
-			maxHeight: 500,
-			maxWidth: 600,
-		},
-	});
 	const classes = useStyles();
 
 	const INITIAL_FORM_STATE = {

@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import {
-	Box,
-	Typography,
-	Button,
-	Grid,
-	Tab,
-	Tabs,
-	AppBar,
-	Hidden,
-	FormControlLabel,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
+import { Typography, Button, Grid } from '@material-ui/core';
 import { HowToReg } from '@material-ui/icons';
 import { Formik, Form } from 'formik';
 
 import * as Yup from 'yup';
 
 import TextField from '../../FormsUI/TextField/index';
-import SelectField from '../../FormsUI/SelectField/index';
 import CustomButton from '../../FormsUI/Button/index';
-import Checkbox from '../../FormsUI/Checkbox/index';
-import countries from '../../../data/countries.json';
+
+import { useStyles } from './styles';
 
 import api from '../../../services/api';
 
@@ -71,34 +59,6 @@ export default function Login() {
 		}
 	}
 
-	const useStyles = makeStyles({
-		componentGrid: {
-			backgroundColor: '#fff',
-			borderRadius: 8,
-			alignItems: 'center',
-			justifyItems: 'center',
-			padding: 25,
-			margin: 35,
-		},
-		header: {
-			marginBottom: 30,
-		},
-		button: {
-			marginTop: 20,
-			marginBottom: 15,
-		},
-		errorText: {
-			color: '#fff',
-		},
-		errorBox: {
-			backgroundColor: '#ff867c',
-			borderRadius: 8,
-			marginTop: 20,
-			marginBottom: 20,
-			marginLeft: 10,
-			marginRight: 10,
-		},
-	});
 	const classes = useStyles();
 
 	const INITIAL_FORM_STATE = {
@@ -134,9 +94,9 @@ export default function Login() {
 						<Grid container spacing={3} justify='center'>
 							{errorMessage && (
 								<>
-									<Grid item xs={12} className={classes.errorBox}>
+									<Grid item xs={10} className={classes.errorBox}>
 										<Typography
-											variant='h6'
+											variant='subtitle1'
 											fullLength='true'
 											className={classes.errorText}
 										>
@@ -147,7 +107,9 @@ export default function Login() {
 							)}
 
 							<Grid item xs={8}>
-								<Typography variant='h4'>Login</Typography>
+								<Typography variant='h4' className={classes.header}>
+									Login
+								</Typography>
 							</Grid>
 
 							<Grid item xs={8}>
@@ -168,6 +130,7 @@ export default function Login() {
 								<Button
 									startIcon={<HowToReg color='primary' />}
 									href='register'
+									className={classes.registerLink}
 								>
 									Don't have an account yet?
 								</Button>

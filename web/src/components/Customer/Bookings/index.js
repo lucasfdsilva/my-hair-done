@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Grid, AppBar, Tabs, Tab } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import { DateRange, Schedule, Timer } from '@material-ui/icons';
 import moment from 'moment';
 
 import ActiveBookings from './ActiveBookings';
 import PastBookings from './PastBookings';
 import Slots from './Slots';
+
+import { useStyles } from './styles';
 
 import api from '../../../services/api';
 
@@ -112,19 +113,6 @@ export default function Bookings() {
 		loadSlots();
 	}, []);
 
-	const useStyles = makeStyles({
-		componentGrid: {
-			backgroundColor: '#fff',
-			borderRadius: 8,
-			alignItems: 'center',
-			justifyItems: 'center',
-			margin: 35,
-			padding: 15,
-		},
-		appbar: {
-			marginBottom: 30,
-		},
-	});
 	const classes = useStyles();
 
 	return (
@@ -139,23 +127,25 @@ export default function Bookings() {
 				</AppBar>
 			</Grid>
 
-			{selectedTab === 0 && (
-				<Grid item>
-					<ActiveBookings bookings={activeBookings} userId={id} />
-				</Grid>
-			)}
+			<Grid container className={classes.content}>
+				{selectedTab === 0 && (
+					<Grid item>
+						<ActiveBookings bookings={activeBookings} userId={id} />
+					</Grid>
+				)}
 
-			{selectedTab === 1 && (
-				<Grid item>
-					<PastBookings bookings={pastBookings} userId={id} />
-				</Grid>
-			)}
+				{selectedTab === 1 && (
+					<Grid item>
+						<PastBookings bookings={pastBookings} userId={id} />
+					</Grid>
+				)}
 
-			{selectedTab === 2 && (
-				<Grid item xs={12}>
-					<Slots slots={slots} userId={id} />
-				</Grid>
-			)}
+				{selectedTab === 2 && (
+					<Grid item xs={12}>
+						<Slots slots={slots} userId={id} />
+					</Grid>
+				)}
+			</Grid>
 		</Grid>
 	);
 }

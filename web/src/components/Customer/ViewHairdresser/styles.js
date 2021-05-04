@@ -7,8 +7,11 @@ export const useStyles = makeStyles({
 		borderRadius: 8,
 		alignItems: 'center',
 		justifyItems: 'center',
-		padding: 25,
+		padding: 15,
 		margin: 35,
+		[theme.breakpoints.down('xs')]: {
+			margin: 10,
+		},
 	},
 	hairdresserInfo: {
 		marginBottom: 40,
@@ -100,5 +103,20 @@ export const useStyles = makeStyles({
 	},
 	reviewTitle: {
 		marginTop: 75,
+	},
+	modalBookingForm: {
+		borderRadius: 8,
+		alignItems: 'center',
+		justifyItems: 'center',
+		padding: 25,
+		maxHeight: 1000,
+		maxWidth: 1000,
+
+		[theme.breakpoints.down('xs')]: {
+			maxHeight: 900,
+			maxWidth: 425,
+			marginLeft: -55,
+			overflowY: 'scroll',
+		},
 	},
 });
