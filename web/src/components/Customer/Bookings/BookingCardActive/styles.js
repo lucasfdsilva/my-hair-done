@@ -15,6 +15,7 @@ export const useStyles = makeStyles({
 	buttons: {
 		marginTop: 40,
 		marginLeft: 50,
+		marginBottom: 25,
 	},
 	profileImgPicture: {
 		border: '2px solid #555',
