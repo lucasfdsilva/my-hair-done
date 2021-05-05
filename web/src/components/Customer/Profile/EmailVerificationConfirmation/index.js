@@ -14,13 +14,18 @@ export default function EmailVerificationConfirmation() {
 	const [successMessage, setSuccessMessage] = useState('');
 
 	useEffect(() => {
-		try {
-			const response = api.get(`/users/verify/${verificationToken}`);
+		async function verifyEmail() {
+			try {
+				const response = await api.put(`/users/verify/${verificationToken}`);
 
-			setSuccessMessage(response.data.message);
-		} catch (error) {
-			setErrorMessage(error.response.data.message);
+				console.log(response);
+
+				setSuccessMessage(response?.data?.message);
+			} catch (error) {
+				setErrorMessage(error?.response?.data?.message);
+			}
 		}
+		verifyEmail();
 	}, []);
 
 	return (
@@ -36,12 +41,12 @@ export default function EmailVerificationConfirmation() {
 					<CheckCircleOutline
 						style={{ color: '#10B83F', fontSize: 60, marginTop: 45 }}
 					/>
-					<Typography variant='h5'> {successMessage}</Typography>
+					<Typography variant='h5'> {successMessage} </Typography>
 				</Grid>
 			) : (
 				<Grid item xs={12}>
 					<ErrorOutline
-						style={{ color: 'primary', fontSize: 60, marginTop: 45 }}
+						style={{ color: '#EF5350', fontSize: 60, marginTop: 45 }}
 					/>
 					<Typography variant='h5'>{errorMessage}</Typography>
 				</Grid>
@@ -51,7 +56,7 @@ export default function EmailVerificationConfirmation() {
 				<Button
 					variant='contained'
 					color='primary'
-					href='/profile'
+					href='/'
 					style={{ marginTop: 30, marginBottom: 45 }}
 				>
 					OK
