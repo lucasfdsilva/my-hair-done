@@ -12,8 +12,6 @@ import { useStyles } from './styles.js';
 import api from '../../../../services/api';
 
 export default function BookingCardActive(props) {
-	const [hairdresser, setHairdresser] = useState();
-	const [slot, setSlot] = useState();
 	const [formattedDate, setFormattedDate] = useState(
 		new Date(props.booking.date).toLocaleDateString(),
 	);
@@ -21,32 +19,7 @@ export default function BookingCardActive(props) {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
 
-	useEffect(() => {
-		async function loadProfile() {
-			try {
-				const response = await api.get(
-					`/users/${props.booking.hairdresser_id}`,
-				);
-
-				setHairdresser(response?.data?.user);
-			} catch (error) {
-				setErrorMessage(error?.response?.data?.message);
-			}
-		}
-
-		async function loadSlot() {
-			try {
-				const response = await api.get(`/slots/${props.booking.slot_id}`);
-
-				setSlot(response?.data?.slot);
-			} catch (error) {
-				setErrorMessage(error?.response?.data?.message);
-			}
-		}
-
-		loadProfile();
-		loadSlot();
-	}, []);
+	useEffect(() => {}, []);
 
 	async function handleCancelBooking() {
 		try {
@@ -70,24 +43,26 @@ export default function BookingCardActive(props) {
 					avatar={
 						<Avatar
 							className={classes.profileImgPicture}
-							src={hairdresser?.profile_img_url}
+							src={props.booking?.profile_img_url}
 						>
-							{hairdresser?.first_name + hairdresser?.last_name}
+							{props.booking?.first_name + props.booking?.last_name}
 						</Avatar>
 					}
-					title={hairdresser?.first_name + ' ' + hairdresser?.last_name}
+					title={props.booking?.first_name + ' ' + props.booking?.last_name}
 					titleTypographyProps={{
 						variant: 'h5',
 						className: `${classes.title}`,
 					}}
-					subheader={hairdresser?.county + ', ' + hairdresser?.country + '.'}
+					subheader={
+						props.booking?.county + ', ' + props.booking?.country + '.'
+					}
 				/>
 			</Grid>
 
 			<Grid item>
 				<Typography variant='h6' color='primary' className={classes.date}>
-					{formattedDate} | {slot?.start_time.slice(0, -3)} -{' '}
-					{slot?.end_time.slice(0, -3)}
+					{formattedDate} | {props.booking?.start_time.slice(0, -3)} -{' '}
+					{props.booking?.end_time.slice(0, -3)}
 				</Typography>
 			</Grid>
 

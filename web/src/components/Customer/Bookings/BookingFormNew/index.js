@@ -16,7 +16,8 @@ import { Formik, Form } from 'formik';
 
 import * as Yup from 'yup';
 
-import TextField from '../../../FormsUI/TextField/index';
+import BookingConfirmation from '../BookingConfirmation';
+
 import CustomButton from '../../../FormsUI/Button/index';
 
 import { useStyles } from './styles.js';
@@ -29,6 +30,8 @@ export default function BookingFormNew(props) {
 	const [selectedSlot, setSelectedSlot] = useState();
 	const { hairdresserId } = useParams();
 	const [hairdresser, setHairdresser] = useState([]);
+
+	const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
@@ -80,7 +83,7 @@ export default function BookingFormNew(props) {
 		try {
 			const response = await api.post('/bookings', data);
 
-			history.push('/hairdressers');
+			setBookingConfirmed(true);
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}
@@ -94,153 +97,159 @@ export default function BookingFormNew(props) {
 
 	return (
 		<Grid container className={classes.componentGrid}>
-			<Formik
-				initialValues={{ ...INITIAL_FORM_STATE }}
-				validationSchema={FORM_VALIDATION}
-				onSubmit={(values, { setSubmitting }) => {
-					setSubmitting(true);
-					handleCreateBooking(values);
-					setSubmitting(false);
-				}}
-			>
-				<Form>
-					<Grid container spacing={2}>
-						<Grid container spacing={3} justify='center'>
-							{errorMessage && (
-								<>
-									<Grid item xs={12} className={classes.errorBox}>
-										<Typography
-											variant='h6'
-											fullLength='true'
-											className={classes.errorText}
-										>
-											Error: {errorMessage}
-										</Typography>
-									</Grid>
-								</>
-							)}
-
-							{successMessage && (
-								<>
-									<Grid item xs={12} className={classes.successBox}>
-										<Typography
-											variant='h6'
-											fullLength='true'
-											className={classes.successMessage}
-										>
-											{successMessage}
-										</Typography>
-									</Grid>
-								</>
-							)}
-
-							<Grid item xs={12}>
-								<Card>
-									<CardHeader
-										className={classes.header}
-										avatar={
-											<Avatar
-												className={classes.profileImgPicture}
-												src={hairdresser.profile_img_url}
+			{bookingConfirmed === true ? (
+				<BookingConfirmation />
+			) : (
+				<Formik
+					initialValues={{ ...INITIAL_FORM_STATE }}
+					validationSchema={FORM_VALIDATION}
+					onSubmit={(values, { setSubmitting }) => {
+						setSubmitting(true);
+						handleCreateBooking(values);
+						setSubmitting(false);
+					}}
+				>
+					<Form>
+						<Grid container spacing={2}>
+							<Grid container spacing={3} justify='center'>
+								{errorMessage && (
+									<>
+										<Grid item xs={12} className={classes.errorBox}>
+											<Typography
+												variant='h6'
+												fullLength='true'
+												className={classes.errorText}
 											>
-												{hairdresser.first_name + hairdresser.last_name}
-											</Avatar>
-										}
-										title={hairdresser.first_name + ' ' + hairdresser.last_name}
-										titleTypographyProps={{
-											variant: 'h5',
-											className: `${classes.title}`,
-										}}
-										subheader={
-											hairdresser.addressLine2 == ''
-												? hairdresser.addressLine1 +
-												  ', ' +
-												  hairdresser.city +
-												  ', ' +
-												  hairdresser.county +
-												  ', ' +
-												  hairdresser.country +
-												  '.'
-												: hairdresser.addressLine1 +
-												  ', ' +
-												  hairdresser.addressLine2 +
-												  ', ' +
-												  hairdresser.city +
-												  ', ' +
-												  hairdresser.county +
-												  ', ' +
-												  hairdresser.country +
-												  '.'
-										}
-									/>
-								</Card>
-							</Grid>
-
-							<Grid item xs={12} sm={12} md={6} lg={6}>
-								<MuiPickersUtilsProvider utils={DateFnsUtils}>
-									<DatePicker
-										className={classes.calendar}
-										disablePast
-										variant='static'
-										openTo='date'
-										format='dd/MM/yyyy'
-										label='Booking Date'
-										views={['year', 'month', 'date']}
-										value={dateValue}
-										onChange={(value) => setDateValue(value)}
-									/>
-								</MuiPickersUtilsProvider>
-							</Grid>
-
-							<Grid item xs={12} sm={12} md={6} lg={6}>
-								<Typography variant='h4' color='primary'>
-									Available Slots
-								</Typography>
-								<Divider />
-
-								<Grid
-									container
-									spacing={3}
-									className={classes.buttonsContainer}
-								>
-									{availableSlots.map((slot) => (
-										<Grid item>
-											<Button
-												key={slot.id}
-												className={classes.slotButton}
-												variant='outlined'
-												color='primary'
-												onClick={() => setSelectedSlot(slot.id)}
-											>
-												{slot.start_time.slice(0, -3)} -{' '}
-												{slot.end_time.slice(0, -3)}
-											</Button>
-										</Grid>
-									))}
-
-									{availableSlots.length === 0 && (
-										<Grid item>
-											<Typography variant='h6'>
-												No Slots Available at this date.
+												Error: {errorMessage}
 											</Typography>
 										</Grid>
-									)}
+									</>
+								)}
+
+								{successMessage && (
+									<>
+										<Grid item xs={12} className={classes.successBox}>
+											<Typography
+												variant='h6'
+												fullLength='true'
+												className={classes.successMessage}
+											>
+												{successMessage}
+											</Typography>
+										</Grid>
+									</>
+								)}
+
+								<Grid item xs={12}>
+									<Card>
+										<CardHeader
+											className={classes.header}
+											avatar={
+												<Avatar
+													className={classes.profileImgPicture}
+													src={hairdresser.profile_img_url}
+												>
+													{hairdresser.first_name + hairdresser.last_name}
+												</Avatar>
+											}
+											title={
+												hairdresser.first_name + ' ' + hairdresser.last_name
+											}
+											titleTypographyProps={{
+												variant: 'h5',
+												className: `${classes.title}`,
+											}}
+											subheader={
+												hairdresser.addressLine2 == ''
+													? hairdresser.addressLine1 +
+													  ', ' +
+													  hairdresser.city +
+													  ', ' +
+													  hairdresser.county +
+													  ', ' +
+													  hairdresser.country +
+													  '.'
+													: hairdresser.addressLine1 +
+													  ', ' +
+													  hairdresser.addressLine2 +
+													  ', ' +
+													  hairdresser.city +
+													  ', ' +
+													  hairdresser.county +
+													  ', ' +
+													  hairdresser.country +
+													  '.'
+											}
+										/>
+									</Card>
+								</Grid>
+
+								<Grid item xs={12} sm={12} md={6} lg={6}>
+									<MuiPickersUtilsProvider utils={DateFnsUtils}>
+										<DatePicker
+											className={classes.calendar}
+											disablePast
+											variant='static'
+											openTo='date'
+											format='dd/MM/yyyy'
+											label='Booking Date'
+											views={['year', 'month', 'date']}
+											value={dateValue}
+											onChange={(value) => setDateValue(value)}
+										/>
+									</MuiPickersUtilsProvider>
+								</Grid>
+
+								<Grid item xs={12} sm={12} md={6} lg={6}>
+									<Typography variant='h4' color='primary'>
+										Available Slots
+									</Typography>
+									<Divider />
+
+									<Grid
+										container
+										spacing={3}
+										className={classes.buttonsContainer}
+									>
+										{availableSlots.map((slot) => (
+											<Grid item>
+												<Button
+													key={slot.id}
+													className={classes.slotButton}
+													variant='outlined'
+													color='primary'
+													onClick={() => setSelectedSlot(slot.id)}
+												>
+													{slot.start_time.slice(0, -3)} -{' '}
+													{slot.end_time.slice(0, -3)}
+												</Button>
+											</Grid>
+										))}
+
+										{availableSlots.length === 0 && (
+											<Grid item>
+												<Typography variant='h6'>
+													No Slots Available at this date.
+												</Typography>
+											</Grid>
+										)}
+									</Grid>
+								</Grid>
+
+								<Grid item xs={12}>
+									<Divider />
 								</Grid>
 							</Grid>
 
-							<Grid item xs={12}>
-								<Divider />
+							<Grid container spacing={3} justify='center'>
+								<Grid item xs={6} className={classes.button}>
+									<CustomButton>Confirm Booking</CustomButton>
+								</Grid>
 							</Grid>
 						</Grid>
-
-						<Grid container spacing={3} justify='center'>
-							<Grid item xs={6} className={classes.button}>
-								<CustomButton>Confirm Booking</CustomButton>
-							</Grid>
-						</Grid>
-					</Grid>
-				</Form>
-			</Formik>
+					</Form>
+				</Formik>
+			)}
 		</Grid>
 	);
 }

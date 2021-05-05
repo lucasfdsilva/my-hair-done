@@ -14,9 +14,22 @@ module.exports = {
 
 			const connectDB = await knex.connect();
 
-			const allBookings = await connectDB('bookings').where({
-				user_id: userId,
-			});
+			const allBookings = await connectDB('bookings')
+				.select(
+					'bookings.*',
+					'users.first_name',
+					'users.last_name',
+					'users.profile_img_url',
+					'users.county',
+					'users.country',
+					'slots.start_time',
+					'slots.end_time',
+				)
+				.leftJoin('users', 'users.id', 'bookings.hairdresser_id')
+				.leftJoin('slots', 'slots.id', 'bookings.slot_id')
+				.where({
+					user_id: userId,
+				});
 
 			if (!allBookings)
 				return res
