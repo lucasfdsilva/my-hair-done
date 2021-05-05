@@ -35,7 +35,7 @@ export default function Hairdressers() {
 
 				setFeaturedHairdressers(sliceHairdressers);
 			} catch (error) {
-				setErrorMessage(error.response.data.message);
+				setErrorMessage(error?.response?.data?.message);
 			}
 		}
 		loadHairdressers();

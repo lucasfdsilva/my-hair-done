@@ -15,7 +15,6 @@ import { Rating } from '@material-ui/lab';
 import BookingFormNew from '../../Bookings/BookingFormNew';
 
 import { useStyles } from './styles';
-import api from '../../../../services/api';
 
 export default function HairdresserCard(props) {
 	const classes = useStyles();
@@ -24,18 +23,15 @@ export default function HairdresserCard(props) {
 	const [reviews, setReviews] = useState([]);
 	const [totalReviews, setTotalReviews] = useState(0);
 	const [averageRating, setAverageRating] = useState(0);
+	const [lastReviewDate, setLastReviewDate] = useState('');
 
 	const [openBookingForm, setOpenBookingForm] = useState(false);
 
 	useEffect(() => {
 		async function getReviews() {
 			try {
-				const response = await api.get(
-					`/reviews/hairdressers/${props.hairdresser.id}`,
-				);
-
 				var ratings = [];
-				for (const review of response.data.reviews) {
+				for (const review of props.hairdresser.reviews) {
 					ratings.push(review.rating);
 				}
 
@@ -49,7 +45,9 @@ export default function HairdresserCard(props) {
 
 				setAverageRating(finalRating);
 				setTotalReviews(ratings.length);
-				setReviews(response.data.reviews);
+				setLastReviewDate(
+					new Date(props.hairdresser?.reviews[0].created_at).toDateString(),
+				);
 			} catch (error) {}
 		}
 
@@ -130,19 +128,19 @@ export default function HairdresserCard(props) {
 				/>
 
 				<CardContent>
-					{reviews.length > 0 && (
+					{props.hairdresser?.reviews?.length > 0 && (
 						<>
 							<Grid container spacing={1}>
 								<Grid item>
 									<Typography variant='subtitle2'>
-										{reviews[0].headline}
+										{props.hairdresser?.reviews[0]?.headline}
 									</Typography>
 								</Grid>
 
 								<Grid item>
 									<Rating
 										name='read-only'
-										value={reviews[0].rating}
+										value={props.hairdresser?.reviews[0]?.rating}
 										precision={0.5}
 										readOnly
 										size='small'
@@ -150,11 +148,10 @@ export default function HairdresserCard(props) {
 								</Grid>
 							</Grid>
 
-							<Typography variant='body2'>{reviews[0].description}</Typography>
-							<Typography variant='caption'>
-								{new Date(reviews[0].created_at).toDateString()} |{' '}
-								{reviews[0].first_name} {reviews[0].last_name}
+							<Typography variant='body2'>
+								{props.hairdresser?.reviews[0]?.description}
 							</Typography>
+							<Typography variant='caption'>{lastReviewDate}</Typography>
 						</>
 					)}
 
