@@ -46,7 +46,9 @@ export default function HairdresserCard(props) {
 				setAverageRating(finalRating);
 				setTotalReviews(ratings.length);
 				setLastReviewDate(
-					new Date(props.hairdresser?.reviews[0].created_at).toDateString(),
+					new Date(
+						props.hairdresser?.reviews[0].created_at.slice(0, -9),
+					).toDateString(),
 				);
 			} catch (error) {}
 		}
@@ -151,7 +153,9 @@ export default function HairdresserCard(props) {
 							<Typography variant='body2'>
 								{props.hairdresser?.reviews[0]?.description}
 							</Typography>
-							<Typography variant='caption'>{lastReviewDate}</Typography>
+							<Typography variant='caption' style={{ color: '#BDBDBD' }}>
+								{lastReviewDate}
+							</Typography>
 						</>
 					)}
 
