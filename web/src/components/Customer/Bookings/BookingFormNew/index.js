@@ -241,7 +241,16 @@ export default function BookingFormNew(props) {
 								</Grid>
 							</Grid>
 
-							<Grid container spacing={3} justify='center'>
+							<Grid container spacing={3} justify='center' align='center'>
+								<Grid item xs={6} className={classes.button}>
+									<Button
+										variant='outlined'
+										fullWidth
+										href={`/hairdressers/${hairdresserId}`}
+									>
+										Cancel
+									</Button>
+								</Grid>
 								<Grid item xs={6} className={classes.button}>
 									<CustomButton>Confirm Booking</CustomButton>
 								</Grid>

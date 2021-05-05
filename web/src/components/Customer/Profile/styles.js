@@ -52,7 +52,7 @@ export const useStyles = makeStyles({
 	picture: {
 		height: 150,
 		width: 150,
-		marginBottom: 20,
+		marginBottom: 60,
 		fontSize: 50,
 		border: '2px solid #555',
 	},
@@ -66,5 +66,11 @@ export const useStyles = makeStyles({
 	},
 	verificationButton: {
 		marginBottom: 20,
+	},
+	modal: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: '100%',
 	},
 });

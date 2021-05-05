@@ -7,6 +7,7 @@ import {
 	FormControlLabel,
 	Avatar,
 	Input,
+	Modal,
 } from '@material-ui/core';
 import { Image, Error } from '@material-ui/icons';
 import { FiTrash2 } from 'react-icons/fi';
@@ -19,6 +20,8 @@ import SelectField from '../../FormsUI/SelectField/index';
 import CustomButton from '../../FormsUI/Button/index';
 import Checkbox from '../../FormsUI/Checkbox/index';
 import countries from '../../../data/countries.json';
+
+import ProfileUpdateConfirmation from './ProfileUpdateConfirmation';
 
 import { useStyles } from './styles';
 
@@ -47,6 +50,8 @@ export default function Profile() {
 
 	const [verified, setVerified] = useState(0);
 	const [memberSince, setMemberSince] = useState('');
+
+	const [profileUpdated, setProfileUpdated] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
@@ -89,6 +94,7 @@ export default function Profile() {
 
 	async function handleFileSelected(event) {
 		setFile(event.target.files[0]);
+		setProfileImgUrl(URL.createObjectURL(event.target.files[0]));
 	}
 
 	async function handleProfilePictureUpload() {
@@ -102,7 +108,7 @@ export default function Profile() {
 				},
 			});
 
-			return setProfileImgUrl(response.data.url);
+			return response.data.url;
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}
@@ -145,27 +151,34 @@ export default function Profile() {
 	}
 
 	async function handleUpdateProfile(values) {
-		const data = {
-			id: id,
-			firstName: values.firstName,
-			lastName: values.lastName,
-			mobile: values.mobile,
-			profile_img_url: profileImgUrl,
-
-			addressLine1: values.addressLine1,
-			addressLine2: values.addressLine2,
-			city: values.city,
-			county: values.county,
-			country: values.country,
-			homeService: values.homeService,
-		};
-
 		try {
+			const uploadedProfileImageUrl = await handleProfilePictureUpload();
+
+			const data = {
+				id: id,
+				firstName: values.firstName,
+				lastName: values.lastName,
+				mobile: values.mobile,
+				profile_img_url: uploadedProfileImageUrl,
+
+				addressLine1: values.addressLine1,
+				addressLine2: values.addressLine2,
+				city: values.city,
+				county: values.county,
+				country: values.country,
+				homeService: values.homeService,
+			};
+
 			const response = await api.put('users', data);
-			window.location.reload();
+
+			setProfileUpdated(true);
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}
+	}
+
+	async function handleProfileUpdateClose() {
+		window.location.reload();
 	}
 
 	const classes = useStyles();
@@ -192,6 +205,16 @@ export default function Profile() {
 
 	return (
 		<Grid container className={classes.componentGrid} xs={12} md={8} lg={6}>
+			<Grid container className={classes.modalContainer}>
+				<Modal
+					className={classes.modal}
+					open={profileUpdated}
+					onClose={handleProfileUpdateClose}
+				>
+					<ProfileUpdateConfirmation />
+				</Modal>
+			</Grid>
+
 			<Grid item xs={12}>
 				<Typography variant='h4' className={classes.header}>
 					Profile
@@ -238,38 +261,23 @@ export default function Profile() {
 							</>
 						)}
 
-						<Grid container justify='center'>
-							<Grid item xs={5} sm={3} md={3} lg={3}>
-								<Avatar className={classes.picture} src={profileImgUrl}>
-									{firstName.charAt(0).toUpperCase() +
-										lastName.charAt(0).toUpperCase()}
-								</Avatar>
-							</Grid>
+						<Grid container justify='center' align='center'>
+							<Grid item xs={12}>
+								<label for='upload-images' className={classes.label}>
+									<Avatar className={classes.picture} src={profileImgUrl}>
+										{firstName.charAt(0).toUpperCase() +
+											lastName.charAt(0).toUpperCase()}
+									</Avatar>
+								</label>
 
-							<Grid container justify='center'>
-								<Grid item xs={4}>
-									<Input
-										endAdornment={<Image />}
-										fullWidth
-										className={classes.fileInput}
-										type='file'
-										accept='image/*'
-										onChange={handleFileSelected}
-										disableUnderline={true}
-									/>
-								</Grid>
-							</Grid>
-
-							<Grid item xs={4}>
-								<Button
-									fullWidth
-									className={classes.uploadButton}
-									variant='outlined'
-									color='primary'
-									onClick={handleProfilePictureUpload}
-								>
-									Upload
-								</Button>
+								<input
+									className={classes.fileInput}
+									id='upload-images'
+									type='file'
+									accept='image/*'
+									onChange={handleFileSelected}
+									style={{ display: 'none' }}
+								/>
 							</Grid>
 						</Grid>
 

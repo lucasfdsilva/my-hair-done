@@ -79,9 +79,8 @@ export default function Register() {
 
 		try {
 			const response = await api.post('users', data);
-			return alert(
-				`User Registered Successfully. User ID: ${response.data.newUserID[0]}`,
-			);
+
+			history.push('/login');
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}

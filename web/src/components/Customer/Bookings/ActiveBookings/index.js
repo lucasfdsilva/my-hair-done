@@ -14,17 +14,23 @@ export default function ActiveBookings(props) {
 				<Typography variant='h4'>Active Bookings</Typography>
 			</Grid>
 
-			<Grid item xs={12}>
-				<List className={classes.list} dense>
-					{props.bookings.map((booking, i) => (
-						<Grid item xs={12}>
-							<BookingCardActive booking={booking} userId={props.userId} />
+			{props.bookings.length > 0 ? (
+				<Grid item xs={12}>
+					<List className={classes.list} dense>
+						{props.bookings.map((booking, i) => (
+							<Grid item xs={12}>
+								<BookingCardActive booking={booking} userId={props.userId} />
 
-							{i + 1 < props.bookings.length && <Divider />}
-						</Grid>
-					))}
-				</List>
-			</Grid>
+								{i + 1 < props.bookings.length && <Divider />}
+							</Grid>
+						))}
+					</List>
+				</Grid>
+			) : (
+				<Grid item>
+					<Typography>You don't have any active bookings.</Typography>
+				</Grid>
+			)}
 		</Grid>
 	);
 }
