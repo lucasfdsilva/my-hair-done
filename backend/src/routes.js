@@ -94,6 +94,10 @@ openRoutes.get(
 	ReviewController.getAllReviewsForHairdresser,
 );
 openRoutes.get('/reviews/:id', ReviewController.view);
+openRoutes.get(
+	'/reviews/bookings/:bookingId',
+	ReviewController.viewReviewByBooking,
+);
 openRoutes.post('/reviews', ReviewController.create);
 openRoutes.put('/reviews', ReviewController.update);
 openRoutes.delete('/reviews', ReviewController.delete);

@@ -56,11 +56,47 @@ module.exports = {
 		}
 	},
 
+	async viewReviewByBooking(req, res, next) {
+		try {
+			const { bookingId } = req.params;
+
+			if (!bookingId) {
+				return res.status(400).json({ message: 'Missing booking ID' });
+			}
+
+			const connectDB = await knex.connect();
+			const reviewFromDB = await connectDB('reviews')
+				.where({ booking_id: bookingId })
+				.first();
+
+			if (!reviewFromDB)
+				return res.status(400).json({ message: 'No review Found' });
+
+			return res.status(200).json({ review: reviewFromDB });
+		} catch (error) {
+			next(error);
+		}
+	},
+
 	async create(req, res, next) {
 		try {
-			const { hairdresserId, userId, headline, description, rating } = req.body;
+			const {
+				hairdresserId,
+				userId,
+				headline,
+				description,
+				rating,
+				bookingId,
+			} = req.body;
 
-			if (!hairdresserId || !userId || !headline || !description || !rating) {
+			if (
+				!hairdresserId ||
+				!userId ||
+				!headline ||
+				!description ||
+				!rating ||
+				!bookingId
+			) {
 				return res
 					.status(400)
 					.json({ message: 'Missing Required Information from Request' });
@@ -73,6 +109,7 @@ module.exports = {
 				headline: headline,
 				description: description,
 				rating: rating,
+				booking_id: bookingId,
 			});
 
 			return res

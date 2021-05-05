@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Grid, Box } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
 
@@ -13,8 +13,9 @@ import CustomButton from '../../../FormsUI/Button/index';
 import api from '../../../../services/api';
 import { useStyles } from './styles';
 
-export default function ReviewFormNew(props) {
+export default function EditReviewForm(props) {
 	const classes = useStyles();
+	const [review, setReview] = useState([]);
 	const [rating, setRating] = useState();
 	const [hover, setHover] = useState(-1);
 
@@ -36,6 +37,21 @@ export default function ReviewFormNew(props) {
 
 	const [clickedToDelete, setClickedToDelete] = useState(false);
 
+	useEffect(() => {
+		async function getReview() {
+			try {
+				const response = await api.get(`/reviews/bookings/${props.booking.id}`);
+
+				setReview(response.data.review);
+				setRating(response.data.review.rating);
+			} catch (error) {
+				setErrorMessage(error?.response?.data?.message);
+			}
+		}
+
+		getReview();
+	}, []);
+
 	async function handleReviewCreation(values) {
 		const data = {
 			headline: values.headline,
@@ -49,24 +65,16 @@ export default function ReviewFormNew(props) {
 		try {
 			const response = await api.post('/reviews', data);
 
-			const bookingData = {
-				id: props.booking.id,
-				hairdresserId: props.booking.hairdresser_id,
-				userId: props.userId,
-				slotId: props.booking.slot_id,
-				date: props.booking.date,
-				reviewId: response.data.newReview[0],
-			};
-
-			const responseUpdateBooking = await api.put('/bookings', bookingData);
-
 			window.location.reload();
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}
 	}
 
-	const INITIAL_FORM_STATE = {};
+	const INITIAL_FORM_STATE = {
+		headline: review.headline,
+		description: review.description,
+	};
 
 	const FORM_VALIDATION = Yup.object().shape({
 		headline: Yup.string().required('Title is a mandatory field'),
@@ -77,7 +85,7 @@ export default function ReviewFormNew(props) {
 		<Grid container className={classes.componentGridNewPost}>
 			<Grid item xs={12}>
 				<Typography variant='h4' className={classes.header}>
-					New Review
+					Edit Review
 				</Typography>
 			</Grid>
 
@@ -120,11 +128,16 @@ export default function ReviewFormNew(props) {
 						)}
 
 						<Grid item xs={12}>
-							<TextField name='headline' label='Headline' />
+							<TextField
+								InputLabelProps={{ shrink: true }}
+								name='headline'
+								label='Headline'
+							/>
 						</Grid>
 
 						<Grid item xs={12}>
 							<TextArea
+								InputLabelProps={{ shrink: true }}
 								name='description'
 								label='Description'
 								className={classes.textArea}
@@ -134,7 +147,6 @@ export default function ReviewFormNew(props) {
 						<Grid item xs={4}>
 							<Rating
 								name='half-rating'
-								defaultValue={2.5}
 								precision={0.5}
 								value={rating}
 								size='large'

@@ -169,7 +169,7 @@ module.exports = {
 		try {
 			const connectDB = await knex.connect();
 
-			const { id, userId, hairdresserId, slotId, date } = req.body;
+			const { id, userId, hairdresserId, slotId, date, reviewId } = req.body;
 
 			if (!id || !userId || !hairdresserId || !slotId || !date) {
 				return res
@@ -191,6 +191,7 @@ module.exports = {
 					hairdresser_id: hairdresserId,
 					slot_id: slotId,
 					date: date,
+					review_id: reviewId,
 				});
 
 			return res.status(200).json({ message: 'Booking updated successfully' });

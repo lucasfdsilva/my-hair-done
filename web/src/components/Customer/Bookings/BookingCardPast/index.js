@@ -10,6 +10,7 @@ import {
 import { RateReview } from '@material-ui/icons';
 
 import ReviewFormNew from '../../Reviews/ReviewFormNew';
+import EditReviewForm from '../../Reviews/EditReviewForm';
 
 import api from '../../../../services/api';
 import { useStyles } from './styles.js';
@@ -24,6 +25,7 @@ export default function BookingCardPast(props) {
 	);
 
 	const [openReviewForm, setOpenReviewForm] = useState(false);
+	const [openEditReviewForm, setOpenEditReviewForm] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
@@ -38,6 +40,14 @@ export default function BookingCardPast(props) {
 		setOpenReviewForm(false);
 	};
 
+	const handleOpenEditReviewForm = () => {
+		setOpenEditReviewForm(true);
+	};
+
+	const handleCloseEditReviewForm = () => {
+		setOpenEditReviewForm(false);
+	};
+
 	return (
 		<Grid container className={classes.componentGrid}>
 			<Grid container className={classes.modalContainer}>
@@ -46,7 +56,25 @@ export default function BookingCardPast(props) {
 					open={openReviewForm}
 					onClose={handleCloseReviewForm}
 				>
-					<ReviewFormNew userId={id} hairdresser={hairdresser} />
+					<ReviewFormNew
+						userId={id}
+						hairdresser={props.booking.id}
+						booking={props.booking}
+					/>
+				</Modal>
+			</Grid>
+
+			<Grid container className={classes.modalContainer}>
+				<Modal
+					className={classes.modal}
+					open={openEditReviewForm}
+					onClose={handleCloseEditReviewForm}
+				>
+					<EditReviewForm
+						userId={id}
+						hairdresser={props.booking.id}
+						booking={props.booking}
+					/>
 				</Modal>
 			</Grid>
 
@@ -79,17 +107,31 @@ export default function BookingCardPast(props) {
 				</Typography>
 			</Grid>
 
-			<Grid item>
-				<Button
-					color='primary'
-					variant='outlined'
-					className={classes.buttons}
-					startIcon={<RateReview />}
-					onClick={() => setOpenReviewForm(true)}
-				>
-					Review
-				</Button>
-			</Grid>
+			{props.booking?.review_id === 0 ? (
+				<Grid item>
+					<Button
+						color='primary'
+						variant='outlined'
+						className={classes.buttons}
+						startIcon={<RateReview />}
+						onClick={() => setOpenReviewForm(true)}
+					>
+						Review
+					</Button>
+				</Grid>
+			) : (
+				<Grid item>
+					<Button
+						color='primary'
+						variant='outlined'
+						className={classes.buttons}
+						startIcon={<RateReview />}
+						onClick={() => setOpenEditReviewForm(true)}
+					>
+						Edit Review
+					</Button>
+				</Grid>
+			)}
 		</Grid>
 	);
 }

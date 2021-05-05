@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
 const AWS = require('aws-sdk');
-const fs = require('fs');
 AWS.config.update({ region: 'eu-west-1' });
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
 
@@ -261,37 +260,36 @@ module.exports = {
 				is_hairdresser: isHairdresser,
 			});
 
-			/*
-      const SQSParams = {
-        MessageAttributes: {
-          "firstName": {
-            DataType: "String",
-            StringValue: firstName
-          },
-          "email": {
-            DataType: "String",
-            StringValue: email.toLowerCase()
-          },
-          "verificationToken": {
-            DataType: "String",
-            StringValue: verificationToken
-          },
-        },
-        MessageBody: "Information required to submit Verification Email",
-        MessageDeduplicationId: verificationToken,  // Required for FIFO queues
-        MessageGroupId: "Group1",  // Required for FIFO queues
-        QueueUrl: "https://sqs.eu-west-1.amazonaws.com/128363080680/RESTaurant-SendEmailVerification.fifo"
-      }
+			const SQSParams = {
+				MessageAttributes: {
+					firstName: {
+						DataType: 'String',
+						StringValue: firstName,
+					},
+					email: {
+						DataType: 'String',
+						StringValue: email.toLowerCase(),
+					},
+					verificationToken: {
+						DataType: 'String',
+						StringValue: verificationToken,
+					},
+				},
+				MessageBody: 'Information required to submit Verification Email',
+				MessageDeduplicationId: verificationToken, // Required for FIFO queues
+				MessageGroupId: 'Group1', // Required for FIFO queues
+				QueueUrl:
+					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-SendEmailVerification.fifo',
+			};
 
-      sqs.sendMessage(SQSParams, function(err, data){
-        if (err) {
-          console.log("Error", err);
-          return res.status(500).json({ err });
-        } else {
-          console.log("Success", data.MessageId);
-        }
-      })
-      */
+			sqs.sendMessage(SQSParams, function (err, data) {
+				if (err) {
+					console.log('Error', err);
+					return res.status(500).json({ err });
+				} else {
+					console.log('Success', data.MessageId);
+				}
+			});
 
 			return res
 				.status(201)
