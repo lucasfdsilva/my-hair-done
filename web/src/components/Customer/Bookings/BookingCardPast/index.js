@@ -64,7 +64,7 @@ export default function BookingCardPast(props) {
 	};
 
 	return (
-		<Grid container>
+		<Grid container className={classes.componentGrid}>
 			<Grid container className={classes.modalContainer}>
 				<Modal
 					className={classes.modal}

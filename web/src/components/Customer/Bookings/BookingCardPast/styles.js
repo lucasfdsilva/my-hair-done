@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/styles';
+import theme from '../../../../theme';
 
 export const useStyles = makeStyles({
 	listItem: { padding: 5 },
@@ -21,5 +22,11 @@ export const useStyles = makeStyles({
 		height: 100,
 		width: 100,
 		fontSize: 30,
+	},
+	modal: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: '100%',
 	},
 });
