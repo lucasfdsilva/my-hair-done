@@ -12,8 +12,8 @@ import Hairdressers from '../../components/Customer/Hairdressers';
 import ViewHairdresser from '../../components/Customer/ViewHairdresser';
 import BookingFormNew from '../../components/Customer/Bookings/BookingFormNew';
 import Profile from '../../components/Customer/Profile';
+import EmailVerificationConfirmation from '../../components/Customer/Profile/EmailVerificationConfirmation';
 import Register from '../../components/Customer/Register';
-import VerifyEmail from '../../components/Customer/VerifyEmail';
 
 export default function Layout(props) {
 	const components = {
@@ -26,8 +26,8 @@ export default function Layout(props) {
 		ViewHairdresser,
 		BookingFormNew,
 		Profile,
+		EmailVerificationConfirmation,
 		Register,
-		VerifyEmail,
 	};
 
 	const ComponentToRender = components[props.component];

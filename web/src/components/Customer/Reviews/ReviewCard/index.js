@@ -30,7 +30,9 @@ export default function ReviewCard(props) {
 						variant: 'subtitle2',
 						className: `${classes.name}`,
 					}}
-					subheader={new Date(props.review?.created_at).toDateString()}
+					subheader={new Date(
+						props.review?.created_at.slice(0, -9),
+					).toDateString()}
 				/>
 			</Grid>
 

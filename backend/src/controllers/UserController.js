@@ -105,32 +105,96 @@ module.exports = {
 				const lastName = namesArray[1];
 
 				const connectDB = await knex.connect();
-				const userFromDB = await connectDB('users')
+				const hairdressersFromDB = await connectDB('users')
 					.where('first_name', 'like', `%${firstName}%`)
 					.orWhere('last_name', 'like', `%${lastName}%`)
 					.andWhere({ is_hairdresser: true });
 
-				if (!userFromDB)
+				if (!hairdressersFromDB)
 					return res
 						.status(400)
 						.json({ message: 'No Hairdressers Found. Please try again.' });
 
-				return res.status(200).json({ hairdressers: userFromDB });
+				const allHairdressersWithReviews = [];
+
+				for (const hairdresser of hairdressersFromDB) {
+					const reviews = await connectDB('reviews')
+						.where({
+							hairdresser_id: hairdresser.id,
+						})
+						.orderBy('created_at', 'desc');
+
+					const hairdresserWithReviews = {
+						id: hairdresser.id,
+						first_name: hairdresser.first_name,
+						last_name: hairdresser.last_name,
+						dob: hairdresser.dob,
+						mobile: hairdresser.mobile,
+						email: hairdresser.email,
+						profile_img_url: hairdresser.profile_img_url,
+						created_at: hairdresser.created_at,
+						home_service: hairdresser.home_service,
+						hairdresser_since: hairdresser.hairdresser_since,
+						addressLine1: hairdresser.addressLine1,
+						addressLine2: hairdresser.addressLine2,
+						city: hairdresser.city,
+						county: hairdresser.county,
+						country: hairdresser.country,
+						reviews: reviews,
+					};
+
+					allHairdressersWithReviews.push(hairdresserWithReviews);
+				}
+
+				return res
+					.status(200)
+					.json({ hairdressers: allHairdressersWithReviews });
 			}
 
 			const connectDB = await knex.connect();
-			const userFromDB = await connectDB('users')
+			const hairdressersFromDB = await connectDB('users')
 				.where('first_name', 'like', `%${name}%`)
 				.orWhere('last_name', 'like', `%${name}%`)
 				.orWhere('email', 'like', `%${name}%`)
 				.andWhere({ is_hairdresser: true });
 
-			if (!userFromDB)
+			if (!hairdressersFromDB)
 				return res
 					.status(400)
 					.json({ message: 'No Hairdressers Found. Please try again.' });
 
-			return res.status(200).json({ hairdressers: userFromDB });
+			const allHairdressersWithReviews = [];
+
+			for (const hairdresser of hairdressersFromDB) {
+				const reviews = await connectDB('reviews')
+					.where({
+						hairdresser_id: hairdresser.id,
+					})
+					.orderBy('created_at', 'desc');
+
+				const hairdresserWithReviews = {
+					id: hairdresser.id,
+					first_name: hairdresser.first_name,
+					last_name: hairdresser.last_name,
+					dob: hairdresser.dob,
+					mobile: hairdresser.mobile,
+					email: hairdresser.email,
+					profile_img_url: hairdresser.profile_img_url,
+					created_at: hairdresser.created_at,
+					home_service: hairdresser.home_service,
+					hairdresser_since: hairdresser.hairdresser_since,
+					addressLine1: hairdresser.addressLine1,
+					addressLine2: hairdresser.addressLine2,
+					city: hairdresser.city,
+					county: hairdresser.county,
+					country: hairdresser.country,
+					reviews: reviews,
+				};
+
+				allHairdressersWithReviews.push(hairdresserWithReviews);
+			}
+
+			return res.status(200).json({ hairdressers: allHairdressersWithReviews });
 		} catch (error) {
 			next(error);
 		}
@@ -426,7 +490,7 @@ module.exports = {
 				MessageDeduplicationId: userFromDB.verification_token, // Required for FIFO queues
 				MessageGroupId: 'Group1', // Required for FIFO queues
 				QueueUrl:
-					'https://sqs.eu-west-1.amazonaws.com/128363080680/RESTaurant-SendEmailVerification.fifo',
+					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-SendEmailVerification.fifo',
 			};
 
 			sqs.sendMessage(SQSParams, function (err, data) {

@@ -44,18 +44,24 @@ function Routes() {
 						<CustomerHome {...props} component={'BookingFormNew'} />
 					)}
 				/>
-				<Route
-					path='/users/verify/:token'
-					render={(props) => (
-						<CustomerHome {...props} component={'VerifyEmail'} />
-					)}
-				/>
 
 				<Route
 					path='/profile'
 					exact
 					render={(props) => <CustomerHome {...props} component={'Profile'} />}
 				/>
+
+				<Route
+					path='/users/verify/:verificationToken'
+					exact
+					render={(props) => (
+						<CustomerHome
+							{...props}
+							component={'EmailVerificationConfirmation'}
+						/>
+					)}
+				/>
+
 				<Route
 					path='/bookings'
 					exact

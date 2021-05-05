@@ -119,8 +119,8 @@ export default function Profile() {
 
 		try {
 			const data = {
-				firstName,
-				email,
+				firstName: firstName,
+				email: email,
 			};
 
 			const response = await api.post('/users/verify/send', data);
