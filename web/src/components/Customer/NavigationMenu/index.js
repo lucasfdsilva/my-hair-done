@@ -10,6 +10,7 @@ import {
 	PhotoLibrary,
 	LibraryBooks,
 	Apps,
+	Visibility,
 } from '@material-ui/icons';
 import theme from '../../../theme';
 import headerLogo from '../../../assets/header-logo.png';
@@ -229,6 +230,12 @@ export default function NavigationMenu() {
 									className={classes.button}
 									href='/'
 									startIcon={<Home className={classes.icon} />}
+								></Button>
+
+								<Button
+									className={classes.button}
+									href='/hairstyler'
+									startIcon={<Visibility className={classes.icon} />}
 								></Button>
 
 								<Button

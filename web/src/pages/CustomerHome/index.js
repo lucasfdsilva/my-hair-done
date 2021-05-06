@@ -10,6 +10,7 @@ import Home from '../../components/Customer/Home';
 import Login from '../../components/Customer/Login';
 import ForgotPassword from '../../components/Customer/ForgotPassword';
 import ResetPassword from '../../components/Customer/ResetPassword';
+import FaceDetection from '../../components/Customer/FaceDetection';
 import Hairdressers from '../../components/Customer/Hairdressers';
 import ViewHairdresser from '../../components/Customer/ViewHairdresser';
 import BookingFormNew from '../../components/Customer/Bookings/BookingFormNew';
@@ -26,6 +27,7 @@ export default function Layout(props) {
 		Login,
 		ForgotPassword,
 		ResetPassword,
+		FaceDetection,
 		Hairdressers,
 		ViewHairdresser,
 		BookingFormNew,

@@ -15,6 +15,15 @@ function Routes() {
 					exact
 					render={(props) => <CustomerHome {...props} component={'Home'} />}
 				/>
+
+				<Route
+					path='/hairstyler'
+					exact
+					render={(props) => (
+						<CustomerHome {...props} component={'FaceDetection'} />
+					)}
+				/>
+
 				<Route
 					path='/hairdressers'
 					exact
