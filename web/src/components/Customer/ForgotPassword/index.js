@@ -13,14 +13,13 @@ import { useStyles } from './styles';
 
 import api from '../../../services/api';
 
-export default function Login() {
+export default function ForgotPassword() {
 	const [id, setID] = useState(localStorage.getItem('id'));
 	const [accessToken, setAccessToken] = useState(
 		localStorage.getItem('accessToken'),
 	);
-	const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin'));
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+
+	const [successMessage, setSuccessMessage] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 
 	const history = useHistory();
@@ -38,22 +37,15 @@ export default function Login() {
 		checkIfUserIsLoggedIn();
 	}, []);
 
-	async function handleLogin(values) {
+	async function handleResetPassword(values) {
 		const data = {
 			email: values.email,
-			password: values.password,
 		};
 
 		try {
-			const response = await api.post('sessions', data);
+			const response = await api.post('/forgotpassword/send', data);
 
-			localStorage.setItem('id', response.data.id);
-			localStorage.setItem('accessToken', response.data.accessToken);
-			localStorage.setItem('isHairdresser', response.data.isHairdresser);
-			localStorage.setItem('isAdmin', response.data.isAdmin);
-
-			history.push('/profile');
-			window.location.reload();
+			setSuccessMessage(response.data.message);
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}
@@ -63,29 +55,30 @@ export default function Login() {
 
 	const INITIAL_FORM_STATE = {
 		email: '',
-		password: '',
 	};
 
 	const FORM_VALIDATION = Yup.object().shape({
 		email: Yup.string()
 			.email('Invalid email address')
 			.required('Email is a mandatory field'),
-		password: Yup.string()
-			.required('Please enter your password')
-			.matches(
-				/^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-				'Password must contain at least 8 characters, one uppercase, one number and one special case character',
-			),
 	});
 
 	return (
-		<Grid container className={classes.componentGrid} xs={12} md={8} lg={6}>
+		<Grid
+			container
+			className={classes.componentGrid}
+			xs={12}
+			md={8}
+			lg={6}
+			justify='center'
+			align='center'
+		>
 			<Formik
 				initialValues={{ ...INITIAL_FORM_STATE }}
 				validationSchema={FORM_VALIDATION}
 				onSubmit={(values, { setSubmitting }) => {
 					setSubmitting(true);
-					handleLogin(values);
+					handleResetPassword(values);
 					setSubmitting(false);
 				}}
 			>
@@ -106,44 +99,34 @@ export default function Login() {
 								</>
 							)}
 
+							{successMessage && (
+								<>
+									<Grid item xs={10} className={classes.successBox}>
+										<Typography
+											variant='subtitle1'
+											fullLength='true'
+											className={classes.successText}
+										>
+											{successMessage}
+										</Typography>
+									</Grid>
+								</>
+							)}
+
 							<Grid item xs={8}>
 								<Typography variant='h4' className={classes.header}>
-									Login
+									Reset Password
 								</Typography>
 							</Grid>
 
 							<Grid item xs={8}>
 								<TextField name='email' label='Email' />
 							</Grid>
-
-							<Grid item xs={8}>
-								<TextField name='password' label='Password' type='password' />
-							</Grid>
 						</Grid>
 
-						<Grid container spacing={3} justify='center'>
+						<Grid container spacing={3} justify='center' align='center'>
 							<Grid item xs={6} className={classes.button}>
-								<CustomButton>Login</CustomButton>
-							</Grid>
-
-							<Grid item xs={8}>
-								<Button
-									startIcon={<VpnKey color='primary' />}
-									href='/forgotpassword'
-									className={classes.forgotPasswordLink}
-								>
-									Forgotten password?
-								</Button>
-							</Grid>
-
-							<Grid item xs={8}>
-								<Button
-									startIcon={<HowToReg color='primary' />}
-									href='/register'
-									className={classes.registerLink}
-								>
-									Create New Account
-								</Button>
+								<CustomButton>Reset Password</CustomButton>
 							</Grid>
 						</Grid>
 					</Grid>

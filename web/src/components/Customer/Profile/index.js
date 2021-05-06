@@ -262,7 +262,7 @@ export default function Profile() {
 						)}
 
 						<Grid container justify='center' align='center'>
-							<Grid item xs={12}>
+							<Grid item xs={2}>
 								<label for='upload-images' className={classes.label}>
 									<Avatar className={classes.picture} src={profileImgUrl}>
 										{firstName.charAt(0).toUpperCase() +

@@ -507,4 +507,111 @@ module.exports = {
 			next(error);
 		}
 	},
+
+	async sendRecoverPasswordEmail(req, res, next) {
+		try {
+			const { email } = req.body;
+
+			if (!email) {
+				return res
+					.status(400)
+					.json({ message: 'Missing Required Information from Request' });
+			}
+
+			const connectDB = await knex.connect();
+			const userFromDB = await connectDB('users')
+				.where({ email: email })
+				.first();
+
+			if (!userFromDB)
+				return res.status(400).json({
+					message: 'No user found using the provided email address',
+				});
+
+			const passwordResetToken = crypto.randomBytes(20).toString('hex');
+
+			let passwordResetTokenExpiresAt = new Date();
+			passwordResetTokenExpiresAt.setHours(
+				passwordResetTokenExpiresAt.getHours() + 2,
+			);
+
+			const newUser = await connectDB('users').where({ email: email }).update({
+				password_reset_token: passwordResetToken,
+				password_reset_token_expires_at: passwordResetTokenExpiresAt,
+			});
+
+			const SQSParams = {
+				MessageAttributes: {
+					firstName: {
+						DataType: 'String',
+						StringValue: userFromDB.first_name,
+					},
+					email: {
+						DataType: 'String',
+						StringValue: email.toLowerCase(),
+					},
+					passwordResetToken: {
+						DataType: 'String',
+						StringValue: passwordResetToken,
+					},
+				},
+				MessageBody: 'Information required to submit Verification Email',
+				MessageDeduplicationId: passwordResetToken, // Required for FIFO queues
+				MessageGroupId: 'Group1', // Required for FIFO queues
+				QueueUrl:
+					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-SendForgotPasswordEmail.fifo',
+			};
+
+			sqs.sendMessage(SQSParams, function (err, data) {
+				if (err) {
+					return res.status(500).json({ err });
+				} else {
+				}
+			});
+
+			return res
+				.status(201)
+				.json({
+					message:
+						'Forgot Password email sent successfully. Please check your inbox. The password reset link will expire in 2 hours.',
+				});
+		} catch (error) {
+			next(error);
+		}
+	},
+
+	async resetPassword(req, res, next) {
+		try {
+			const { password, passwordResetToken } = req.body;
+
+			if (!password || !passwordResetToken) {
+				return res
+					.status(400)
+					.json({ message: 'Missing Required Information from Request' });
+			}
+
+			const connectDB = await knex.connect();
+			const userFromDB = await connectDB('users')
+				.where({ password_reset_token: passwordResetToken })
+				.first();
+
+			if (!userFromDB)
+				return res.status(400).json({
+					message: 'No user found using the provided password reset token',
+				});
+
+			const salt = await bcrypt.genSalt();
+			const hashedPassword = await bcrypt.hash(password, salt);
+
+			const updatedPasswordUser = await connectDB('users')
+				.where({ password_reset_token: passwordResetToken })
+				.update({
+					password: hashedPassword,
+				});
+
+			return res.status(201).json({ message: 'Password updated successfully' });
+		} catch (error) {
+			next(error);
+		}
+	},
 };

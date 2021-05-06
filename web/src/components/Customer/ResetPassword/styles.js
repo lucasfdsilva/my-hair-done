@@ -13,19 +13,12 @@ export const useStyles = makeStyles({
 		},
 	},
 	header: {
-		marginTop: 30,
+		marginTop: 45,
 		marginBottom: 20,
-	},
-	forgotPasswordLink: {
-		marginTop: 10,
-	},
-	registerLink: {
-		marginTop: -10,
-		marginBottom: 60,
 	},
 	button: {
 		marginTop: 35,
-		marginBottom: 15,
+		marginBottom: 75,
 	},
 	errorText: {
 		color: '#fff',
@@ -33,7 +26,18 @@ export const useStyles = makeStyles({
 	errorBox: {
 		backgroundColor: '#ff867c',
 		borderRadius: 8,
-		marginTop: 20,
+		marginTop: 40,
+		marginBottom: 5,
+		marginLeft: 10,
+		marginRight: 10,
+	},
+	successText: {
+		color: '#fff',
+	},
+	successBox: {
+		backgroundColor: '#1cbd77',
+		borderRadius: 8,
+		marginTop: 40,
 		marginBottom: 5,
 		marginLeft: 10,
 		marginRight: 10,

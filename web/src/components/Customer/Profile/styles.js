@@ -16,6 +16,11 @@ export const useStyles = makeStyles({
 	header: {
 		marginBottom: 30,
 	},
+	label: {
+		'&:hover': {
+			cursor: 'pointer',
+		},
+	},
 	button: {
 		marginTop: 20,
 		marginBottom: 20,

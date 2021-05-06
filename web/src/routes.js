@@ -32,6 +32,23 @@ function Routes() {
 					exact
 					render={(props) => <CustomerHome {...props} component={'Login'} />}
 				/>
+
+				<Route
+					path='/forgotpassword'
+					exact
+					render={(props) => (
+						<CustomerHome {...props} component={'ForgotPassword'} />
+					)}
+				/>
+
+				<Route
+					path='/forgotpassword/newpassword/:passwordResetToken'
+					exact
+					render={(props) => (
+						<CustomerHome {...props} component={'ResetPassword'} />
+					)}
+				/>
+
 				<Route
 					path='/hairdressers/:hairdresserId'
 					render={(props) => (

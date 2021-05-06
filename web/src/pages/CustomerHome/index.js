@@ -8,6 +8,8 @@ import Footer from '../../components/Customer/Footer';
 import Bookings from '../../components/Customer/Bookings';
 import Home from '../../components/Customer/Home';
 import Login from '../../components/Customer/Login';
+import ForgotPassword from '../../components/Customer/ForgotPassword';
+import ResetPassword from '../../components/Customer/ResetPassword';
 import Hairdressers from '../../components/Customer/Hairdressers';
 import ViewHairdresser from '../../components/Customer/ViewHairdresser';
 import BookingFormNew from '../../components/Customer/Bookings/BookingFormNew';
@@ -22,6 +24,8 @@ export default function Layout(props) {
 		Bookings,
 		Home,
 		Login,
+		ForgotPassword,
+		ResetPassword,
 		Hairdressers,
 		ViewHairdresser,
 		BookingFormNew,

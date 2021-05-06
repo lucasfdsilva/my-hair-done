@@ -36,6 +36,11 @@ openRoutes.put(
 	UserController.verifyEmailAddress,
 );
 openRoutes.post('/users/verify/send', UserController.sendVerificationEmail);
+openRoutes.post(
+	'/forgotpassword/send',
+	UserController.sendRecoverPasswordEmail,
+);
+openRoutes.post('/forgotpassword/newpassword', UserController.resetPassword);
 openRoutes.post('/users/upload', UserController.uploadProfilePicture);
 
 //Portfolio Posts Controller Routes
