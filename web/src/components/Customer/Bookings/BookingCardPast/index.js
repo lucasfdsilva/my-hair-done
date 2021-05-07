@@ -92,51 +92,51 @@ export default function BookingCardPast(props) {
 					title={props.booking?.first_name + ' ' + props.booking?.last_name}
 					titleTypographyProps={{
 						variant: 'h5',
-						className: `${classes.title}`,
+					}}
+					subheaderTypographyProps={{
+						variant: 'h6',
+						color: 'primary',
 					}}
 					subheader={
-						props.isHairdresser === true &&
-						props.booking?.county + ', ' + props.booking?.country + '.'
+						formattedDate +
+						' | ' +
+						props.booking?.start_time?.slice(0, -3) +
+						' - ' +
+						props.booking?.end_time?.slice(0, -3)
 					}
 				/>
 			</Grid>
-
-			<Grid item>
-				<Typography variant='h6' color='primary' className={classes.date}>
-					{formattedDate} | {props.booking?.start_time.slice(0, -3)} -{' '}
-					{props.booking?.end_time.slice(0, -3)}
-				</Typography>
-			</Grid>
-
-			{props.isHairdresser !== 1 ? (
-				props.booking?.review_id === 0 ? (
-					<Grid item>
-						<Button
-							color='primary'
-							variant='outlined'
-							className={classes.buttons}
-							startIcon={<RateReview />}
-							onClick={() => setOpenReviewForm(true)}
-						>
-							Review
-						</Button>
-					</Grid>
+			<Grid container justify='flex-end' align='flex-end'>
+				{props.isHairdresser !== 1 ? (
+					props.booking?.review_id === 0 ? (
+						<Grid item>
+							<Button
+								color='primary'
+								variant='outlined'
+								className={classes.buttonContainer}
+								startIcon={<RateReview />}
+								onClick={() => setOpenReviewForm(true)}
+							>
+								Review
+							</Button>
+						</Grid>
+					) : (
+						<Grid item>
+							<Button
+								color='primary'
+								variant='outlined'
+								className={classes.buttonContainer}
+								startIcon={<RateReview />}
+								onClick={() => setOpenEditReviewForm(true)}
+							>
+								Edit Review
+							</Button>
+						</Grid>
+					)
 				) : (
-					<Grid item>
-						<Button
-							color='primary'
-							variant='outlined'
-							className={classes.buttons}
-							startIcon={<RateReview />}
-							onClick={() => setOpenEditReviewForm(true)}
-						>
-							Edit Review
-						</Button>
-					</Grid>
-				)
-			) : (
-				<Grid item></Grid>
-			)}
+					<Grid item></Grid>
+				)}
+			</Grid>
 		</Grid>
 	);
 }

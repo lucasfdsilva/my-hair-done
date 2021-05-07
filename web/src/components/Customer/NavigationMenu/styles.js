@@ -21,6 +21,6 @@ export const useStyles = makeStyles({
 		fontSize: 'large',
 	},
 	toolbar: {
-		padding: 10,
+		padding: 7,
 	},
 });

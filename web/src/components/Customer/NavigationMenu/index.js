@@ -3,7 +3,14 @@ import { SiProbot } from 'react-icons/si';
 import { BsCalendar, BsImages } from 'react-icons/bs';
 import { GrConfigure } from 'react-icons/gr';
 
-import { AppBar, Toolbar, Button, Grid, Hidden } from '@material-ui/core';
+import {
+	AppBar,
+	Toolbar,
+	Button,
+	Grid,
+	Hidden,
+	Tooltip,
+} from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import { Scissors, UserPlus, Power, Home, LogIn, User } from 'react-feather';
@@ -75,6 +82,16 @@ export default function NavigationMenu() {
 
 							<Button
 								className={classes.button}
+								startIcon={<SiProbot className={classes.icon} />}
+								onClick={() =>
+									window.open('https://hairstyler.myhairdone.co.uk')
+								}
+							>
+								AR Hairstyler (Dev)
+							</Button>
+
+							<Button
+								className={classes.button}
 								href='/profile'
 								startIcon={<User className={classes.icon} />}
 							>
@@ -101,16 +118,6 @@ export default function NavigationMenu() {
 
 							<Button
 								className={classes.button}
-								startIcon={<SiProbot className={classes.icon} />}
-								onClick={() =>
-									window.open('https://hairstyler.myhairdone.co.uk')
-								}
-							>
-								AR Hairstyler (Dev)
-							</Button>
-
-							<Button
-								className={classes.button}
 								startIcon={<Power className={classes.icon} />}
 								onClick={() => {
 									localStorage.setItem('id', '');
@@ -127,66 +134,82 @@ export default function NavigationMenu() {
 
 						<Hidden mdUp>
 							<Grid container justify='center' spacing={3}>
-								<Button
-									className={classes.button}
-									href='/'
-									startIcon={<Home className={classes.icon} />}
-								></Button>
+								<Tooltip title='Home'>
+									<Button
+										className={classes.button}
+										href='/'
+										startIcon={<Home className={classes.icon} />}
+									></Button>
+								</Tooltip>
 
-								<Button
-									className={classes.button}
-									href='/hairdressers'
-									startIcon={<Scissors className={classes.icon} />}
-								></Button>
+								<Tooltip title='Hairdressers'>
+									<Button
+										className={classes.button}
+										href='/hairdressers'
+										startIcon={<Scissors className={classes.icon} />}
+									></Button>
+								</Tooltip>
 
-								<Button
-									className={classes.button}
-									href='/profile'
-									startIcon={<User className={classes.icon} />}
-								></Button>
+								<Tooltip title='AR Hairstyler'>
+									<Button
+										className={classes.button}
+										startIcon={<SiProbot className={classes.icon} />}
+										onClick={() =>
+											window.open('https://hairstyler.myhairdone.co.uk')
+										}
+									></Button>
+								</Tooltip>
+
+								<Tooltip title='My Profile'>
+									<Button
+										className={classes.button}
+										href='/profile'
+										startIcon={<User className={classes.icon} />}
+									></Button>
+								</Tooltip>
 
 								{isHairdresser === 1 && (
-									<Button
-										className={classes.button}
-										href={`/hairdressers/${id}`}
-										startIcon={<BsImages className={classes.icon} />}
-									></Button>
+									<Tooltip title='My Portfolio'>
+										<Button
+											className={classes.button}
+											href={`/hairdressers/${id}`}
+											startIcon={<BsImages className={classes.icon} />}
+										></Button>
+									</Tooltip>
 								)}
 
-								<Button
-									className={classes.button}
-									href='/bookings'
-									startIcon={<BsCalendar className={classes.icon} />}
-								></Button>
-
-								<Button
-									className={classes.button}
-									href='/bookings'
-									startIcon={<Power className={classes.icon} />}
-									onClick={() => {
-										localStorage.setItem('id', '');
-										localStorage.setItem('accessToken', '');
-										localStorage.setItem('isAdmin', 0);
-										window.location.reload();
-									}}
-								></Button>
-
-								<Button
-									className={classes.button}
-									startIcon={<SiProbot className={classes.icon} />}
-									onClick={() =>
-										window.open('https://hairstyler.myhairdone.co.uk')
-									}
-								></Button>
-
-								{isAdmin == 1 && (
+								<Tooltip title='Bookings'>
 									<Button
 										className={classes.button}
-										href='/admin'
-										startIcon={<GrConfigure className={classes.icon} />}
-									>
-										Admin Panel
-									</Button>
+										href='/bookings'
+										startIcon={<BsCalendar className={classes.icon} />}
+									></Button>
+								</Tooltip>
+
+								<Tooltip title='Logout'>
+									<Button
+										className={classes.button}
+										href='/'
+										startIcon={<Power className={classes.icon} />}
+										onClick={() => {
+											localStorage.setItem('id', '');
+											localStorage.setItem('accessToken', '');
+											localStorage.setItem('isAdmin', 0);
+											window.location.reload();
+										}}
+									></Button>
+								</Tooltip>
+
+								{isAdmin == 1 && (
+									<Tooltip title='Admin Panel'>
+										<Button
+											className={classes.button}
+											href='/admin'
+											startIcon={<GrConfigure className={classes.icon} />}
+										>
+											Admin Panel
+										</Button>
+									</Tooltip>
 								)}
 							</Grid>
 						</Hidden>
@@ -198,80 +221,100 @@ export default function NavigationMenu() {
 		return (
 			<ThemeProvider theme={theme}>
 				<AppBar position='static' color='white'>
-					<Toolbar>
-						<Grid container justify='center' spacing={3}>
-							<Hidden smDown>
-								<a href='/'>
-									<img src={headerLogo} alt='' className={classes.image} />
-								</a>
+					<Toolbar className={classes.toolbar}>
+						<Hidden smDown>
+							<a href='/'>
+								<img src={headerLogo} alt='' className={classes.image} />
+							</a>
 
-								<Button
-									className={classes.button}
-									href='/'
-									startIcon={<Home className={classes.icon} />}
-								>
-									home
-								</Button>
+							<Button
+								className={classes.button}
+								href='/'
+								startIcon={<Home className={classes.icon} />}
+							>
+								home
+							</Button>
 
-								<Button
-									className={classes.button}
-									href='/hairdressers'
-									startIcon={<Scissors className={classes.icon} />}
-								>
-									Hairdressers
-								</Button>
+							<Button
+								className={classes.button}
+								href='/hairdressers'
+								startIcon={<Scissors className={classes.icon} />}
+							>
+								Hairdressers
+							</Button>
 
-								<Button
-									className={classes.button}
-									href='/register'
-									startIcon={<UserPlus className={classes.icon} />}
-								>
-									Register
-								</Button>
+							<Button
+								className={classes.button}
+								startIcon={<SiProbot className={classes.icon} />}
+								onClick={() =>
+									window.open('https://hairstyler.myhairdone.co.uk')
+								}
+							>
+								AR Hairstyler (Dev)
+							</Button>
 
-								<Button
-									className={classes.button}
-									href='/login'
-									startIcon={<LogIn className={classes.icon} />}
-								>
-									Login
-								</Button>
-							</Hidden>
+							<Button
+								className={classes.button}
+								href='/register'
+								startIcon={<UserPlus className={classes.icon} />}
+							>
+								Register
+							</Button>
 
-							<Hidden mdUp>
-								<Button
-									className={classes.button}
-									href='/'
-									startIcon={<Home className={classes.icon} />}
-								></Button>
+							<Button
+								className={classes.button}
+								href='/login'
+								startIcon={<LogIn className={classes.icon} />}
+							>
+								Login
+							</Button>
+						</Hidden>
 
-								<Button
-									className={classes.button}
-									href='/hairdressers'
-									startIcon={<Scissors className={classes.icon} />}
-								></Button>
+						<Hidden mdUp>
+							<Grid container justify='center' spacing={3}>
+								<Tooltip title='Home'>
+									<Button
+										className={classes.button}
+										href='/'
+										startIcon={<Home className={classes.icon} />}
+									></Button>
+								</Tooltip>
 
-								<Button
-									className={classes.button}
-									href='/register'
-									startIcon={<UserPlus className={classes.icon} />}
-								></Button>
+								<Tooltip title='Hairdressers'>
+									<Button
+										className={classes.button}
+										href='/hairdressers'
+										startIcon={<Scissors className={classes.icon} />}
+									></Button>
+								</Tooltip>
 
-								<Button
-									className={classes.button}
-									href='/login'
-									startIcon={<LogIn className={classes.icon} />}
-								></Button>
+								<Tooltip title='AR Hairstyler'>
+									<Button
+										className={classes.button}
+										startIcon={<SiProbot className={classes.icon} />}
+										onClick={() =>
+											window.open('https://hairstyler.myhairdone.co.uk')
+										}
+									></Button>
+								</Tooltip>
 
-								<Button
-									className={classes.button}
-									startIcon={<SiProbot className={classes.icon} />}
-									onClick={() =>
-										window.open('https://hairstyler.myhairdone.co.uk')
-									}
-								></Button>
-							</Hidden>
-						</Grid>
+								<Tooltip title='Register'>
+									<Button
+										className={classes.button}
+										href='/register'
+										startIcon={<UserPlus className={classes.icon} />}
+									></Button>
+								</Tooltip>
+
+								<Tooltip title='Login'>
+									<Button
+										className={classes.button}
+										href='/login'
+										startIcon={<LogIn className={classes.icon} />}
+									></Button>
+								</Tooltip>
+							</Grid>
+						</Hidden>
 					</Toolbar>
 				</AppBar>
 			</ThemeProvider>

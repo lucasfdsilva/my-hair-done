@@ -37,7 +37,6 @@ export default function BookingCardActive(props) {
 		<Grid container>
 			<Grid item>
 				<CardHeader
-					className={classes.header}
 					avatar={
 						<Avatar
 							className={classes.profileImgPicture}
@@ -49,31 +48,32 @@ export default function BookingCardActive(props) {
 					title={props.booking?.first_name + ' ' + props.booking?.last_name}
 					titleTypographyProps={{
 						variant: 'h5',
-						className: `${classes.title}`,
+					}}
+					subheaderTypographyProps={{
+						variant: 'h6',
+						color: 'primary',
 					}}
 					subheader={
-						props.isHairdresser === true &&
-						props.booking?.county + ', ' + props.booking?.country + '.'
+						formattedDate +
+						' | ' +
+						props.booking?.start_time?.slice(0, -3) +
+						' - ' +
+						props.booking?.end_time?.slice(0, -3)
 					}
 				/>
 			</Grid>
 
-			<Grid item>
-				<Typography variant='h6' color='primary' className={classes.date}>
-					{formattedDate} | {props.booking?.start_time?.slice(0, -3)} -{' '}
-					{props.booking?.end_time?.slice(0, -3)}
-				</Typography>
-			</Grid>
-
-			<Grid item>
-				<Button
-					color='primary'
-					variant='outlined'
-					className={classes.buttons}
-					onClick={() => handleCancelBooking()}
-				>
-					Cancel Booking
-				</Button>
+			<Grid container justify='flex-end' align='flex-end'>
+				<Grid item>
+					<Button
+						className={classes.buttonContainer}
+						color='primary'
+						variant='outlined'
+						onClick={() => handleCancelBooking()}
+					>
+						Cancel Booking
+					</Button>
+				</Grid>
 			</Grid>
 		</Grid>
 	);

@@ -10,7 +10,7 @@ import {
 	Divider,
 } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import { Add } from '@material-ui/icons';
+import { Add, Home } from '@material-ui/icons';
 import { useParams } from 'react-router-dom';
 
 import BookingFormNew from '../Bookings/BookingFormNew';
@@ -241,6 +241,20 @@ export default function ViewHairdresser(props) {
 									</Button>
 								</Grid>
 							)}
+						</Grid>
+
+						<Grid container>
+							<Home
+								color='primary'
+								fontSize='large'
+								style={{ marginLeft: 25 }}
+							/>
+							<Typography
+								variant='subtitle2'
+								style={{ marginTop: 7, marginBottom: 20 }}
+							>
+								Home service: {hairdresser.home_service === 1 ? 'Yes' : 'No'}
+							</Typography>
 						</Grid>
 					</Card>
 				</Grid>

@@ -3,19 +3,14 @@ import theme from '../../../../theme';
 
 export const useStyles = makeStyles({
 	listItem: { padding: 5 },
-	weekDays: {
-		marginLeft: 30,
-	},
-	title: {
-		marginTop: -40,
-	},
-	date: {
-		marginTop: 45,
-		marginLeft: 30,
-	},
-	buttons: {
-		marginTop: 40,
-		marginLeft: 50,
+	buttonContainer: {
+		marginRight: 30,
+		marginTop: -150,
+		[theme.breakpoints.down('xs')]: {
+			marginRight: 80,
+			marginTop: 0,
+			marginBottom: 30,
+		},
 	},
 	profileImgPicture: {
 		border: '2px solid #555',

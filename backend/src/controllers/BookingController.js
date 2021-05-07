@@ -270,7 +270,7 @@ module.exports = {
 
 			//Get all slots that are registered for that week day
 			const allRegisteredSlotsWeekDayTrueRaw = await connectDB.schema.raw(
-				`SELECT id, start_time, end_time from slots WHERE ${dateWeekDay} = true AND hairdresser_id = ${hairdresserId}`,
+				`SELECT id, start_time, end_time from slots WHERE ${dateWeekDay} = true AND hairdresser_id = ${hairdresserId} ORDER BY start_time ASC`,
 			);
 
 			var allRegisteredSlotsWeekDayTrueClean = [];
