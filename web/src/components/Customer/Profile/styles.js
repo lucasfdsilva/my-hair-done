@@ -60,6 +60,9 @@ export const useStyles = makeStyles({
 		marginBottom: 60,
 		fontSize: 50,
 		border: '2px solid #555',
+		[theme.breakpoints.down('xs')]: {
+			marginLeft: -45,
+		},
 	},
 	uploadButton: {
 		marginTop: 10,

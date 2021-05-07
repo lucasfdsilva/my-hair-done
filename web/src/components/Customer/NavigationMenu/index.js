@@ -2,7 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { SiProbot } from 'react-icons/si';
 import { BsCalendar, BsImages } from 'react-icons/bs';
 import { GrConfigure } from 'react-icons/gr';
-import { AppBar, Toolbar, Button, Grid, Hidden } from '@material-ui/core';
+
+import {
+	AppBar,
+	Toolbar,
+	Button,
+	Grid,
+	Hidden,
+	Menu,
+	MenuItem,
+	ListItemIcon,
+	ListItemText,
+	Popper,
+} from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import { Scissors, UserPlus, Power, Home, LogIn, User } from 'react-feather';
@@ -50,7 +62,7 @@ export default function NavigationMenu() {
 		return (
 			<ThemeProvider theme={theme}>
 				<AppBar position='static' color='white'>
-					<Toolbar>
+					<Toolbar className={classes.toolbar}>
 						<Hidden smDown>
 							<a href='/'>
 								<img src={headerLogo} alt='' className={classes.image} />
@@ -176,9 +188,7 @@ export default function NavigationMenu() {
 									onClick={() =>
 										window.open('https://hairstyler.myhairdone.co.uk')
 									}
-								>
-									AR Hairstyler (Dev)
-								</Button>
+								></Button>
 
 								{isAdmin == 1 && (
 									<Button
@@ -238,16 +248,6 @@ export default function NavigationMenu() {
 									Login
 								</Button>
 							</Hidden>
-
-							<Button
-								className={classes.button}
-								startIcon={<SiProbot className={classes.icon} />}
-								onClick={() =>
-									window.open('https://hairstyler.myhairdone.co.uk')
-								}
-							>
-								AR Hairstyler (Dev)
-							</Button>
 
 							<Hidden mdUp>
 								<Button

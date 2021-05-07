@@ -20,4 +20,7 @@ export const useStyles = makeStyles({
 		color: theme.palette.secondary.main,
 		fontSize: 'large',
 	},
+	toolbar: {
+		padding: 10,
+	},
 });

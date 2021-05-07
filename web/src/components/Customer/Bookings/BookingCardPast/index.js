@@ -18,8 +18,6 @@ import { useStyles } from './styles.js';
 export default function BookingCardPast(props) {
 	const classes = useStyles();
 	const [id, setID] = useState(localStorage.getItem('id'));
-	const [hairdresser, setHairdresser] = useState();
-	const [slot, setSlot] = useState();
 	const [formattedDate, setFormattedDate] = useState(
 		new Date(props.booking.date).toLocaleDateString(),
 	);
@@ -30,7 +28,9 @@ export default function BookingCardPast(props) {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		console.log(props.isHairdresser);
+	}, []);
 
 	const handleOpenReviewForm = () => {
 		setOpenReviewForm(true);
@@ -95,6 +95,7 @@ export default function BookingCardPast(props) {
 						className: `${classes.title}`,
 					}}
 					subheader={
+						props.isHairdresser === true &&
 						props.booking?.county + ', ' + props.booking?.country + '.'
 					}
 				/>
@@ -107,30 +108,34 @@ export default function BookingCardPast(props) {
 				</Typography>
 			</Grid>
 
-			{props.booking?.review_id === 0 ? (
-				<Grid item>
-					<Button
-						color='primary'
-						variant='outlined'
-						className={classes.buttons}
-						startIcon={<RateReview />}
-						onClick={() => setOpenReviewForm(true)}
-					>
-						Review
-					</Button>
-				</Grid>
+			{props.isHairdresser !== 1 ? (
+				props.booking?.review_id === 0 ? (
+					<Grid item>
+						<Button
+							color='primary'
+							variant='outlined'
+							className={classes.buttons}
+							startIcon={<RateReview />}
+							onClick={() => setOpenReviewForm(true)}
+						>
+							Review
+						</Button>
+					</Grid>
+				) : (
+					<Grid item>
+						<Button
+							color='primary'
+							variant='outlined'
+							className={classes.buttons}
+							startIcon={<RateReview />}
+							onClick={() => setOpenEditReviewForm(true)}
+						>
+							Edit Review
+						</Button>
+					</Grid>
+				)
 			) : (
-				<Grid item>
-					<Button
-						color='primary'
-						variant='outlined'
-						className={classes.buttons}
-						startIcon={<RateReview />}
-						onClick={() => setOpenEditReviewForm(true)}
-					>
-						Edit Review
-					</Button>
-				</Grid>
+				<Grid item></Grid>
 			)}
 		</Grid>
 	);

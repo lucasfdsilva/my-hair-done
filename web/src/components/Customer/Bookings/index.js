@@ -130,13 +130,21 @@ export default function Bookings() {
 			<Grid container className={classes.content}>
 				{selectedTab === 0 && (
 					<Grid item>
-						<ActiveBookings bookings={activeBookings} userId={id} />
+						<ActiveBookings
+							bookings={activeBookings}
+							isHairdresser={isHairdresser}
+							userId={id}
+						/>
 					</Grid>
 				)}
 
 				{selectedTab === 1 && (
 					<Grid item>
-						<PastBookings bookings={pastBookings} userId={id} />
+						<PastBookings
+							bookings={pastBookings}
+							isHairdresser={isHairdresser}
+							userId={id}
+						/>
 					</Grid>
 				)}
 

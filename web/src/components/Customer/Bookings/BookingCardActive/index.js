@@ -19,8 +19,6 @@ export default function BookingCardActive(props) {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
 
-	useEffect(() => {}, []);
-
 	async function handleCancelBooking() {
 		try {
 			const response = await api.delete(`/bookings`, {
@@ -54,6 +52,7 @@ export default function BookingCardActive(props) {
 						className: `${classes.title}`,
 					}}
 					subheader={
+						props.isHairdresser === true &&
 						props.booking?.county + ', ' + props.booking?.country + '.'
 					}
 				/>

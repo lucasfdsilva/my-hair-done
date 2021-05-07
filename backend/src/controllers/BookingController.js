@@ -51,9 +51,22 @@ module.exports = {
 
 			const connectDB = await knex.connect();
 
-			const allBookings = await connectDB('bookings').where({
-				hairdresser_id: hairdresserId,
-			});
+			const allBookings = await connectDB('bookings')
+				.select(
+					'bookings.*',
+					'users.first_name',
+					'users.last_name',
+					'users.profile_img_url',
+					'users.county',
+					'users.country',
+					'slots.start_time',
+					'slots.end_time',
+				)
+				.leftJoin('users', 'users.id', 'bookings.user_id')
+				.leftJoin('slots', 'slots.id', 'bookings.slot_id')
+				.where({
+					'bookings.hairdresser_id': hairdresserId,
+				});
 
 			if (!allBookings)
 				return res
@@ -106,6 +119,7 @@ module.exports = {
 				hairdresser_id: hairdresserId,
 				slot_id: slotId,
 				date: date,
+				review_id: 0,
 			});
 
 			/*
