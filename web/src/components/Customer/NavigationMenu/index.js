@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { SiProbot } from 'react-icons/si';
+import { BsCalendar, BsImages } from 'react-icons/bs';
+import { GrConfigure } from 'react-icons/gr';
 import { AppBar, Toolbar, Button, Grid, Hidden } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
-import {
-	Home,
-	ExitToApp,
-	HowToReg,
-	PeopleAlt,
-	Person,
-	PhotoLibrary,
-	LibraryBooks,
-	Apps,
-	Visibility,
-} from '@material-ui/icons';
+
+import { Scissors, UserPlus, Power, Home, LogIn, User } from 'react-feather';
 import theme from '../../../theme';
 import headerLogo from '../../../assets/header-logo.png';
 
@@ -73,7 +67,7 @@ export default function NavigationMenu() {
 							<Button
 								className={classes.button}
 								href='/hairdressers'
-								startIcon={<PeopleAlt className={classes.icon} />}
+								startIcon={<Scissors className={classes.icon} />}
 							>
 								Hairdressers
 							</Button>
@@ -81,7 +75,7 @@ export default function NavigationMenu() {
 							<Button
 								className={classes.button}
 								href='/profile'
-								startIcon={<Person className={classes.icon} />}
+								startIcon={<User className={classes.icon} />}
 							>
 								Profile
 							</Button>
@@ -90,7 +84,7 @@ export default function NavigationMenu() {
 								<Button
 									className={classes.button}
 									href={`/hairdressers/${id}`}
-									startIcon={<PhotoLibrary className={classes.icon} />}
+									startIcon={<BsImages className={classes.icon} />}
 								>
 									Portfolio
 								</Button>
@@ -99,14 +93,24 @@ export default function NavigationMenu() {
 							<Button
 								className={classes.button}
 								href='/bookings'
-								startIcon={<LibraryBooks className={classes.icon} />}
+								startIcon={<BsCalendar className={classes.icon} />}
 							>
 								Bookings
 							</Button>
 
 							<Button
 								className={classes.button}
-								startIcon={<ExitToApp className={classes.icon} />}
+								startIcon={<SiProbot className={classes.icon} />}
+								onClick={() =>
+									window.open('https://hairstyler.myhairdone.co.uk')
+								}
+							>
+								AR Hairstyler (Dev)
+							</Button>
+
+							<Button
+								className={classes.button}
+								startIcon={<Power className={classes.icon} />}
 								onClick={() => {
 									localStorage.setItem('id', '');
 									localStorage.setItem('accessToken', '');
@@ -131,33 +135,33 @@ export default function NavigationMenu() {
 								<Button
 									className={classes.button}
 									href='/hairdressers'
-									startIcon={<PeopleAlt className={classes.icon} />}
+									startIcon={<Scissors className={classes.icon} />}
 								></Button>
 
 								<Button
 									className={classes.button}
 									href='/profile'
-									startIcon={<Person className={classes.icon} />}
+									startIcon={<User className={classes.icon} />}
 								></Button>
 
 								{isHairdresser === 1 && (
 									<Button
 										className={classes.button}
 										href={`/hairdressers/${id}`}
-										startIcon={<PhotoLibrary className={classes.icon} />}
+										startIcon={<BsImages className={classes.icon} />}
 									></Button>
 								)}
 
 								<Button
 									className={classes.button}
 									href='/bookings'
-									startIcon={<LibraryBooks className={classes.icon} />}
+									startIcon={<BsCalendar className={classes.icon} />}
 								></Button>
 
 								<Button
 									className={classes.button}
 									href='/bookings'
-									startIcon={<ExitToApp className={classes.icon} />}
+									startIcon={<Power className={classes.icon} />}
 									onClick={() => {
 										localStorage.setItem('id', '');
 										localStorage.setItem('accessToken', '');
@@ -166,11 +170,21 @@ export default function NavigationMenu() {
 									}}
 								></Button>
 
+								<Button
+									className={classes.button}
+									startIcon={<SiProbot className={classes.icon} />}
+									onClick={() =>
+										window.open('https://hairstyler.myhairdone.co.uk')
+									}
+								>
+									AR Hairstyler (Dev)
+								</Button>
+
 								{isAdmin == 1 && (
 									<Button
 										className={classes.button}
 										href='/admin'
-										startIcon={<Apps className={classes.icon} />}
+										startIcon={<GrConfigure className={classes.icon} />}
 									>
 										Admin Panel
 									</Button>
@@ -203,7 +217,7 @@ export default function NavigationMenu() {
 								<Button
 									className={classes.button}
 									href='/hairdressers'
-									startIcon={<PeopleAlt className={classes.icon} />}
+									startIcon={<Scissors className={classes.icon} />}
 								>
 									Hairdressers
 								</Button>
@@ -211,7 +225,7 @@ export default function NavigationMenu() {
 								<Button
 									className={classes.button}
 									href='/register'
-									startIcon={<HowToReg className={classes.icon} />}
+									startIcon={<UserPlus className={classes.icon} />}
 								>
 									Register
 								</Button>
@@ -219,11 +233,21 @@ export default function NavigationMenu() {
 								<Button
 									className={classes.button}
 									href='/login'
-									startIcon={<ExitToApp className={classes.icon} />}
+									startIcon={<LogIn className={classes.icon} />}
 								>
 									Login
 								</Button>
 							</Hidden>
+
+							<Button
+								className={classes.button}
+								startIcon={<SiProbot className={classes.icon} />}
+								onClick={() =>
+									window.open('https://hairstyler.myhairdone.co.uk')
+								}
+							>
+								AR Hairstyler (Dev)
+							</Button>
 
 							<Hidden mdUp>
 								<Button
@@ -234,26 +258,28 @@ export default function NavigationMenu() {
 
 								<Button
 									className={classes.button}
-									href='/hairstyler'
-									startIcon={<Visibility className={classes.icon} />}
-								></Button>
-
-								<Button
-									className={classes.button}
 									href='/hairdressers'
-									startIcon={<PeopleAlt className={classes.icon} />}
+									startIcon={<Scissors className={classes.icon} />}
 								></Button>
 
 								<Button
 									className={classes.button}
 									href='/register'
-									startIcon={<HowToReg className={classes.icon} />}
+									startIcon={<UserPlus className={classes.icon} />}
 								></Button>
 
 								<Button
 									className={classes.button}
 									href='/login'
-									startIcon={<ExitToApp className={classes.icon} />}
+									startIcon={<LogIn className={classes.icon} />}
+								></Button>
+
+								<Button
+									className={classes.button}
+									startIcon={<SiProbot className={classes.icon} />}
+									onClick={() =>
+										window.open('https://hairstyler.myhairdone.co.uk')
+									}
 								></Button>
 							</Hidden>
 						</Grid>

@@ -61,8 +61,8 @@ export default function BookingCardActive(props) {
 
 			<Grid item>
 				<Typography variant='h6' color='primary' className={classes.date}>
-					{formattedDate} | {props.booking?.start_time.slice(0, -3)} -{' '}
-					{props.booking?.end_time.slice(0, -3)}
+					{formattedDate} | {props.booking?.start_time?.slice(0, -3)} -{' '}
+					{props.booking?.end_time?.slice(0, -3)}
 				</Typography>
 			</Grid>
 

@@ -17,14 +17,6 @@ function Routes() {
 				/>
 
 				<Route
-					path='/hairstyler'
-					exact
-					render={(props) => (
-						<CustomerHome {...props} component={'FaceDetection'} />
-					)}
-				/>
-
-				<Route
 					path='/hairdressers'
 					exact
 					render={(props) => (
