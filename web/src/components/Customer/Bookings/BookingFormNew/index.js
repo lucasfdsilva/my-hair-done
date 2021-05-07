@@ -61,6 +61,8 @@ export default function BookingFormNew(props) {
 					}&hairdresserId=${hairdresserId}`,
 				);
 
+				console.log(dateValue.getMonth() + 1);
+
 				setAvailableSlots(response.data.availableSlots);
 			} catch (error) {
 				setErrorMessage(error?.response?.data?.message);

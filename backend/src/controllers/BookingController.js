@@ -309,21 +309,12 @@ module.exports = {
 
 				//If the date is today, the below eliminates all slots that the start time has already passed
 				const todayDate = new Date();
-
-				let todayDateMonth = todayDate.getMonth() + 1;
-
-				if (todayDateMonth < 10) {
-					todayDateMonth = `0${todayDateMonth}`;
-				}
-
-				let todayDateDay = todayDate.getDate();
-
-				if (todayDateDay < 10) {
-					todayDateDay = `0${todayDateDay}`;
-				}
-
 				const formattedTodayDate =
-					todayDate.getFullYear() + '-' + todayDateMonth + '-' + todayDateDay;
+					todayDate.getFullYear() +
+					'-' +
+					(todayDate.getMonth() + 1) +
+					'-' +
+					todayDate.getDate();
 
 				const currentTime = todayDate.getTime();
 
