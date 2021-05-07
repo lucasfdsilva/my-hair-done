@@ -3,18 +3,7 @@ import { SiProbot } from 'react-icons/si';
 import { BsCalendar, BsImages } from 'react-icons/bs';
 import { GrConfigure } from 'react-icons/gr';
 
-import {
-	AppBar,
-	Toolbar,
-	Button,
-	Grid,
-	Hidden,
-	Menu,
-	MenuItem,
-	ListItemIcon,
-	ListItemText,
-	Popper,
-} from '@material-ui/core';
+import { AppBar, Toolbar, Button, Grid, Hidden } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import { Scissors, UserPlus, Power, Home, LogIn, User } from 'react-feather';

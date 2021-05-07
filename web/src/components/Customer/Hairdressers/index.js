@@ -61,18 +61,6 @@ export default function Hairdressers() {
 		searchHairdressers();
 	}, [searchParameter]);
 
-	async function handleSearch(event) {
-		event.preventDefault();
-
-		try {
-			const response = await api.get(`/users/hairdressers/${searchParameter}`);
-
-			setHairdressers(response.data.hairdressers);
-		} catch (error) {
-			setErrorMessage(error.response.data.message);
-		}
-	}
-
 	return (
 		<Grid container className={classes.componentGrid}>
 			<Grid
@@ -95,6 +83,12 @@ export default function Hairdressers() {
 							</Grid>
 						</>
 					)}
+
+					<Grid item xs={12} sm={12} md={12} lg={12}>
+						<Typography variant='h5' className={classes.searchTitle}>
+							Search for hairdressers
+						</Typography>
+					</Grid>
 
 					<Grid item xs={12} sm={12} md={12} lg={12}>
 						<TextField

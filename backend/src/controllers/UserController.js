@@ -51,7 +51,7 @@ module.exports = {
 					.json({ message: 'There are no registered hairdressers.' });
 			}
 
-			const allHairdressersWithReviews = [];
+			const allHairdressers = [];
 
 			for (const hairdresser of allHairdressersFromDB) {
 				const reviews = await connectDB('reviews')
@@ -60,7 +60,25 @@ module.exports = {
 					})
 					.orderBy('created_at', 'desc');
 
-				const hairdresserWithReviews = {
+				const posts = await connectDB('portfolio_posts')
+					.where({
+						user_id: hairdresser.id,
+					})
+					.orderBy('created_at', 'desc');
+
+				let lastPortfolioImageUrl = '';
+
+				for (const post of posts) {
+					const images = await connectDB('portfolio_images')
+						.where({
+							post_id: post.id,
+						})
+						.orderBy('created_at', 'desc');
+
+					lastPortfolioImageUrl = images[0].url;
+				}
+
+				const hairdresserWithAddedDetails = {
 					id: hairdresser.id,
 					first_name: hairdresser.first_name,
 					last_name: hairdresser.last_name,
@@ -77,12 +95,16 @@ module.exports = {
 					county: hairdresser.county,
 					country: hairdresser.country,
 					reviews: reviews,
+					posts: posts,
+					lastPortfolioImageUrl: lastPortfolioImageUrl,
 				};
 
-				allHairdressersWithReviews.push(hairdresserWithReviews);
+				allHairdressers.push(hairdresserWithAddedDetails);
 			}
 
-			return res.json({ hairdressers: allHairdressersWithReviews });
+			return res.json({
+				hairdressers: allHairdressers,
+			});
 		} catch (error) {
 			next(error);
 		}
@@ -569,12 +591,10 @@ module.exports = {
 				}
 			});
 
-			return res
-				.status(201)
-				.json({
-					message:
-						'Forgot Password email sent successfully. Please check your inbox. The password reset link will expire in 2 hours.',
-				});
+			return res.status(201).json({
+				message:
+					'Forgot Password email sent successfully. Please check your inbox. The password reset link will expire in 2 hours.',
+			});
 		} catch (error) {
 			next(error);
 		}

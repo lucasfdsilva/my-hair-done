@@ -5,6 +5,8 @@ const AWS = require('aws-sdk');
 AWS.config.update({ region: 'eu-west-1' });
 const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
 
+const moment = require('moment');
+
 module.exports = {
 	async indexUser(req, res, next) {
 		try {
@@ -303,6 +305,34 @@ module.exports = {
 						start_time: slot.start_time,
 						end_time: slot.end_time,
 					});
+				}
+
+				//If the date is today, the below eliminates all slots that the start time has already passed
+				const todayDate = new Date();
+
+				let todayDateMonth = todayDate.getMonth() + 1;
+
+				if (todayDateMonth < 10) {
+					todayDateMonth = `0${todayDateMonth}`;
+				}
+
+				let todayDateDay = todayDate.getDate();
+
+				if (todayDateDay < 10) {
+					todayDateDay = `0${todayDateDay}`;
+				}
+
+				const formattedTodayDate =
+					todayDate.getFullYear() + '-' + todayDateMonth + '-' + todayDateDay;
+
+				const currentTime = todayDate.getTime();
+
+				if (date == formattedTodayDate) {
+					for (const [index, slotDate] of availableSlots.entries()) {
+						if (moment(slotDate.start_time, 'hh:mm:ss').isBefore(currentTime)) {
+							availableSlots.pop(index);
+						}
+					}
 				}
 			}
 

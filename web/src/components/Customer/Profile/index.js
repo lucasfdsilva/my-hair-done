@@ -142,11 +142,9 @@ export default function Profile() {
 			localStorage.setItem('id', '');
 			localStorage.setItem('accessToken', '');
 
-			alert(`User Deleted Successfully ${response.data}`);
-
 			history.push('/');
 		} catch (error) {
-			alert(`Could not delete user. Error: ${error}`);
+			setErrorMessage(`Could not delete user. Error: ${error}`);
 		}
 	}
 

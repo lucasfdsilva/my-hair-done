@@ -84,4 +84,8 @@ export const useStyles = makeStyles({
 		justifyContent: 'center',
 		width: '100%',
 	},
+	searchTitle: {
+		marginTop: 10,
+		marginLeft: 5,
+	},
 });

@@ -50,7 +50,6 @@ export default function BookingFormNew(props) {
 		}
 
 		async function loadSlots() {
-			console.log('loading slots');
 			try {
 				const response = await api.get(
 					`/availability?date=${
@@ -61,7 +60,6 @@ export default function BookingFormNew(props) {
 						dateValue.getDate()
 					}&hairdresserId=${hairdresserId}`,
 				);
-				console.log(response.data.availableSlots);
 
 				setAvailableSlots(response.data.availableSlots);
 			} catch (error) {

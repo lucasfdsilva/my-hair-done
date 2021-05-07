@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
 	Card,
 	CardHeader,
@@ -16,6 +17,8 @@ import BookingFormNew from '../../Bookings/BookingFormNew';
 
 import { useStyles } from './styles';
 
+import api from '../../../../services/api';
+
 export default function HairdresserCard(props) {
 	const classes = useStyles();
 	const [id, setID] = useState(localStorage.getItem('id'));
@@ -26,6 +29,8 @@ export default function HairdresserCard(props) {
 	const [lastReviewDate, setLastReviewDate] = useState('');
 
 	const [openBookingForm, setOpenBookingForm] = useState(false);
+
+	const history = useHistory();
 
 	useEffect(() => {
 		async function getReviews() {
@@ -120,14 +125,19 @@ export default function HairdresserCard(props) {
 					</Grid>
 				</Grid>
 
-				<CardMedia
-					component='img'
-					image={props.hairdresser.profile_img_url}
-					height='160'
-					title={
-						props.hairdresser.first_name + ' ' + props.hairdresser.last_name
-					}
-				/>
+				<label
+					className={classes.portfolioImg}
+					onClick={() => history.push(`/hairdressers/${props.hairdresser.id}`)}
+				>
+					<CardMedia
+						component='img'
+						image={props.hairdresser?.lastPortfolioImageUrl}
+						height='160'
+						title={
+							props.hairdresser.first_name + ' ' + props.hairdresser.last_name
+						}
+					/>
+				</label>
 
 				<CardContent>
 					{props.hairdresser?.reviews?.length > 0 && (

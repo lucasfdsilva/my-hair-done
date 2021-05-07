@@ -81,4 +81,9 @@ export const useStyles = makeStyles({
 		justifyContent: 'center',
 		width: '100%',
 	},
+	portfolioImg: {
+		'&:hover': {
+			cursor: 'pointer',
+		},
+	},
 });

@@ -250,16 +250,22 @@ export default function ViewHairdresser(props) {
 			<Divider variant='middle' fullWidth className={classes.divider} />
 
 			<Grid container spacing={3}>
-				{featuredPosts.map((post) => (
-					<Grid item xs={12} sm={6} md={4} lg={3}>
-						<PortfolioPostCard
-							key={post.id}
-							post={post}
-							isOwner={isOwner}
-							userId={id}
-						/>
-					</Grid>
-				))}
+				{featuredPosts.length > 0 ? (
+					featuredPosts.map((post) => (
+						<Grid item xs={12} sm={6} md={4} lg={3}>
+							<PortfolioPostCard
+								key={post.id}
+								post={post}
+								isOwner={isOwner}
+								userId={id}
+							/>
+						</Grid>
+					))
+				) : (
+					<Typography style={{ marginLeft: 13 }}>
+						No Feature Jobs have been created by this hairdresser yet.
+					</Typography>
+				)}
 			</Grid>
 
 			<Typography variant='h5' className={classes.reviewTitle}>
@@ -267,15 +273,19 @@ export default function ViewHairdresser(props) {
 			</Typography>
 			<Divider variant='middle' fullWidth className={classes.divider} />
 
-			<Grid container>
-				{reviews.map((review, i) => (
-					<Grid item xs={12}>
-						<ReviewCard key={review.id} review={review} />
+			{reviews.length > 0 ? (
+				<Grid container>
+					{reviews.map((review, i) => (
+						<Grid item xs={12}>
+							<ReviewCard key={review.id} review={review} />
 
-						{i + 1 < reviews.length && <Divider />}
-					</Grid>
-				))}
-			</Grid>
+							{i + 1 < reviews.length && <Divider />}
+						</Grid>
+					))}
+				</Grid>
+			) : (
+				<Typography>There are no reviews for this hairdresser yet.</Typography>
+			)}
 		</Grid>
 	);
 }

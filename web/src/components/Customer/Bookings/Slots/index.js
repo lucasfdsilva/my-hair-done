@@ -69,17 +69,23 @@ export default function Slots(props) {
 				</Button>
 			</Grid>
 
-			<Grid item xs={12}>
-				<List className={classes.list} dense>
-					{props.slots.map((slot, i) => (
-						<Grid item xs={12}>
-							<SlotCard slot={slot} userId={props.userId} />
+			{props.slots.length > 0 ? (
+				<Grid item xs={12}>
+					<List className={classes.list} dense>
+						{props.slots.map((slot, i) => (
+							<Grid item xs={12}>
+								<SlotCard slot={slot} userId={props.userId} />
 
-							{i + 1 < props.slots.length && <Divider />}
-						</Grid>
-					))}
-				</List>
-			</Grid>
+								{i + 1 < props.slots.length && <Divider />}
+							</Grid>
+						))}
+					</List>
+				</Grid>
+			) : (
+				<Grid item>
+					<Typography>You don't have any past bookings.</Typography>
+				</Grid>
+			)}
 		</Grid>
 	);
 }
