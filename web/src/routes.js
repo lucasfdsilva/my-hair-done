@@ -56,10 +56,21 @@ function Routes() {
 						<CustomerHome {...props} component={'ViewHairdresser'} />
 					)}
 				/>
+
 				<Route
 					path='/bookings/new/hairdressers/:hairdresserId'
 					render={(props) => (
 						<CustomerHome {...props} component={'BookingFormNew'} />
+					)}
+				/>
+
+				<Route
+					path='/bookings/cancelled'
+					render={(props) => (
+						<CustomerHome
+							{...props}
+							component={'BookingCancellationConfirmation'}
+						/>
 					)}
 				/>
 

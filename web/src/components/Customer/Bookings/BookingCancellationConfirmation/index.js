@@ -1,23 +1,32 @@
 import React from 'react';
 import { Grid, Typography, Button } from '@material-ui/core';
-import { CheckCircleOutline } from '@material-ui/icons';
+import { CancelOutlined } from '@material-ui/icons';
 
 import { useStyles } from './styles';
-export default function BookingConfirmation() {
+export default function BookingCancellationConfirmation() {
 	const classes = useStyles();
 
 	return (
-		<Grid container align='center' justify='center' spacing={3}>
+		<Grid
+			container
+			align='center'
+			justify='center'
+			spacing={3}
+			className={classes.componentGrid}
+			xs={12}
+			md={8}
+			lg={6}
+		>
 			<Grid item xs={12}>
-				<CheckCircleOutline
-					style={{ color: '#10B83F', fontSize: 60, marginTop: 45 }}
+				<CancelOutlined
+					style={{ color: '#EF5350', fontSize: 60, marginTop: 45 }}
 				/>
-				<Typography variant='h5'> Booking completed successfully!</Typography>
+				<Typography variant='h5'> Your Booking has been cancelled.</Typography>
 			</Grid>
 
 			<Grid item xs={12}>
 				<Typography variant='body1'>
-					You will receive an email confirmation shortly.
+					A notification email has been sent confirming the cancellation.
 				</Typography>
 			</Grid>
 

@@ -13,6 +13,7 @@ import ResetPassword from '../../components/Customer/ResetPassword';
 import Hairdressers from '../../components/Customer/Hairdressers';
 import ViewHairdresser from '../../components/Customer/ViewHairdresser';
 import BookingFormNew from '../../components/Customer/Bookings/BookingFormNew';
+import BookingCancellationConfirmation from '../../components/Customer/Bookings/BookingCancellationConfirmation';
 import Profile from '../../components/Customer/Profile';
 import EmailVerificationConfirmation from '../../components/Customer/Profile/EmailVerificationConfirmation';
 import Register from '../../components/Customer/Register';
@@ -29,6 +30,7 @@ export default function Layout(props) {
 		Hairdressers,
 		ViewHairdresser,
 		BookingFormNew,
+		BookingCancellationConfirmation,
 		Profile,
 		EmailVerificationConfirmation,
 		Register,

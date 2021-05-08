@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
 	Grid,
 	CardHeader,
@@ -19,13 +20,15 @@ export default function BookingCardActive(props) {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
 
+	const history = useHistory();
+
 	async function handleCancelBooking() {
 		try {
 			const response = await api.delete(`/bookings`, {
 				data: { id: props.booking.id },
 			});
 
-			window.location.reload();
+			history.push('/bookings/cancelled');
 		} catch (error) {
 			setErrorMessage(error?.response?.data?.message);
 		}
