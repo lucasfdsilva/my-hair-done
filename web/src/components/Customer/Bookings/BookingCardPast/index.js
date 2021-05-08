@@ -107,6 +107,19 @@ export default function BookingCardPast(props) {
 				/>
 			</Grid>
 			<Grid container justify='flex-end' align='flex-end'>
+				{props.isHairdresser == false && (
+					<Grid item>
+						<Button
+							className={classes.buttonContainer}
+							color='primary'
+							variant='outlined'
+							href={`/hairdressers/${props.booking?.hairdresser_id}`}
+						>
+							View Profile
+						</Button>
+					</Grid>
+				)}
+
 				{props.isHairdresser !== 1 ? (
 					props.booking?.review_id === 0 ? (
 						<Grid item>

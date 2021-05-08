@@ -149,7 +149,7 @@ module.exports = {
 				review_id: 0,
 			});
 
-			const SQSParamsUser = {
+			const SQSParams = {
 				MessageAttributes: {
 					bookingID: {
 						DataType: 'String',
@@ -197,70 +197,10 @@ module.exports = {
 				MessageDeduplicationId: String(newBooking[0]), // Required for FIFO queues
 				MessageGroupId: 'Group1', // Required for FIFO queues
 				QueueUrl:
-					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-BookingConfirmationEmailUser.fifo',
+					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-BookingConfirmation.fifo',
 			};
 
-			const SQSParamsHairdresser = {
-				MessageAttributes: {
-					bookingID: {
-						DataType: 'String',
-						StringValue: String(newBooking[0]),
-					},
-					userEmail: {
-						DataType: 'String',
-						StringValue: userFromDB.email,
-					},
-					userName: {
-						DataType: 'String',
-						StringValue: userFromDB.first_name + ' ' + userFromDB.last_name,
-					},
-					hairdresserId: {
-						DataType: 'String',
-						StringValue: String(hairdresserId),
-					},
-					hairdresserEmail: {
-						DataType: 'String',
-						StringValue: hairdresserFromDB.email,
-					},
-					hairdresserMobile: {
-						DataType: 'String',
-						StringValue: hairdresserFromDB.mobile,
-					},
-					hairdresserName: {
-						DataType: 'String',
-						StringValue:
-							hairdresserFromDB.first_name + ' ' + hairdresserFromDB.last_name,
-					},
-					date: {
-						DataType: 'String',
-						StringValue: formattedDate.toDateString(),
-					},
-					startTime: {
-						DataType: 'String',
-						StringValue: slotFromDB.start_time.slice(0, -3),
-					},
-					endTime: {
-						DataType: 'String',
-						StringValue: slotFromDB.end_time.slice(0, -3),
-					},
-				},
-				MessageBody: 'New Booking Confirmation Email',
-				MessageDeduplicationId: String(newBooking[0]), // Required for FIFO queues
-				MessageGroupId: 'Group1', // Required for FIFO queues
-				QueueUrl:
-					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-BookingConfirmationEmailHairdresser.fifo',
-			};
-
-			sqs.sendMessage(SQSParamsUser, function (err, data) {
-				if (err) {
-					console.log('Error', err);
-					return res.status(500).json({ err });
-				} else {
-					console.log('Success', data.MessageId);
-				}
-			});
-
-			sqs.sendMessage(SQSParamsHairdresser, function (err, data) {
+			sqs.sendMessage(SQSParams, function (err, data) {
 				if (err) {
 					console.log('Error', err);
 					return res.status(500).json({ err });
@@ -332,9 +272,98 @@ module.exports = {
 			if (!bookingFromDB)
 				return res.status(400).json({ message: 'No Booking Found' });
 
+			const userFromDB = await connectDB('users')
+				.where({ id: bookingFromDB.user_id })
+				.first();
+
+			if (!userFromDB)
+				return res
+					.status(404)
+					.json({ message: `Can't find the user with the provided ID.` });
+
+			const hairdresserFromDB = await connectDB('users')
+				.where({ id: bookingFromDB.hairdresser_id })
+				.first();
+
+			if (!hairdresserFromDB)
+				return res.status(404).json({
+					message: `Can't find the hairdresser with the provided ID.`,
+				});
+
+			const slotFromDB = await connectDB('slots')
+				.where({ id: bookingFromDB.slot_id })
+				.first();
+
+			if (!slotFromDB)
+				return res.status(404).json({
+					message: `Can't find the slot with the provided ID.`,
+				});
+
+			let formattedDate = new Date(bookingFromDB.date);
+
 			const deletedBooking = await connectDB('bookings')
 				.where({ id: id })
 				.del();
+
+			const SQSParams = {
+				MessageAttributes: {
+					bookingID: {
+						DataType: 'String',
+						StringValue: String(bookingFromDB.id),
+					},
+					userEmail: {
+						DataType: 'String',
+						StringValue: userFromDB.email,
+					},
+					userName: {
+						DataType: 'String',
+						StringValue: userFromDB.first_name + ' ' + userFromDB.last_name,
+					},
+					hairdresserId: {
+						DataType: 'String',
+						StringValue: String(hairdresserFromDB.id),
+					},
+					hairdresserEmail: {
+						DataType: 'String',
+						StringValue: hairdresserFromDB.email,
+					},
+					hairdresserMobile: {
+						DataType: 'String',
+						StringValue: hairdresserFromDB.mobile,
+					},
+					hairdresserName: {
+						DataType: 'String',
+						StringValue:
+							hairdresserFromDB.first_name + ' ' + hairdresserFromDB.last_name,
+					},
+					date: {
+						DataType: 'String',
+						StringValue: formattedDate.toDateString(),
+					},
+					startTime: {
+						DataType: 'String',
+						StringValue: slotFromDB.start_time.slice(0, -3),
+					},
+					endTime: {
+						DataType: 'String',
+						StringValue: slotFromDB.end_time.slice(0, -3),
+					},
+				},
+				MessageBody: 'Booking Cancellation Email',
+				MessageDeduplicationId: String(bookingFromDB.id), // Required for FIFO queues
+				MessageGroupId: 'Group1', // Required for FIFO queues
+				QueueUrl:
+					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-BookingCancellation.fifo',
+			};
+
+			sqs.sendMessage(SQSParams, function (err, data) {
+				if (err) {
+					console.log('Error', err);
+					return res.status(500).json({ err });
+				} else {
+					console.log('Success', data.MessageId);
+				}
+			});
 
 			return res.status(200).json({ message: 'Booking deleted successfully' });
 		} catch (error) {
