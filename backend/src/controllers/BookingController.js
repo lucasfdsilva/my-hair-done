@@ -106,7 +106,7 @@ module.exports = {
 
 	async create(req, res, next) {
 		try {
-			const { userId, hairdresserId, slotId, date } = req.body;
+			const { userId, hairdresserId, date, slotId } = req.body;
 
 			if (!userId || !hairdresserId || !slotId || !date) {
 				return res
@@ -116,6 +116,31 @@ module.exports = {
 
 			const connectDB = await knex.connect();
 
+			const userFromDB = await connectDB('users').where({ id: userId }).first();
+
+			if (!userFromDB)
+				return res
+					.status(404)
+					.json({ message: `Can't find the user with the provided ID.` });
+
+			const hairdresserFromDB = await connectDB('users')
+				.where({ id: hairdresserId })
+				.first();
+
+			if (!hairdresserFromDB)
+				return res.status(404).json({
+					message: `Can't find the hairdresser with the provided ID.`,
+				});
+
+			const slotFromDB = await connectDB('slots').where({ id: slotId }).first();
+
+			if (!slotFromDB)
+				return res.status(404).json({
+					message: `Can't find the slot with the provided ID.`,
+				});
+
+			let formattedDate = new Date(date);
+
 			const newBooking = await connectDB('bookings').insert({
 				user_id: userId,
 				hairdresser_id: hairdresserId,
@@ -124,53 +149,125 @@ module.exports = {
 				review_id: 0,
 			});
 
-			/*
-      const SQSParams = {
-        MessageAttributes: {
-          "bookingID": {
-            DataType: "String",
-            StringValue: String(newBooking[0])
-          },
-          "userId": {
-            DataType: "String",
-            StringValue: String(userId)
-          },
-          "hairdresserId": {
-            DataType: "String",
-            StringValue: String(hairdresserId)
-          },
-          "userEmail": {
-            DataType: "String",
-            StringValue: userEmail
-          },
-          "date": {
-            DataType: "String",
-            StringValue: date
-          },
-          "startTime": {
-            DataType: "String",
-            StringValue: startTime
-          },
-          "duration": {
-            DataType: "String",
-            StringValue: String(duration)
-          },
-        },
-        MessageBody: "New Booking Confirmation Email",
-        MessageDeduplicationId: String(newBooking[0]),  // Required for FIFO queues
-        MessageGroupId: "Group1",  // Required for FIFO queues
-        QueueUrl: "https://sqs.eu-west-1.amazonaws.com/128363080680/RESTaurant-BookingConfirmationEmail.fifo"
-      }
+			const SQSParamsUser = {
+				MessageAttributes: {
+					bookingID: {
+						DataType: 'String',
+						StringValue: String(newBooking[0]),
+					},
+					userEmail: {
+						DataType: 'String',
+						StringValue: userFromDB.email,
+					},
+					userName: {
+						DataType: 'String',
+						StringValue: userFromDB.first_name + ' ' + userFromDB.last_name,
+					},
+					hairdresserId: {
+						DataType: 'String',
+						StringValue: String(hairdresserId),
+					},
+					hairdresserEmail: {
+						DataType: 'String',
+						StringValue: hairdresserFromDB.email,
+					},
+					hairdresserMobile: {
+						DataType: 'String',
+						StringValue: hairdresserFromDB.mobile,
+					},
+					hairdresserName: {
+						DataType: 'String',
+						StringValue:
+							hairdresserFromDB.first_name + ' ' + hairdresserFromDB.last_name,
+					},
+					date: {
+						DataType: 'String',
+						StringValue: formattedDate.toDateString(),
+					},
+					startTime: {
+						DataType: 'String',
+						StringValue: slotFromDB.start_time.slice(0, -3),
+					},
+					endTime: {
+						DataType: 'String',
+						StringValue: slotFromDB.end_time.slice(0, -3),
+					},
+				},
+				MessageBody: 'New Booking Confirmation Email',
+				MessageDeduplicationId: String(newBooking[0]), // Required for FIFO queues
+				MessageGroupId: 'Group1', // Required for FIFO queues
+				QueueUrl:
+					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-BookingConfirmationEmailUser.fifo',
+			};
 
-      sqs.sendMessage(SQSParams, function(err, data){
-        if (err) {
-          console.log("Error", err);
-          return res.status(500).json({ err });
-        } else {
-          console.log("Success", data.MessageId);
-        }
-      })
-      */
+			const SQSParamsHairdresser = {
+				MessageAttributes: {
+					bookingID: {
+						DataType: 'String',
+						StringValue: String(newBooking[0]),
+					},
+					userEmail: {
+						DataType: 'String',
+						StringValue: userFromDB.email,
+					},
+					userName: {
+						DataType: 'String',
+						StringValue: userFromDB.first_name + ' ' + userFromDB.last_name,
+					},
+					hairdresserId: {
+						DataType: 'String',
+						StringValue: String(hairdresserId),
+					},
+					hairdresserEmail: {
+						DataType: 'String',
+						StringValue: hairdresserFromDB.email,
+					},
+					hairdresserMobile: {
+						DataType: 'String',
+						StringValue: hairdresserFromDB.mobile,
+					},
+					hairdresserName: {
+						DataType: 'String',
+						StringValue:
+							hairdresserFromDB.first_name + ' ' + hairdresserFromDB.last_name,
+					},
+					date: {
+						DataType: 'String',
+						StringValue: formattedDate.toDateString(),
+					},
+					startTime: {
+						DataType: 'String',
+						StringValue: slotFromDB.start_time.slice(0, -3),
+					},
+					endTime: {
+						DataType: 'String',
+						StringValue: slotFromDB.end_time.slice(0, -3),
+					},
+				},
+				MessageBody: 'New Booking Confirmation Email',
+				MessageDeduplicationId: String(newBooking[0]), // Required for FIFO queues
+				MessageGroupId: 'Group1', // Required for FIFO queues
+				QueueUrl:
+					'https://sqs.eu-west-1.amazonaws.com/128363080680/myhairdone-BookingConfirmationEmailHairdresser.fifo',
+			};
+
+			sqs.sendMessage(SQSParamsUser, function (err, data) {
+				if (err) {
+					console.log('Error', err);
+					return res.status(500).json({ err });
+				} else {
+					console.log('Success', data.MessageId);
+				}
+			});
+
+			sqs.sendMessage(SQSParamsHairdresser, function (err, data) {
+				if (err) {
+					console.log('Error', err);
+					return res.status(500).json({ err });
+				} else {
+					console.log('Success', data.MessageId);
+				}
+			});
 
 			return res.status(201).json({
 				message: 'Booking Registered Successfully',
