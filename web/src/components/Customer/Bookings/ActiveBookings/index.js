@@ -19,7 +19,11 @@ export default function ActiveBookings(props) {
 					<List className={classes.list} dense>
 						{props.bookings.map((booking, i) => (
 							<Grid item xs={12}>
-								<BookingCardActive booking={booking} userId={props.userId} />
+								<BookingCardActive
+									booking={booking}
+									userId={props.userId}
+									isHairdresser={props.isHairdresser}
+								/>
 
 								{i + 1 < props.bookings.length && <Divider />}
 							</Grid>

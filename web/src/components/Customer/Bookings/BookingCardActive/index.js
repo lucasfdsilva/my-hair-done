@@ -64,6 +64,19 @@ export default function BookingCardActive(props) {
 			</Grid>
 
 			<Grid container justify='flex-end' align='flex-end'>
+				{props.isHairdresser == false && (
+					<Grid item>
+						<Button
+							className={classes.buttonContainer}
+							color='primary'
+							variant='outlined'
+							href={`/hairdressers/${props.booking?.hairdresser_id}`}
+						>
+							View Profile
+						</Button>
+					</Grid>
+				)}
+
 				<Grid item>
 					<Button
 						className={classes.buttonContainer}

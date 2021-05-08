@@ -116,7 +116,7 @@ export default function Bookings() {
 	const classes = useStyles();
 
 	return (
-		<Grid container className={classes.componentGrid}>
+		<Grid container className={classes.componentGrid} xs={12} md={8} lg={6}>
 			<Grid item xs={12}>
 				<AppBar position='static' className={classes.appbar}>
 					<Tabs value={selectedTab} onChange={handleChange} centered>
@@ -127,7 +127,12 @@ export default function Bookings() {
 				</AppBar>
 			</Grid>
 
-			<Grid container className={classes.content}>
+			<Grid
+				container
+				className={classes.content}
+				justify='center'
+				align='center'
+			>
 				{selectedTab === 0 && (
 					<Grid item>
 						<ActiveBookings
@@ -149,7 +154,7 @@ export default function Bookings() {
 				)}
 
 				{selectedTab === 2 && (
-					<Grid item xs={12}>
+					<Grid item>
 						<Slots slots={slots} userId={id} />
 					</Grid>
 				)}
