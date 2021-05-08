@@ -8,6 +8,8 @@ import {
 	Button,
 } from '@material-ui/core';
 
+import { Error } from '@material-ui/icons';
+
 import { useStyles } from './styles.js';
 
 import api from '../../../../services/api';
@@ -20,7 +22,13 @@ export default function BookingCardActive(props) {
 	const [errorMessage, setErrorMessage] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
 
+	const [clickedToCancel, setClickedToCancel] = useState(false);
+
 	const history = useHistory();
+
+	async function handleClickedToCancel() {
+		setClickedToCancel(true);
+	}
 
 	async function handleCancelBooking() {
 		try {
@@ -81,14 +89,25 @@ export default function BookingCardActive(props) {
 				)}
 
 				<Grid item>
-					<Button
-						className={classes.buttonContainer}
-						color='primary'
-						variant='outlined'
-						onClick={() => handleCancelBooking()}
-					>
-						Cancel Booking
-					</Button>
+					{clickedToCancel == 1 ? (
+						<Button
+							startIcon={<Error color='primary' />}
+							onClick={() => handleCancelBooking()}
+							className={classes.buttonContainer}
+							variant='outlined'
+						>
+							Are you Sure?
+						</Button>
+					) : (
+						<Button
+							className={classes.buttonContainer}
+							color='primary'
+							variant='outlined'
+							onClick={() => setClickedToCancel(true)}
+						>
+							Cancel Booking
+						</Button>
+					)}
 				</Grid>
 			</Grid>
 		</Grid>
