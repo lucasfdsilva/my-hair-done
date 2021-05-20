@@ -139,7 +139,7 @@ export default function Hairdressers() {
 					))}
 			</Grid>
 
-			<Typography variant='h5'>Featured Professionals</Typography>
+			<Typography variant='h5'>Featured Hairdressers</Typography>
 
 			<Divider variant='middle' fullWidth className={classes.divider} />
 
