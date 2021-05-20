@@ -20,7 +20,7 @@ export const useStyles = makeStyles({
 		maxHeight: 420,
 		[theme.breakpoints.down('sm')]: {
 			maxHeight: 800,
-			padding: 70,
+			padding: 10,
 		},
 	},
 	faceRecognitionInnerContainer: {
@@ -44,8 +44,7 @@ export const useStyles = makeStyles({
 	},
 	featuredHairdressersContainer: {
 		backgroundColor: '#fff',
-		padding: 70,
-		marginTop: -20,
+		padding: 20,
 	},
 	button: {
 		marginTop: 60,
@@ -69,7 +68,7 @@ export const useStyles = makeStyles({
 	forUsersContainer: {
 		borderRadius: 8,
 		marginTop: 15,
-		padding: 40,
+		padding: 20,
 		marginBottom: 50,
 		backgroundColor: 'rgba(255,255,255, 0.7)',
 	},
@@ -83,7 +82,11 @@ export const useStyles = makeStyles({
 	forUsersImage: {
 		borderRadius: 8,
 		[theme.breakpoints.down('xs')]: {
-			height: 230,
+			height: 175,
 		},
+	},
+	reviewsContainer: {
+		backgroundColor: '#fff',
+		padding: 40,
 	},
 });

@@ -3,6 +3,7 @@ import { Typography, Grid, Divider, Button } from '@material-ui/core';
 import Image from 'material-ui-image';
 
 import HairdresserCard from '../Hairdressers/HairdresserCard';
+import ReviewCard from '../Reviews/ReviewCard';
 
 import { useStyles } from './styles';
 
@@ -10,6 +11,42 @@ import api from '../../../services/api';
 
 export default function HomePageBody() {
 	const classes = useStyles();
+
+	const testimonials = [
+		{
+			id: 0,
+			rating: 5,
+			headline: 'Life Changing',
+			description:
+				'Managing my appointments and meeting new clients has never been this easy!',
+			created_at: '2021-05-20 07:56:31',
+			profile_img_url: '/user1.jpg',
+			first_name: 'Ciaran',
+			last_name: 'Murphy',
+		},
+		{
+			id: 0,
+			rating: 5,
+			headline: 'Perfect for finding new clients',
+			description:
+				'The possibility of storing my entire portfolio and manage my bookings all in the same place is priceless to me.',
+			created_at: '2021-02-16 07:56:31',
+			profile_img_url: 'user2.jpg',
+			first_name: 'Enda',
+			last_name: 'Walsh',
+		},
+		{
+			id: 0,
+			rating: 5,
+			headline: 'Well Architected and incredibly useful',
+			description:
+				'After moving to Ireland I had issues finding hairdressers...not anymore thanks to My Hair Done!',
+			created_at: '2021-04-02 07:56:31',
+			profile_img_url: 'user3.jpg',
+			first_name: 'Andrew',
+			last_name: 'Mccarthy',
+		},
+	];
 
 	const [featuredHairdressers, setFeaturedHairdressers] = useState([]);
 
@@ -34,7 +71,7 @@ export default function HomePageBody() {
 	}, []);
 
 	return (
-		<Grid>
+		<Grid container>
 			<Grid
 				container
 				justify='center'
@@ -52,7 +89,7 @@ export default function HomePageBody() {
 				</Grid>
 			</Grid>
 
-			<Grid className={classes.faceRecognitionOuterContainer}>
+			<Grid item xs={12} className={classes.faceRecognitionOuterContainer}>
 				<Grid container className={classes.faceRecognitionInnerContainer}>
 					<Grid item xs={12} sm={7} md={7} lg={7}>
 						<Typography
@@ -197,6 +234,21 @@ export default function HomePageBody() {
 							className={classes.forUsersImage}
 						/>
 					</Grid>
+				</Grid>
+			</Grid>
+
+			<Grid container className={classes.reviewsContainer}>
+				<Typography variant='h5'>Testimonials</Typography>
+				<Divider variant='middle' fullWidth className={classes.divider} />
+
+				<Grid container>
+					{testimonials.map((testimonial, i) => (
+						<Grid item xs={12}>
+							<ReviewCard key={testimonial.id} review={testimonial} />
+
+							{i + 1 < testimonials.length && <Divider />}
+						</Grid>
+					))}
 				</Grid>
 			</Grid>
 		</Grid>
