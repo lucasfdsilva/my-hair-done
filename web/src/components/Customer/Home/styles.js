@@ -19,7 +19,8 @@ export const useStyles = makeStyles({
 		padding: 40,
 		maxHeight: 420,
 		[theme.breakpoints.down('sm')]: {
-			maxHeight: 725,
+			maxHeight: 800,
+			padding: 70,
 		},
 	},
 	faceRecognitionInnerContainer: {
@@ -29,7 +30,7 @@ export const useStyles = makeStyles({
 		padding: 20,
 		maxHeight: 350,
 		[theme.breakpoints.down('sm')]: {
-			maxHeight: 650,
+			maxHeight: 725,
 		},
 	},
 	faceRecognitionTextContainer: {
@@ -43,7 +44,8 @@ export const useStyles = makeStyles({
 	},
 	featuredHairdressersContainer: {
 		backgroundColor: '#fff',
-		padding: 40,
+		padding: 70,
+		marginTop: -20,
 	},
 	button: {
 		marginTop: 60,
@@ -77,5 +79,11 @@ export const useStyles = makeStyles({
 	title: {
 		color: '#1E283C',
 		fontWeight: 'bold',
+	},
+	forUsersImage: {
+		borderRadius: 8,
+		[theme.breakpoints.down('xs')]: {
+			height: 230,
+		},
 	},
 });

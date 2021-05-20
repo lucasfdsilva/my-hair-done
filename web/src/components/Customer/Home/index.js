@@ -116,7 +116,14 @@ export default function HomePageBody() {
 					spacing={2}
 					className={classes.forUsersContainer}
 				>
-					<Grid item xs={5} className={classes.textContainer}>
+					<Grid
+						item
+						xs={12}
+						sm={12}
+						md={5}
+						lg={5}
+						className={classes.textContainer}
+					>
 						<Typography variant='h4' className={classes.title}>
 							For Hairdressers
 							<br></br>
@@ -138,11 +145,11 @@ export default function HomePageBody() {
 						</Typography>
 					</Grid>
 
-					<Grid item xs={5}>
+					<Grid item xs={12} sm={12} md={5} lg={5}>
 						<img
 							src='/hairdresser.jpg'
 							alt='for hairdressers'
-							style={{ borderRadius: 8 }}
+							className={classes.forUsersImage}
 						/>
 					</Grid>
 				</Grid>
@@ -154,7 +161,14 @@ export default function HomePageBody() {
 					spacing={2}
 					className={classes.forUsersContainer}
 				>
-					<Grid item xs={5} className={classes.textContainer}>
+					<Grid
+						item
+						xs={12}
+						sm={12}
+						md={5}
+						lg={5}
+						className={classes.textContainer}
+					>
 						<Typography variant='h4' className={classes.title}>
 							For Clients
 							<br></br>
@@ -176,8 +190,12 @@ export default function HomePageBody() {
 						</Typography>
 					</Grid>
 
-					<Grid item xs={5}>
-						<img src='/user.jpg' alt='for users' style={{ borderRadius: 8 }} />
+					<Grid item xs={12} sm={12} md={5} lg={5}>
+						<img
+							src='/user.jpg'
+							alt='for users'
+							className={classes.forUsersImage}
+						/>
 					</Grid>
 				</Grid>
 			</Grid>
