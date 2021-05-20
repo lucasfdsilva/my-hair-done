@@ -96,7 +96,7 @@ export default function HomePageBody() {
 							variant='h4'
 							className={classes.faceRecognitionTextContainer}
 						>
-							Discover our AR Hairstyler
+							Discover the new AR Hairstyler
 							<br></br>
 							<Typography variant='body1'>
 								Our Augmented Reality Hairstyler uses Machine Learning to read

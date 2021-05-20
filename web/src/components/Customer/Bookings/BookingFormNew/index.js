@@ -25,6 +25,9 @@ import api from '../../../../services/api';
 
 export default function BookingFormNew(props) {
 	const [id, setID] = useState(localStorage.getItem('id'));
+	const [accessToken, setAccessToken] = useState(
+		localStorage.getItem('accessToken'),
+	);
 	const [dateValue, setDateValue] = useState(new Date());
 	const [availableSlots, setAvailableSlots] = useState([]);
 	const [selectedSlot, setSelectedSlot] = useState();
@@ -39,6 +42,8 @@ export default function BookingFormNew(props) {
 	const history = useHistory();
 
 	useEffect(() => {
+		if (!id || !accessToken) return history.push('/login');
+
 		async function loadHairdresser() {
 			try {
 				const response = await api.get(`/users/${hairdresserId}`);
