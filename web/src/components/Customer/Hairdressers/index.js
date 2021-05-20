@@ -31,7 +31,7 @@ export default function Hairdressers() {
 
 				const sliceHairdressers = response.data.hairdressers
 					.reverse()
-					.slice(0, 8);
+					.slice(0, 4);
 
 				setFeaturedHairdressers(sliceHairdressers);
 			} catch (error) {

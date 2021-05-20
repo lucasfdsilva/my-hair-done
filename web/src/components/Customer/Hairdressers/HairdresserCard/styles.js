@@ -2,6 +2,9 @@ import { makeStyles } from '@material-ui/styles';
 import theme from '../../../../theme';
 
 export const useStyles = makeStyles({
+	card: {
+		minHeight: 490,
+	},
 	componentGrid: {
 		backgroundColor: '#fff',
 		borderRadius: 8,
@@ -12,10 +15,6 @@ export const useStyles = makeStyles({
 	},
 	header: {
 		marginBottom: 30,
-	},
-	button: {
-		marginTop: 20,
-		marginBottom: 15,
 	},
 	errorText: {
 		color: '#fff',
@@ -51,6 +50,9 @@ export const useStyles = makeStyles({
 		height: 75,
 		width: 75,
 		fontSize: 30,
+	},
+	reviewDescription: {
+		minHeight: 60,
 	},
 	buttonsContainer: {
 		marginTop: 15,

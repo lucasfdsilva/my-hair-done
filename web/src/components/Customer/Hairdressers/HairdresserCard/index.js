@@ -85,7 +85,7 @@ export default function HairdresserCard(props) {
 				</Modal>
 			</Grid>
 
-			<Card raised='true'>
+			<Card raised='true' className={classes.card}>
 				<CardHeader
 					avatar={
 						<Avatar
@@ -160,11 +160,12 @@ export default function HairdresserCard(props) {
 								</Grid>
 							</Grid>
 
-							<Typography variant='body2'>
-								{props.hairdresser?.reviews[0]?.description}
-							</Typography>
-							<Typography variant='caption' style={{ color: '#BDBDBD' }}>
-								{lastReviewDate}
+							<Typography variant='body2' className={classes.reviewDescription}>
+								{props.hairdresser?.reviews[0]?.description.substring(0, 100)}
+								...<br></br>
+								<Typography variant='caption' style={{ color: '#BDBDBD' }}>
+									{lastReviewDate}
+								</Typography>
 							</Typography>
 						</>
 					)}
