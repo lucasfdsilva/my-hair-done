@@ -127,9 +127,12 @@ module.exports = {
 
 				const connectDB = await knex.connect();
 				const hairdressersFromDB = await connectDB('users')
-					.where('first_name', 'like', `%${firstName}%`)
-					.orWhere('last_name', 'like', `%${lastName}%`)
-					.andWhere({ is_hairdresser: true });
+					.where({ is_hairdresser: true })
+					.where((hairdresser) => {
+						hairdresser
+							.andWhere('first_name', 'like', `%${firstName}%`)
+							.orWhere('last_name', 'like', `%${lastName}%`);
+					});
 
 				if (!hairdressersFromDB)
 					return res
@@ -174,10 +177,14 @@ module.exports = {
 
 			const connectDB = await knex.connect();
 			const hairdressersFromDB = await connectDB('users')
-				.where('first_name', 'like', `%${name}%`)
-				.orWhere('last_name', 'like', `%${name}%`)
-				.orWhere('email', 'like', `%${name}%`)
-				.andWhere({ is_hairdresser: true });
+				.where({
+					is_hairdresser: true,
+				})
+				.where((hairdresser) => {
+					hairdresser
+						.andWhere('first_name', 'like', `%${name}%`)
+						.orWhere('last_name', 'like', `%${name}%`);
+				});
 
 			if (!hairdressersFromDB)
 				return res

@@ -86,7 +86,7 @@ export default function Hairdressers() {
 
 					<Grid item xs={12} sm={12} md={12} lg={12}>
 						<Typography variant='h5' className={classes.searchTitle}>
-							Search for hairdressers
+							Search for Hairdressers
 						</Typography>
 					</Grid>
 
@@ -128,6 +128,9 @@ export default function Hairdressers() {
 				spacing={6}
 				className={classes.searchResults}
 			>
+				{hairdressers?.length == 0 && (
+					<Typography variant='h6'>No Hairdressers Found</Typography>
+				)}
 				{hairdressers &&
 					hairdressers.map((hairdresser) => (
 						<Grid item xs={12} sm={6} md={4} lg={3} key={hairdresser.id}>

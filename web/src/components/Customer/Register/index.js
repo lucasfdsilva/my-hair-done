@@ -8,6 +8,7 @@ import {
 	Tabs,
 	AppBar,
 	FormControlLabel,
+	Modal,
 } from '@material-ui/core';
 import { ExitToApp, MonetizationOn, Person } from '@material-ui/icons';
 import { Formik, Form } from 'formik';
@@ -22,6 +23,8 @@ import CustomButton from '../../FormsUI/Button/index';
 import Checkbox from '../../FormsUI/Checkbox/index';
 import countries from '../../../data/countries.json';
 
+import RegistrationConfirmation from './RegistrationConfirmation';
+
 import { useStyles } from './styles';
 
 import api from '../../../services/api';
@@ -31,6 +34,7 @@ export default function Register() {
 	const [accessToken, setAccessToken] = useState(
 		localStorage.getItem('accessToken'),
 	);
+	const [registrationConfirmed, setRegistrationConfirmed] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState('');
 
@@ -80,10 +84,14 @@ export default function Register() {
 		try {
 			const response = await api.post('users', data);
 
-			history.push('/login');
+			setRegistrationConfirmed(true);
 		} catch (error) {
 			setErrorMessage(error.response.data.message);
 		}
+	}
+
+	async function handleRegistrationConfirmationClose() {
+		setRegistrationConfirmed(false);
 	}
 
 	const classes = useStyles();
@@ -144,6 +152,16 @@ export default function Register() {
 
 	return (
 		<Grid container className={classes.componentGrid} xs={12} md={8} lg={6}>
+			<Grid container className={classes.modalContainer}>
+				<Modal
+					className={classes.modal}
+					open={registrationConfirmed}
+					onClose={handleRegistrationConfirmationClose}
+				>
+					<RegistrationConfirmation />
+				</Modal>
+			</Grid>
+
 			<Grid item xs={12}>
 				<Typography variant='h4' className={classes.header}>
 					Register

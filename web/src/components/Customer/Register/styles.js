@@ -38,4 +38,10 @@ export const useStyles = makeStyles({
 	checkbox: {
 		marginLeft: -15,
 	},
+	modal: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: '100%',
+	},
 });
