@@ -107,6 +107,80 @@ export default function HomePageBody() {
 					))}
 				</Grid>
 			</Grid>
+
+			<Grid container className={classes.forUsersOuterContainer}>
+				<Grid
+					container
+					align='center'
+					justify='center'
+					spacing={2}
+					className={classes.forUsersContainer}
+				>
+					<Grid item xs={5} className={classes.textContainer}>
+						<Typography variant='h4' className={classes.title}>
+							For Hairdressers
+							<br></br>
+							<br></br>
+							<Typography variant='body1'>
+								More than just an appointment booking app, it's your life made
+								easier and your portfolio visible!
+								<br></br>
+								<br></br>
+								Features
+								<br></br>
+								<br></br>- Free Web App available in any device
+								<br></br>- Manage your appointments
+								<br></br>- Publish your portfolio
+								<br></br>- Create customized time slots
+								<br></br>- Notifications and Reminders
+								<br></br>- Reduce no shows
+							</Typography>
+						</Typography>
+					</Grid>
+
+					<Grid item xs={5}>
+						<img
+							src='/hairdresser.jpg'
+							alt='for hairdressers'
+							style={{ borderRadius: 8 }}
+						/>
+					</Grid>
+				</Grid>
+
+				<Grid
+					container
+					align='center'
+					justify='center'
+					spacing={2}
+					className={classes.forUsersContainer}
+				>
+					<Grid item xs={5} className={classes.textContainer}>
+						<Typography variant='h4' className={classes.title}>
+							For Clients
+							<br></br>
+							<br></br>
+							<Typography variant='body1'>
+								More than just an appointment booking app, it's your life made
+								easier!
+								<br></br>
+								<br></br>
+								Features
+								<br></br>
+								<br></br>- Free Web App available in any device
+								<br></br>- Manage your appointments
+								<br></br>- Publish your portfolio
+								<br></br>- Create customized time slots
+								<br></br>- Notifications and Reminders
+								<br></br>- Reduce no shows
+							</Typography>
+						</Typography>
+					</Grid>
+
+					<Grid item xs={5}>
+						<img src='/user.jpg' alt='for users' style={{ borderRadius: 8 }} />
+					</Grid>
+				</Grid>
+			</Grid>
 		</Grid>
 	);
 }

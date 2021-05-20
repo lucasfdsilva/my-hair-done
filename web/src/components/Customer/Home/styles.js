@@ -61,4 +61,21 @@ export const useStyles = makeStyles({
 		width: '100%',
 		border: '1px solid #FF6257',
 	},
+	forUsersOuterContainer: {
+		padding: 40,
+	},
+	forUsersContainer: {
+		borderRadius: 8,
+		marginTop: 15,
+		padding: 40,
+		marginBottom: 50,
+		backgroundColor: 'rgba(255,255,255, 0.7)',
+	},
+	textContainer: {
+		borderRadius: 8,
+	},
+	title: {
+		color: '#1E283C',
+		fontWeight: 'bold',
+	},
 });
