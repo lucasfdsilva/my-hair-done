@@ -337,11 +337,7 @@ export default function Profile() {
 								</Grid>
 
 								<Grid item xs={12}>
-									<SelectField
-										name='country'
-										label='Country'
-										options={countries}
-									/>
+									<TextField name='country' label='Country' />
 								</Grid>
 
 								<Grid item xs={4} className={classes.checkbox}>
