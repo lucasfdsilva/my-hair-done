@@ -105,7 +105,7 @@ export default function HomePageBody() {
 								<br></br>
 								<br></br>
 								<Typography variant='caption'>
-									Use it from a Desktop browser for optimal experience.
+									Use it from a Desktop browser for better experience.
 									<br></br>
 									Please note that this feature is still under development.
 								</Typography>
