@@ -29,9 +29,7 @@ export default function Hairdressers() {
 			try {
 				const response = await api.get(`/users/hairdressers`);
 
-				const sliceHairdressers = response.data.hairdressers
-					.reverse()
-					.slice(0, 4);
+				const sliceHairdressers = response.data.hairdressers.slice(0, 4);
 
 				setFeaturedHairdressers(sliceHairdressers);
 			} catch (error) {
